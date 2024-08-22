@@ -2,35 +2,41 @@ package com.teamtwo.model;
 
 public class ShippingAddressDTO {
 	
-	private int ShippingAddressId;
-	private String ShippingAddressAddress;
-	private String ShippingAddressIsDefault;
-	private int ShippingAddressUserIdFk;
-	
+	private int shippingAddressId;
+	private String shippingAddressAddress;
+	private String shippingAddressIsDefault;
+	private int shippingAddressUserIdFk;
 	
 	public int getShippingAddressId() {
-		return ShippingAddressId;
+		return shippingAddressId;
 	}
+	
 	public void setShippingAddressId(int shippingAddressId) {
-		ShippingAddressId = shippingAddressId;
+		this.shippingAddressId = shippingAddressId;
 	}
+	
 	public String getShippingAddressAddress() {
-		return ShippingAddressAddress;
+		return shippingAddressAddress;
 	}
+	
 	public void setShippingAddressAddress(String shippingAddressAddress) {
-		ShippingAddressAddress = shippingAddressAddress;
+		this.shippingAddressAddress = shippingAddressAddress;
 	}
+	
 	public String getShippingAddressIsDefault() {
-		return ShippingAddressIsDefault;
+		return shippingAddressIsDefault;
 	}
+	
 	public void setShippingAddressIsDefault(String shippingAddressIsDefault) {
-		ShippingAddressIsDefault = shippingAddressIsDefault;
+		this.shippingAddressIsDefault = shippingAddressIsDefault;
 	}
+	
 	public int getShippingAddressUserIdFk() {
-		return ShippingAddressUserIdFk;
+		return shippingAddressUserIdFk;
 	}
+	
 	public void setShippingAddressUserIdFk(int shippingAddressUserIdFk) {
-		ShippingAddressUserIdFk = shippingAddressUserIdFk;
+		this.shippingAddressUserIdFk = shippingAddressUserIdFk;
 	}
-
+	
 }
