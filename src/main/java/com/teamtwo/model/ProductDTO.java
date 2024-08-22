@@ -9,55 +9,70 @@ public class ProductDTO {
 	private String productImage;		// 상품이미지
 	private String productCreatedAt;	// 상품생성일
 	private String productUpdatedAt;	// 업데이트일
-	private int productCategoryId;		// [ CategoryDTO ] 카테고리식별자 외래키   
+	private int productCategoryFk;		// [ CategoryDTO ] 카테고리식별자 외래키   
 	
 	public int getProductId() {
 		return productId;
 	}
+	
 	public void setProductId(int productId) {
 		this.productId = productId;
 	}
+	
 	public String getProductName() {
 		return productName;
 	}
+	
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+	
 	public int getProductPrice() {
 		return productPrice;
 	}
+	
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
+	
 	public int getProductStock() {
 		return productStock;
 	}
+	
 	public void setProductStock(int productStock) {
 		this.productStock = productStock;
 	}
+	
 	public String getProductImage() {
 		return productImage;
 	}
+	
 	public void setProductImage(String productImage) {
 		this.productImage = productImage;
 	}
+	
 	public String getProductCreatedAt() {
 		return productCreatedAt;
 	}
+	
 	public void setProductCreatedAt(String productCreatedAt) {
 		this.productCreatedAt = productCreatedAt;
 	}
+	
 	public String getProductUpdatedAt() {
 		return productUpdatedAt;
 	}
+	
 	public void setProductUpdatedAt(String productUpdatedAt) {
 		this.productUpdatedAt = productUpdatedAt;
 	}
-	public int getProductCategoryId() {
-		return productCategoryId;
+	
+	public int getProductCategoryFk() {
+		return productCategoryFk;
 	}
-	public void setProductCategoryId(int productCategoryId) {
-		this.productCategoryId = productCategoryId;
-	}	
+	
+	public void setProductCategoryFk(int productCategoryFk) {
+		this.productCategoryFk = productCategoryFk;
+	}
 
 }
