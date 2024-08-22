@@ -2,35 +2,35 @@ package com.teamtwo.model;
 
 public class ShippingAddressDTO {
 	
-	private int shipping_address_id;
-	private String shipping_address_address;
-	private String shipping_address_is_default;
-	private int shipping_address_user_id;
+	private int ShippingAddressId;
+	private String ShippingAddressAddress;
+	private String ShippingAddressIsDefault;
+	private int ShippingAddressUserIdFk;
 	
 	
-	public int getShipping_address_id() {
-		return shipping_address_id;
+	public int getShippingAddressId() {
+		return ShippingAddressId;
 	}
-	public void setShipping_address_id(int shipping_address_id) {
-		this.shipping_address_id = shipping_address_id;
+	public void setShippingAddressId(int shippingAddressId) {
+		ShippingAddressId = shippingAddressId;
 	}
-	public String getShipping_address_address() {
-		return shipping_address_address;
+	public String getShippingAddressAddress() {
+		return ShippingAddressAddress;
 	}
-	public void setShipping_address_address(String shipping_address_address) {
-		this.shipping_address_address = shipping_address_address;
+	public void setShippingAddressAddress(String shippingAddressAddress) {
+		ShippingAddressAddress = shippingAddressAddress;
 	}
-	public String getShipping_address_is_default() {
-		return shipping_address_is_default;
+	public String getShippingAddressIsDefault() {
+		return ShippingAddressIsDefault;
 	}
-	public void setShipping_address_is_default(String shipping_address_is_default) {
-		this.shipping_address_is_default = shipping_address_is_default;
+	public void setShippingAddressIsDefault(String shippingAddressIsDefault) {
+		ShippingAddressIsDefault = shippingAddressIsDefault;
 	}
-	public int getShipping_address_user_id() {
-		return shipping_address_user_id;
+	public int getShippingAddressUserIdFk() {
+		return ShippingAddressUserIdFk;
 	}
-	public void setShipping_address_user_id(int shipping_address_user_id) {
-		this.shipping_address_user_id = shipping_address_user_id;
+	public void setShippingAddressUserIdFk(int shippingAddressUserIdFk) {
+		ShippingAddressUserIdFk = shippingAddressUserIdFk;
 	}
 
 }

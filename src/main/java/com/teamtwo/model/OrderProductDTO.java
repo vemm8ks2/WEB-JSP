@@ -2,35 +2,35 @@ package com.teamtwo.model;
 
 public class OrderProductDTO {
 
-	private int Order_product_id;
-	private String Order_product_qunatity;
-	private int Order_product_user_id;
-	private int Order_product_prod_id;
+	private int OrderProductId;
+	private String OrderProductQunatity;
+	private int OrderProductUserIdFk;
+	private int OrderProductProdIdFk;
 	
 	
-	public int getOrder_product_id() {
-		return Order_product_id;
+	public int getOrderProductId() {
+		return OrderProductId;
 	}
-	public void setOrder_product_id(int order_product_id) {
-		Order_product_id = order_product_id;
+	public void setOrderProductId(int orderProductId) {
+		OrderProductId = orderProductId;
 	}
-	public String getOrder_product_qunatity() {
-		return Order_product_qunatity;
+	public String getOrderProductQunatity() {
+		return OrderProductQunatity;
 	}
-	public void setOrder_product_qunatity(String order_product_qunatity) {
-		Order_product_qunatity = order_product_qunatity;
+	public void setOrderProductQunatity(String orderProductQunatity) {
+		OrderProductQunatity = orderProductQunatity;
 	}
-	public int getOrder_product_user_id() {
-		return Order_product_user_id;
+	public int getOrderProductUserIdFk() {
+		return OrderProductUserIdFk;
 	}
-	public void setOrder_product_user_id(int order_product_user_id) {
-		Order_product_user_id = order_product_user_id;
+	public void setOrderProductUserIdFk(int orderProductUserIdFk) {
+		OrderProductUserIdFk = orderProductUserIdFk;
 	}
-	public int getOrder_product_prod_id() {
-		return Order_product_prod_id;
+	public int getOrderProductProdIdFk() {
+		return OrderProductProdIdFk;
 	}
-	public void setOrder_product_prod_id(int order_product_prod_id) {
-		Order_product_prod_id = order_product_prod_id;
+	public void setOrderProductProdIdFk(int orderProductProdIdFk) {
+		OrderProductProdIdFk = orderProductProdIdFk;
 	}
 	
 }
