@@ -9,7 +9,7 @@ public class OrderDTO {
 	private String orderStatus; 		// 주문상태 [order_status]
 	private String orderCreatedAt; 		// 주문일 [creater_at]
 	private String orderDeliveredAt; 	// 배송완료일 [delivered_at]
-	private int userId; 				// UserDTO 유저식별자[user_id] userNo => userId로 변경함.
+	private int orderUserFk; 			// UserDTO 유저식별자[user_id] userNo => userId로 변경함.
 	
 	public int getOrderId() {
 		return orderId;
@@ -66,13 +66,13 @@ public class OrderDTO {
 	public void setOrderDeliveredAt(String orderDeliveredAt) {
 		this.orderDeliveredAt = orderDeliveredAt;
 	}
-	
-	public int getUserId() {
-		return userId;
+
+	public int getOrderUserFk() {
+		return orderUserFk;
 	}
-	
-	public void setUserId(int userId) {
-		this.userId = userId;
+
+	public void setOrderUserFk(int orderUserFk) {
+		this.orderUserFk = orderUserFk;
 	}
 
 }
