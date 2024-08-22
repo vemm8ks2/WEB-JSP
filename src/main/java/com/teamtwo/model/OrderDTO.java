@@ -1,78 +1,78 @@
 package com.teamtwo.model;
 
 public class OrderDTO {
-	private int order_no; 				// 주문식별자 [id]
-	private String order_receiverName; 	// 수취인 이름[receiver_name]
-	private String order_receiverPhone; // 수취인 연락처[receiver_phone]
-	private String order_receiverAddr; 	// 수취인 주소 [receiver_addr]
-	private String order_status; 		// 주문상태 [order_status]
-	private String order_createdAt; 	// 주문일 [creater_at]
-	private String order_deliveredAt; 	// 배송완료일 [delivered_at]
-	private int user_no; 				// UserDTO 유저식별자[user_id]
 	
-	public int getOrder_no() {
-		return order_no;
+	private int orderId; 				// 주문식별자 [id] // orderNo => orderId로 변경함.
+	private String orderReceiverName; 	// 수취인 이름[receiver_name]
+	private String orderReceiverPhone; 	// 수취인 연락처[receiver_phone]
+	private String orderReceiverAddr; 	// 수취인 주소 [receiver_addr]
+	private String orderStatus; 		// 주문상태 [order_status]
+	private String orderCreatedAt; 		// 주문일 [creater_at]
+	private String orderDeliveredAt; 	// 배송완료일 [delivered_at]
+	private int userId; 				// UserDTO 유저식별자[user_id] userNo => userId로 변경함.
+	
+	public int getOrderId() {
+		return orderId;
 	}
 	
-	public void setOrder_no(int order_no) {
-		this.order_no = order_no;
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 	
-	public String getOrder_receiverName() {
-		return order_receiverName;
+	public String getOrderReceiverName() {
+		return orderReceiverName;
 	}
 	
-	public void setOrder_receiverName(String order_receiverName) {
-		this.order_receiverName = order_receiverName;
+	public void setOrderReceiverName(String orderReceiverName) {
+		this.orderReceiverName = orderReceiverName;
 	}
 	
-	public String getOrder_receiverPhone() {
-		return order_receiverPhone;
+	public String getOrderReceiverPhone() {
+		return orderReceiverPhone;
 	}
 	
-	public void setOrder_receiverPhone(String order_receiverPhone) {
-		this.order_receiverPhone = order_receiverPhone;
+	public void setOrderReceiverPhone(String orderReceiverPhone) {
+		this.orderReceiverPhone = orderReceiverPhone;
 	}
 	
-	public String getOrder_receiverAddr() {
-		return order_receiverAddr;
+	public String getOrderReceiverAddr() {
+		return orderReceiverAddr;
 	}
 	
-	public void setOrder_receiverAddr(String order_receiverAddr) {
-		this.order_receiverAddr = order_receiverAddr;
+	public void setOrderReceiverAddr(String orderReceiverAddr) {
+		this.orderReceiverAddr = orderReceiverAddr;
 	}
 	
-	public String getOrder_status() {
-		return order_status;
+	public String getOrderStatus() {
+		return orderStatus;
 	}
 	
-	public void setOrder_status(String order_status) {
-		this.order_status = order_status;
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 	
-	public String getOrder_createdAt() {
-		return order_createdAt;
+	public String getOrderCreatedAt() {
+		return orderCreatedAt;
 	}
 	
-	public void setOrder_createdAt(String order_createdAt) {
-		this.order_createdAt = order_createdAt;
+	public void setOrderCreatedAt(String orderCreatedAt) {
+		this.orderCreatedAt = orderCreatedAt;
 	}
 	
-	public String getOrder_deliveredAt() {
-		return order_deliveredAt;
+	public String getOrderDeliveredAt() {
+		return orderDeliveredAt;
 	}
 	
-	public void setOrder_deliveredAt(String order_deliveredAt) {
-		this.order_deliveredAt = order_deliveredAt;
+	public void setOrderDeliveredAt(String orderDeliveredAt) {
+		this.orderDeliveredAt = orderDeliveredAt;
 	}
 	
-	public int getUser_no() {
-		return user_no;
+	public int getUserId() {
+		return userId;
 	}
 	
-	public void setUser_no(int user_no) {
-		this.user_no = user_no;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
-
 
 }
