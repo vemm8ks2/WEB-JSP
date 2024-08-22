@@ -7,8 +7,8 @@ create table T_order(
 	order_status VARCHAR2(20) not null,							-- 주문상태
 	order_created_at DATE not null,								-- 주문일
 	order_delivered_at DATE not null,							-- 배송완료일
-	order_customer_Fk NUMBER(9),									-- 유저외래키
+	order_customer_fk NUMBER(9),									-- 유저외래키
 	
 	primary key(order_id),										-- 기본키
-	foreign key(order_customer_Fk) references T_customer(customer_id)	-- 외래키
+	foreign key(order_customer_fk) references T_customer(customer_id)	-- 외래키
 );

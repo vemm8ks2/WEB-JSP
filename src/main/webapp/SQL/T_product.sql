@@ -7,8 +7,8 @@ create table T_product(
 	product_image VARCHAR2(1000) not null,						-- 상품이미지
 	product_createdAt DATE not null,							-- 상품생성일
 	product_updateAt DATE not null,								-- 업데이트일
-	product_category_Fk NUMBER(9),								-- 카테고리식별자
+	product_category_fk NUMBER(9),								-- 카테고리식별자
 	
 	primary key(product_id),											-- 기본키
-	foreign key(product_category_Fk) references T_category(category_id)	-- 카테고리외래키
+	foreign key(product_category_fk) references T_category(category_id)	-- 카테고리외래키
 );
