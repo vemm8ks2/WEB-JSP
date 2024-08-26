@@ -81,7 +81,7 @@ public class _SampleDAO implements BaseDAO<_SampleDAO> {
 	}
 
 	@Override
-	public void save(_SampleDAO t) {
+	public void save(_SampleDAO dto) {
 		try {
 			open();
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class _SampleDAO implements BaseDAO<_SampleDAO> {
 	}
 
 	@Override
-	public void update(_SampleDAO t, String[] params) {
+	public void update(_SampleDAO dto) {
 		try {
 			open();
 		} catch (Exception e) {
@@ -103,7 +103,7 @@ public class _SampleDAO implements BaseDAO<_SampleDAO> {
 	}
 
 	@Override
-	public void delete(_SampleDAO t) {
+	public void delete(int id) {
 		try {
 			open();
 		} catch (Exception e) {
