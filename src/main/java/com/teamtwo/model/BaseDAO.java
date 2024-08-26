@@ -14,9 +14,9 @@ public interface BaseDAO<T> {
     
     List<T> getAll();
     
-    void save(T t);
+    void save(T dto);
     
-    void update(T t);
+    void update(T dto);
     
     void delete(int id);
 }
