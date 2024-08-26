@@ -2,63 +2,77 @@ package com.teamtwo.model;
 
 public class ProductDTO {
 	
-	private String Product_id;
-	private String Product_name;
-	private String Product_price;
-	private String Product_stock;
-	private String Product_image;
-	private String Product_createdAt;
-	private String Product_updatedAt;
-	private String Productcategory_id;
+	private int productId; 				// 상품식별자
+	private String productName; 		// 상품명
+	private int productPrice;			// 상품가격
+	private int productStock;			// 상품재고
+	private String productImage;		// 상품이미지
+	private String productCreatedAt;	// 상품생성일
+	private String productUpdatedAt;	// 업데이트일
+	private int productCategoryFk;		// [ CategoryDTO ] 카테고리식별자 외래키   
 	
+	public int getProductId() {
+		return productId;
+	}
 	
-	public String getProduct_id() {
-		return Product_id;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
-	public void setProduct_id(String product_id) {
-		Product_id = product_id;
+	
+	public String getProductName() {
+		return productName;
 	}
-	public String getProduct_name() {
-		return Product_name;
+	
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
-	public void setProduct_name(String product_name) {
-		Product_name = product_name;
+	
+	public int getProductPrice() {
+		return productPrice;
 	}
-	public String getProduct_price() {
-		return Product_price;
+	
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
 	}
-	public void setProduct_price(String product_price) {
-		Product_price = product_price;
+	
+	public int getProductStock() {
+		return productStock;
 	}
-	public String getProduct_stock() {
-		return Product_stock;
+	
+	public void setProductStock(int productStock) {
+		this.productStock = productStock;
 	}
-	public void setProduct_stock(String product_stock) {
-		Product_stock = product_stock;
+	
+	public String getProductImage() {
+		return productImage;
 	}
-	public String getProduct_image() {
-		return Product_image;
+	
+	public void setProductImage(String productImage) {
+		this.productImage = productImage;
 	}
-	public void setProduct_image(String product_image) {
-		Product_image = product_image;
+	
+	public String getProductCreatedAt() {
+		return productCreatedAt;
 	}
-	public String getProduct_createdAt() {
-		return Product_createdAt;
+	
+	public void setProductCreatedAt(String productCreatedAt) {
+		this.productCreatedAt = productCreatedAt;
 	}
-	public void setProduct_createdAt(String product_createdAt) {
-		Product_createdAt = product_createdAt;
+	
+	public String getProductUpdatedAt() {
+		return productUpdatedAt;
 	}
-	public String getProduct_updatedAt() {
-		return Product_updatedAt;
+	
+	public void setProductUpdatedAt(String productUpdatedAt) {
+		this.productUpdatedAt = productUpdatedAt;
 	}
-	public void setProduct_updatedAt(String product_updatedAt) {
-		Product_updatedAt = product_updatedAt;
+	
+	public int getProductCategoryFk() {
+		return productCategoryFk;
 	}
-	public String getProductcategory_id() {
-		return Productcategory_id;
-	}
-	public void setProductcategory_id(String productcategory_id) {
-		Productcategory_id = productcategory_id;
+	
+	public void setProductCategoryFk(int productCategoryFk) {
+		this.productCategoryFk = productCategoryFk;
 	}
 
 }

@@ -3,10 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script type="text/javascript">
+		location.href = "mainView.do";
+	</script>
 </head>
 <body>
-	환영합니다.
+
 </body>
 </html>
