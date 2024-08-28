@@ -9,14 +9,14 @@ import java.util.List;
  * @param <T>
  */
 public interface BaseDAO<T> {
-	
-	T get(int id);
-    
-    List<T> getAll();
-    
-    void save(T dto);
-    
-    void update(T dto);
-    
-    void delete(int id);
+
+  T get(int id);
+
+  List<T> getAll();
+
+  void save(T dto);
+
+  void update(T dto);
+
+  void delete(int id);
 }

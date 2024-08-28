@@ -14,109 +14,126 @@ import javax.sql.DataSource;
 
 public class CartDAO implements BaseDAO<CartDTO> {
 
-	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
-	
-	private static CartDAO instance = null;
-	
-	private CartDAO() {}
-	
-	public static CartDAO getInstance() {
-		if (instance == null) 
-			instance = new CartDAO();
-		
-		return instance;
-	}
-	
-	private void open() {
-		try {
-			Context initCtx = new InitialContext();
-			Context ctx = (Context) initCtx.lookup("java:comp/env");
-			DataSource ds = (DataSource) ctx.lookup("jdbc/myoracle");
+  private Connection conn = null;
+  private PreparedStatement pstmt = null;
+  private ResultSet rs = null;
 
-			conn = ds.getConnection();
-		} catch (NamingException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void close() {
-		try {
-			if (rs != null) rs.close();
-			if (pstmt != null) pstmt.close();
-			if (conn != null) conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+  private static CartDAO instance = null;
 
-	@Override
-	public CartDTO get(int id) {
-		CartDTO dto = null;
-		
-		try {
-			open();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		
-		return dto;
-	}
+  private CartDAO() {}
 
-	@Override
-	public List<CartDTO> getAll() {
-		List<CartDTO> list = new ArrayList<>();
-		
-		try {
-			open();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		
-		return list;
-	}
+  public static CartDAO getInstance() {
+    if (instance == null)
+      instance = new CartDAO();
 
-	@Override
-	public void save(CartDTO dto) {
-		try {
-			open();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
+    return instance;
+  }
 
-	@Override
-	public void update(CartDTO dto) {
-		try {
-			open();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
+  private void open() {
+    try {
+      Context initCtx = new InitialContext();
+      Context ctx = (Context) initCtx.lookup("java:comp/env");
+      DataSource ds = (DataSource) ctx.lookup("jdbc/myoracle");
 
-	@Override
-	public void delete(int id) {
-		try {
-			open();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
+      conn = ds.getConnection();
+    } catch (NamingException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void close() {
+    try {
+      if (rs != null)
+        rs.close();
+      if (pstmt != null)
+        pstmt.close();
+      if (conn != null)
+        conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public CartDTO get(int id) {
+    CartDTO dto = null;
+
+    try {
+      open();
+      
+      CartDTO dto = null;
+      
+      String sql = "select * from T_category where category_id = ?";
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, id);
+      
+      rs = pstmt.executeQuery();
+      
+      if(rs.next()) {
+        dto = new CartDTO();
+        dto.setCartId(rs.getInt(1));
+        
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return dto;
+  }
+
+  @Override
+  public List<CartDTO> getAll() {
+    List<CartDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
+
+  @Override
+  public void save(CartDTO dto) {
+    try {
+      open();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  }
+
+  @Override
+  public void update(CartDTO dto) {
+    try {
+      open();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  }
+
+  @Override
+  public void delete(int id) {
+    try {
+      open();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  }
 
 }

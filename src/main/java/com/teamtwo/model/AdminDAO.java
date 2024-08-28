@@ -42,9 +42,12 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
 
   private void close() {
     try {
-      if (rs != null) rs.close();
-      if (pstmt != null) pstmt.close();
-      if (conn != null) conn.close();
+      if (rs != null)
+        rs.close();
+      if (pstmt != null)
+        pstmt.close();
+      if (conn != null)
+        conn.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -58,7 +61,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       open();
 
       String sql = "";
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
