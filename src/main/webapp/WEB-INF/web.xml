@@ -18,9 +18,18 @@
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>com.teamtwo.controller.FrontController</servlet-class>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+	
+	<!-- 필터 정의 및 매핑 -->
+    <filter>
+        <filter-name>homeFilter</filter-name>
+        <filter-class>com.teamtwo.filter.HomeFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>homeFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
