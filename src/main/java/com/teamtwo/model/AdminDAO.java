@@ -57,6 +57,8 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     try {
       open();
 
+      String sql = "";
+      
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
