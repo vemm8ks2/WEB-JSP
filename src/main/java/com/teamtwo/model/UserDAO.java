@@ -151,21 +151,18 @@ public class UserDAO implements BaseDAO<UserDTO> {
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-        if (dto.getUserPassword().equals(rs.getString("customer_password"))) {
-          sql = "update T_customer set customer_password=?, customer_name=?,"
-              + "customer_email=?, customer_phone_number=?,"
-              + "customer_birth=?, customer_updated_at=sysdate";
-          pstmt = conn.prepareStatement(sql);
+        sql = "update T_customer set customer_password=?, customer_name=?,"
+            + "customer_email=?, customer_phone_number=?,"
+            + "customer_birth=?, customer_updated_at=sysdate";
+        pstmt = conn.prepareStatement(sql);
 
-          pstmt.setString(1, dto.getUserPassword());
-          pstmt.setString(2, dto.getUserName());
-          pstmt.setString(3, dto.getUserEmail());
-          pstmt.setString(4, dto.getUserPhoneNumber());
-          pstmt.setString(5, dto.getUserBirth());
+        pstmt.setString(1, dto.getUserPassword());
+        pstmt.setString(2, dto.getUserName());
+        pstmt.setString(3, dto.getUserEmail());
+        pstmt.setString(4, dto.getUserPhoneNumber());
+        pstmt.setString(5, dto.getUserBirth());
 
-        }
       }
-
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
