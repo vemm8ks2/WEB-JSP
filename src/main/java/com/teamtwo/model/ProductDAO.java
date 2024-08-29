@@ -146,7 +146,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 			  count = rs.getInt(1);
 			}
 			
-			sql = "insert into T_product values(?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "insert into T_product values(?, ?, ?, ?, ?, sysdate, '', ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -155,9 +155,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 			pstmt.setInt(3, dto.getProductPrice());
 			pstmt.setInt(4, dto.getProductStock());
 			pstmt.setString(5, dto.getProductImage());
-			pstmt.setString(6, dto.getProductCreatedAt());
-			pstmt.setString(7, dto.getProductUpdatedAt());
-			pstmt.setInt(8, dto.getProductCategoryFk());
+			pstmt.setInt(6, dto.getProductCategoryFk());
 			
 			pstmt.executeUpdate();
 			
@@ -177,8 +175,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 			
 			String sql = "update T_product set product_name = ?,"
 			              + "product_price = ?, product_stock = ?,"
-			              + "product_image = ?, product_createdAt = ?,"
-			              + "product_updatedAt = ?, where product_id = ?";
+			              + "product_image = ?, product_updatedAt = sysdate,"
+			              + "where product_id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -186,9 +184,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 			pstmt.setInt(2, dto.getProductPrice());
 			pstmt.setInt(3, dto.getProductStock());
 			pstmt.setString(4, dto.getProductImage());
-			pstmt.setString(5, dto.getProductCreatedAt());
-			pstmt.setString(6, dto.getProductUpdatedAt());
-			pstmt.setInt(7, dto.getProductId());
+			pstmt.setInt(5, dto.getProductId());
 			
 			pstmt.executeUpdate();
 			
