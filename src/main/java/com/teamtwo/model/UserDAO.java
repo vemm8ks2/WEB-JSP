@@ -120,7 +120,7 @@ public class UserDAO implements BaseDAO<UserDTO> {
 	public void save(UserDTO dto) {
 		try {
 			open();
-			String sql = "insert into T_customer values(?,?,?,?,?,?,?,?,sysdate,sysdate)";
+			String sql = "insert into T_customer values(?,?,?,?,?,?,?,?,sysdate,'')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getUserId());
 			pstmt.setString(2, dto.getUserLoginId());
@@ -180,7 +180,7 @@ public class UserDAO implements BaseDAO<UserDTO> {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-			  sql = "dalete from T_customer where customer_id=?";
+			  sql = "delete from T_customer where customer_id=?";
 			  pstmt = conn.prepareStatement(sql);
 			  pstmt.setInt(1, id);
 			}
