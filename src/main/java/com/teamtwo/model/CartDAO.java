@@ -131,7 +131,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, newCartId);
+      pstmt.setInt(1, dto.getCartId());
       pstmt.setInt(2, dto.getCartProductCount());
       pstmt.setInt(3, dto.getCartCustomerFk());
       pstmt.setInt(4, dto.getCartProductFk());
