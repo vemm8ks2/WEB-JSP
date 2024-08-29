@@ -4,7 +4,7 @@ public class CartDTO {
 	
 	private int cartId;
 	private int cartProductCount;
-	private int cartUserFk;
+	private int cartCustomerFk;
 	private int cartProductFk;
 	
 	public int getCartId() {
@@ -23,12 +23,12 @@ public class CartDTO {
 		this.cartProductCount = cartProductCount;
 	}
 	
-	public int getCartUserFk() {
-		return cartUserFk;
+	public int getCartCustomerFk() {
+		return cartCustomerFk;
 	}
 	
-	public void setCartUserFk(int cartUserFk) {
-		this.cartUserFk = cartUserFk;
+	public void setCartCustomerFk(int cartCustomerFk) {
+		this.cartCustomerFk = cartCustomerFk;
 	}
 	
 	public int getCartProductFk() {

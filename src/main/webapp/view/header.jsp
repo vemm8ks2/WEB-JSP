@@ -16,7 +16,9 @@
         </svg>
       </button>
     </form>
-    <div class="flex gap-4"> <!-- .header-top__logged-in -->
+    <!-- .header-top__logged-in -->
+    <!-- 로그인 상태 UI
+    <div class="flex gap-4">
       <a href="#">
         <div class="relative">
           <svg class="w-8 fill-gray-500" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 483.1 483.1" xml:space="preserve">
@@ -37,21 +39,20 @@
         </div>
       </a>
     </div>
+    -->
     <!-- .header-top__logged-out -->
-    <!-- 비로그인 상태 UI
     <div class="flex gap-2">
-      <a href="#">
+      <a href="loginView.do">
         <button class="px-6 py-2 rounded-md bg-black text-white">
           로그인
         </button>
       </a>
-      <a href="#">
-        <button class="px-6 py-2 rounded-md bg-black text-white">
+      <a href="registerView.do">
+        <button class="px-6 py-2 rounded-md bg-white text-black">
           회원가입
         </button>
       </a>
     </div>
-    -->
   </div>
   <nav class="mt-4 text-slate-500 [&_*]:z-10"> <!-- .header-bottom__nav -->
     <ul class="flex [&>li]:mr-4 [&>li]:font-medium [&>li:hover>span]:text-slate-900"> <!-- .header-bottom__wrapper -->
