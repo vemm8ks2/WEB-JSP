@@ -80,7 +80,6 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
         dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
         dto.setAdminLastAccessedIp(rs.getString("admin_last_accessed_ip"));
       }
-
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
