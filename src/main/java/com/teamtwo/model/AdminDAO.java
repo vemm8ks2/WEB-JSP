@@ -16,6 +16,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
   private Connection conn = null;
   private PreparedStatement pstmt = null;
   private ResultSet rs = null;
+  String sql = null;
 
   private static AdminDAO instance = null;
 
@@ -42,9 +43,12 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
 
   private void close() {
     try {
-      if (rs != null) rs.close();
-      if (pstmt != null) pstmt.close();
-      if (conn != null) conn.close();
+      if (rs != null)
+        rs.close();
+      if (pstmt != null)
+        pstmt.close();
+      if (conn != null)
+        conn.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -57,8 +61,25 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     try {
       open();
 
-      String sql = "";
-      
+      sql = "select * from t_admin where admin_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setInt(1, id);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        dto = new AdminDTO();
+        dto.setAdminId(rs.getInt("admin_id"));
+        dto.setAdminLoginId(rs.getString("admin_login_id"));
+        dto.setAdminPassword(rs.getString("admin_password"));
+        dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
+        dto.setAdminCreateAt(rs.getString("admin_create_at"));
+        dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
+        dto.setAdminLastAccessedIp(rs.getString("admin_last_accessed_ip"));
+      }
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -66,7 +87,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     }
 
     return dto;
-  }
+  } // AdminDTo get() end
 
   @Override
   public List<AdminDTO> getAll() {
@@ -75,6 +96,28 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     try {
       open();
 
+      sql = "select * from t_admin";
+
+      pstmt = conn.prepareStatement(sql);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+
+        AdminDTO dto = new AdminDTO();
+
+        dto.setAdminId(rs.getInt("adminid"));
+        dto.setAdminLoginId(rs.getString("adminloginid"));
+        dto.setAdminPassword(rs.getString("adminpassword"));
+        dto.setAdminName(rs.getString("adminname"));
+        dto.setAdminPhoneNumber(rs.getString("adminPhonenumber"));
+        dto.setAdminCreateAt(rs.getString("admincreateat"));
+        dto.setAdminLastAccessedAt(rs.getString("adminlastaccessedat"));
+        dto.setAdminLastAccessedIp(rs.getString("adminlastaccessedip"));
+
+        list.add(dto);
+      }
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -82,42 +125,108 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     }
 
     return list;
-  }
+  } // List<> end
 
   @Override
   public void save(AdminDTO dto) {
     try {
       open();
 
+      sql = "insert into t_admin (admin_id, admin_login_id, admin_password, "
+          + " admin_name, admin_phone_number, admin_create_at,"
+          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,sysdate,?,?)";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setInt(1, dto.getAdminId());
+      pstmt.setString(2, dto.getAdminLoginId());
+      pstmt.setString(3, dto.getAdminPassword());
+      pstmt.setString(4, dto.getAdminName());
+      pstmt.setString(5, dto.getAdminPhoneNumber());
+      pstmt.setString(6, dto.getAdminLastAccessedAt());
+      pstmt.setString(7, dto.getAdminLastAccessedIp());
+
+      pstmt.executeUpdate();
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
-  }
+  } // save() end
 
   @Override
   public void update(AdminDTO dto) {
+
     try {
       open();
+
+      sql = "select * from t_admin where admin_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setInt(1, dto.getAdminId());
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        if (dto.getAdminPassword().equals(rs.getString("adminloginid"))) {
+
+          sql = "update t_admin set" + " admin_name = ?" + " admin_phone_number = ?"
+              + " where admin_id = ?";
+
+          pstmt = conn.prepareStatement(sql);
+
+          pstmt.setString(1, dto.getAdminName());
+          pstmt.setString(2, dto.getAdminPhoneNumber());
+          pstmt.setInt(3, dto.getAdminId());
+
+          pstmt.executeUpdate();
+        } else {
+          // 비밀번호 불일치 처리
+        }
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
-  }
+
+  } // update() end
 
   @Override
   public void delete(int id) {
+
     try {
       open();
+
+      sql = "select * from t_admin where admin_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setInt(1, id);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+
+        sql = "delete from t_admin where admin_id = ?";
+
+        pstmt = conn.prepareStatement(sql);
+
+        pstmt.setInt(1, id);
+
+        pstmt.executeUpdate();
+
+      } // if end
 
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
-  }
+    
+  } // delete() end
 
-}
+} // class end
