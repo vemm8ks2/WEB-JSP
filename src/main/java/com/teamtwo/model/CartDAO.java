@@ -207,6 +207,10 @@ public class CartDAO implements BaseDAO<CartDTO> {
     }
   }
 
+  /*
+   * 데이터베이스에 저장되어 있는 데이터 중 cart_id가 가장 큰 값을 가져온 후
+   * 1을 더하여 새로운 cart_id 번호를 반환합니다.
+   */
   public Integer getCartId() {
     Integer id = null;
 
@@ -219,7 +223,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
       rs = pstmt.executeQuery();
 
       if (rs.next())
-        id = rs.getInt(1);
+        id = rs.getInt(1) + 1;
       
     } catch (Exception e) {
       e.printStackTrace();
