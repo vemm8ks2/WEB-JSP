@@ -60,20 +60,20 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
 
     try {
       open();
-      
+
       String sql = "select * from T_category where category_id = ?";
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next()) {
         dto = new CategoryDTO();
-        
+
         dto.setCategoryId(rs.getInt("category_id"));
         dto.setCategoryName(rs.getString("category_name"));
         dto.setCategoryParentFk(rs.getInt("category_parent_fk"));
-        
+
       }
 
     } catch (Exception e) {
@@ -91,21 +91,21 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
 
     try {
       open();
-      
+
       String sql = "select * from T_category";
       pstmt = conn.prepareStatement(sql);
-      
+
       rs = pstmt.executeQuery();
-      
-      while(rs.next()) {
+
+      while (rs.next()) {
         CategoryDTO dto = new CategoryDTO();
-        
+
         dto.setCategoryId(rs.getInt("category_id"));
         dto.setCategoryName(rs.getString("category_name"));
         dto.setCategoryParentFk(rs.getInt("category_parent_fk"));
-        
+
         list.add(dto);
-        
+
       }
 
     } catch (Exception e) {
@@ -121,14 +121,25 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
   public void save(CategoryDTO dto) {
     try {
       open();
-      
-      String sql = "insert into T_category values(?,?,?)";
+
+      String sql;
+
+      boolean hasParentFk = dto.getCategoryParentFk() != null;
+
+      if (hasParentFk)
+        sql = "INSERT INTO T_category VALUES(?, ?, ?)";
+      else
+        sql = "INSERT INTO T_category VALUES(?, ?, '')";
+
       pstmt = conn.prepareStatement(sql);
+
       pstmt.setInt(1, dto.getCategoryId());
       pstmt.setString(2, dto.getCategoryName());
-      pstmt.setInt(3, dto.getCategoryParentFk());
-      
-     pstmt.executeUpdate();
+
+      if (hasParentFk)
+        pstmt.setInt(3, dto.getCategoryParentFk());
+
+      pstmt.executeUpdate();
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -141,13 +152,14 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
   public void update(CategoryDTO dto) {
     try {
       open();
-      
-      String sql = "update T_category set category_name = ?, category_parent_fk = ? where category_id = ?";
-      pstmt= conn.prepareStatement(sql);
+
+      String sql =
+          "update T_category set category_name = ?, category_parent_fk = ? where category_id = ?";
+      pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, dto.getCategoryName());
       pstmt.setInt(2, dto.getCategoryParentFk());
       pstmt.setInt(3, dto.getCategoryId());
-      
+
       pstmt.executeUpdate();
 
     } catch (Exception e) {
@@ -161,11 +173,11 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
   public void delete(int id) {
     try {
       open();
-      
+
       String sql = "delete from T_category where category_id = ?";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setInt(1,id);
-      
+      pstmt.setInt(1, id);
+
       pstmt.executeUpdate();
 
     } catch (Exception e) {
@@ -173,6 +185,29 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
     } finally {
       close();
     }
+  }
+
+  public Integer getCategoryId() {
+    Integer id = null;
+
+    try {
+      open();
+
+      String sql = "SELECT max(category_id) FROM T_category";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        id = rs.getInt(1) + 1;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return id;
   }
 
 }
