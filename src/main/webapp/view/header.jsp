@@ -1,6 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.List"%>
+<%@page import="com.teamtwo.model.CategoryDTO"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	List<CategoryDTO> categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+	List<CategoryDTO> rootCategory = categoryList.stream()
+	    	.filter(category -> category.getCategoryParentFk() == 0)
+	    	.toList();
+	
+	request.setAttribute("rootCategory", rootCategory);
+%>
+
 <header class="p-4 border-b"> <!-- header -->
   <div class="flex justify-between items-center px-2"> <!-- .header-top-wrapper -->
     <h1 class="font-bold text-xl"> <!-- .header-top__logo -->
@@ -56,231 +71,43 @@
   </div>
   <nav class="mt-4 text-slate-500 [&_*]:z-10"> <!-- .header-bottom__nav -->
     <ul class="flex [&>li]:mr-4 [&>li]:font-medium [&>li:hover>span]:text-slate-900"> <!-- .header-bottom__wrapper -->
-      <li class="relative [&>ul]:hidden [&:hover>ul]:block">
-        <span class="inline-block p-2">컴퓨터&#183;노트북</span>
-        <ul class="absolute min-w-max bg-white border py-2 rounded-md  [&>div>li]:hidden [&>div:hover>li]:block">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>노트북/데스크탑</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">게이밍 노트북</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">사무용 노트북</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">브랜드 PC</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">AI/딥러닝 PC</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>입출력장치</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">모니터</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">키보드</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">마우스</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">웹캠</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">프린터</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>PC부품</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">CPU</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">RAM</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">SSD</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
+	  <c:forEach var="root" items="${ rootCategory }">
+	  <li class="relative [&>ul]:hidden [&:hover>ul]:block">
+        <span class="inline-block p-2">${ root.getCategoryName() }</span>
+	    <ul class="absolute min-w-max bg-white border py-2 rounded-md  [&>div>li]:hidden [&>div:hover>li]:block [&>hr:last-child]:hidden">
+	    <%-- 
+	    	TODO: ul 태그의 클래스를 보면 'absolute min-w-max ...' 나열되어 있는데 해당 태그는 하위 태그가 있을 때 적용되어야 하는데 처음에 이를
+	    	고려하지 못하고 작성하여 스타일링이 불완전하다. 구체적으로는 하위 태그가 아예 없음에도 박스가 생겨난다. HTML 구조와 CSS 수정이 필요하다.
+	     --%>
+        
+      	<c:forEach var="level1" items="${ categoryList }">
+      	  <c:if test="${ root.getCategoryId() == level1.getCategoryParentFk() }">
+            <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
+	          <span>${ level1.getCategoryName() }</span>
+	      	  <li class="absolute top-0 right-0 flex">
+	            <div class="relative py-2">
+	              <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max [&>hr:last-child]:hidden">
+	                
+			      <c:forEach var="level2" items="${ categoryList }">
+			        <c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
+		              <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
+		                <a href="#" class="w-full px-4 py-2">${ level2.getCategoryName() }</a>
+		              </li>
+		              <hr class="m-2">
+			        </c:if>
+			      </c:forEach>
+			        
+	              </ul>
+	            </div>
+	          </li>
+	        </div>
+	        <hr class="m-2">
+      	  </c:if>
+      	</c:forEach>
+      	
         </ul>
       </li>
-      <li class="relative [&>ul]:hidden [&:hover>ul]:block">
-        <span class="inline-block p-2">가전&#183;TV</span>
-        <ul class="absolute min-w-max bg-white border py-2 rounded-md  [&>div>li]:hidden [&>div:hover>li]:block">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>영상/음향가전</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">TV</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">프로젝터</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">셋톱박스</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">사운드바</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">앰프</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>생활/계절가전</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">세탁기</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">건조기</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">청소기</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">에어컨</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>주방가전</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">냉장고</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">김치냉장고</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">전기밥솥</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-        </ul>
-      </li>
-      <li class="relative [&>ul]:hidden [&:hover>ul]:block">
-        <span class="inline-block p-2">태블릿&#183;모바일&#183;게임</span>
-        <ul class="absolute min-w-max bg-white border py-2 rounded-md  [&>div>li]:hidden [&>div:hover>li]:block">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>태블릿/스마트폰</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">삼성</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">애플</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">샤오미</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>주변기기</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">스마트워치</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">모바일 악세서리</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">보조배터리</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-          <hr class="m-2">
-          <div class="relative py-2 px-4 hover:bg-slate-100 [&:hover>span]:text-slate-700">
-            <span>게임기</span>
-            <li class="absolute top-0 right-0 flex">
-              <div class="relative py-2">
-                <ul class="absolute left-[-5px] py-2 border rounded-md min-w-36 bg-white [&>li>a]:inline-block [&>li>a]:min-w-max">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">스위치</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">플레이스테이션</a>
-                  </li>
-                  <hr class="m-2">
-                  <li class="hover:bg-slate-100 [&:hover>a]:text-slate-700">
-                    <a href="#" class="w-full px-4 py-2">엑스박스</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </div>
-        </ul>
-      </li>
+      </c:forEach>
     </ul>
   </nav>
 </header>
