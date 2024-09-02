@@ -13,18 +13,19 @@ public class ShowAllProductAction implements Action {
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-
+    
     ProductDAO dao = ProductDAO.getInstance();
-
-    List<ProductDTO> productList = dao.getAll();
-
-    request.setAttribute("productList", productList);
-
+    
+    List<ProductDTO> list = dao.getAll();
+    
+    request.setAttribute("productList", list);
+    
     ActionForward forward = new ActionForward();
-
-    forward.setPath(""); // TODO: path 설정하기.
+    
     forward.setRedirect(false);
-
+    
+    forward.setPath("view/product_list.jsp");
+    
     return forward;
   }
 
