@@ -56,14 +56,22 @@ public class UserDAO implements BaseDAO<UserDTO> {
 
   @Override
   public UserDTO get(int id) {
+
     UserDTO dto = null;
+
     try {
       open();
-      String sql = "select * from T_customer where customer_id = ?";
+
+      String sql = "SELECT * FROM T_customer WHERE customer_id = ?";
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
 
+      rs = pstmt.executeQuery();
+
       if (rs.next()) {
+        dto = new UserDTO();
+
         dto.setUserId(rs.getInt("customer_id"));
         dto.setUserLoginId(rs.getString("customer_login_id"));
         dto.setUserPassword(rs.getString("customer_password"));
@@ -87,15 +95,19 @@ public class UserDAO implements BaseDAO<UserDTO> {
 
   @Override
   public List<UserDTO> getAll() {
+
     List<UserDTO> list = new ArrayList<>();
+
     try {
       open();
-      String sql = "select * from T_customer";
+      String sql = "SELECT * FROM T_customer";
+
       pstmt = conn.prepareStatement(sql);
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
         UserDTO dto = new UserDTO();
+
         dto.setUserId(rs.getInt("customer_id"));
         dto.setUserLoginId(rs.getString("customer_login_id"));
         dto.setUserPassword(rs.getString("customer_password"));
@@ -123,8 +135,11 @@ public class UserDAO implements BaseDAO<UserDTO> {
   public void save(UserDTO dto) {
     try {
       open();
-      String sql = "insert into T_customer values(?,?,?,?,?,?,?,?,sysdate,'')";
+
+      String sql = "INSERT INTO T_customer VALUES(?,?,?,?,?,?,?,?,sysdate,'')";
+
       pstmt = conn.prepareStatement(sql);
+
       pstmt.setInt(1, dto.getUserId());
       pstmt.setString(2, dto.getUserLoginId());
       pstmt.setString(3, dto.getUserPassword());
@@ -145,15 +160,19 @@ public class UserDAO implements BaseDAO<UserDTO> {
   public void update(UserDTO dto) {
     try {
       open();
-      String sql = "select * from T_customer where customer_id=?";
+
+      String sql = "SELECT * FROM T_customer WHERE customer_id=?";
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, dto.getUserId());
+
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-        sql = "update T_customer set customer_password=?, customer_name=?,"
-            + "customer_email=?, customer_phone_number=?,"
-            + "customer_birth=?, customer_updated_at=sysdate";
+        sql = "UPDATE T_customer SET customer_password = ?, customer_name = ?,"
+            + "customer_email = ?, customer_phone_number = ?,"
+            + "customer_birth = ?, customer_updated_at = sysdate";
+
         pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, dto.getUserPassword());
@@ -162,6 +181,7 @@ public class UserDAO implements BaseDAO<UserDTO> {
         pstmt.setString(4, dto.getUserPhoneNumber());
         pstmt.setString(5, dto.getUserBirth());
 
+        pstmt.executeUpdate(sql);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -174,15 +194,21 @@ public class UserDAO implements BaseDAO<UserDTO> {
   public void delete(int id) {
     try {
       open();
-      String sql = "select * from T_customer where customer_id =?";
+
+      String sql = "SELECT * FROM T_customer WHERE customer_id = ?";
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
+
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-        sql = "delete from T_customer where customer_id=?";
+        sql = "DELETE FROM T_customer WHERE customer_id = ?";
+
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, id);
+
+        pstmt.executeUpdate();
       }
 
     } catch (Exception e) {
@@ -191,5 +217,45 @@ public class UserDAO implements BaseDAO<UserDTO> {
       close();
     }
   }
+
+  public UserDTO getCustomerByLoginId(String customerLoginId) {
+
+    UserDTO dto = null;
+
+    try {
+      open();
+
+      String sql = "SELECT * FROM T_customer WHERE customer_login_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, customerLoginId);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        dto = new UserDTO();
+
+        dto.setUserId(rs.getInt("customer_id"));
+        dto.setUserLoginId(rs.getString("customer_login_id"));
+        dto.setUserPassword(rs.getString("customer_password"));
+        dto.setUserName(rs.getString("customer_name"));
+        dto.setUserEmail(rs.getString("customer_email"));
+        dto.setUserPhoneNumber(rs.getString("customer_phone_number"));
+        dto.setUserGender(rs.getString("customer_gender"));
+        dto.setUserBirth(rs.getString("customer_birth"));
+        dto.setUserCreatedAt(rs.getString("customer_created_at"));
+        dto.setUserUpdatedAt(rs.getString("customer_updated_at"));
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return dto;
+  }
+
+
 
 }

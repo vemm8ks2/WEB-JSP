@@ -193,15 +193,18 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
   @Override
   public void delete(int id) {
+    /**
+     * TODO(24.09.03): 에러 발생 시 throw
+     */
+    
     try {
       open();
 
-      String sql = "delete from T_shipping_address where shipping_address_id = ?";
+      String sql = "DELETE FROM T_shipping_address WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
       pstmt.setInt(1, id);
-
       pstmt.executeUpdate();
 
     } catch (Exception e) {
