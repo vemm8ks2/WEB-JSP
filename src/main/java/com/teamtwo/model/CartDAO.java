@@ -124,6 +124,9 @@ public class CartDAO implements BaseDAO<CartDTO> {
       open();
 
       Integer newCartId = getCartId();
+      /**
+       * TODO(24.09.03): 에러 핸들링
+       */
       if (newCartId == null)
         throw new SQLException();
 
@@ -196,7 +199,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
       
       int result = pstmt.executeUpdate();
       /*
-       * TODO: 삭제에 실패하였을 때 에러 핸들링
+       * TODO: 삭제에 실패하였을 때 에러 핸들링. 아래는 임시 코드입니다.
        */
       if (result > 0)
         throw new SQLException();
