@@ -6,57 +6,56 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import com.teamtwo.model.UserDAO;
 import com.teamtwo.model.UserDTO;
 
+/**
+ * 유저의 로그인 Action 입니다.
+ * 
+ * @author bborib
+ */
 public class LoginAction implements Action {
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    String customer_login_id = request.getParameter("customer_login_id").trim();
+    ActionForward forward = new ActionForward();
 
-    String customer_password = request.getParameter("customer_password").trim();
+    String customerLoginId = request.getParameter("customer_login_id").trim();
+    String customerPassword = request.getParameter("customer_password").trim();
 
     UserDAO dao = UserDAO.getInstance();
 
-    // 회원인지 여부 확인
-    int check = dao.userCheck(customer_login_id, customer_password);
+    UserDTO customer = dao.getCustomerByLoginId(customerLoginId);
 
-    PrintWriter out = response.getWriter();
-
-    ActionForward forward = new ActionForward();
-
-    if (check > 0) {
-
-      UserDTO cont = dao.getMember(customer_login_id);
-      
-      HttpSession session = request.getSession();
-
-      session.setAttribute("customer_login_id", cont.getUserId());
-
-      session.setAttribute("customer_password", cont.getUserName());
-
-      forward.setRedirect(true);
-
-      forward.setPath("user_main.do");
-
-    } else if (check == -1) {
-
-      out.println("<script>");
-      out.println("alert('사용자 비밀번호가 틀립니다. 확인해 주세요.')");
-      out.println("history.back()");
-      out.println("</script>");
-    } else {
-
-      out.println("<script>");
-      out.println("alert('회원이 아닙니다. 아이디를 확인해 주세요.')");
-      out.println("history.back()");
-      out.println("</script>");
+    if (customer == null) {
+      /**
+       * TODO(24.09.03): 유저 로그인 아이디가 없는 경우 에러 핸들링
+       */
+      return null;
     }
 
+    if (!isCorrectPassword(customerPassword, customer.getUserPassword())) {
+      /**
+       * TODO(24.09.03): 로그인 유저의 패스워드가 틀린 경우
+       */
+      return null;
+    }
+
+    HttpSession session = request.getSession();
+
+    session.setAttribute("customer", customer);
+
+    forward.setPath("mainView.do");
+    forward.setRedirect(false);
+
     return forward;
+  }
+
+  public boolean isCorrectPassword(String customerPwd, String targetPwd) {
+    return customerPwd.equals(targetPwd);
   }
 
 }
