@@ -171,10 +171,19 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
 
   @Override
   public void delete(int id) {
+    /**
+     * TODO(24.09.03): 카테고리는 부모 카테고리 외래키가 있기 떄문에 구조 상 자식 카테고리가 있다면 오라클에서 에러를 발생시킨다.
+     * 이에 대한 에러를 던져주고 Action에서 처리하도록 한다.
+     * 
+     *  고민해볼 점: 자식 카테고리가 있는 카테고리를 지울 수는 없을까? 상식적으로 자식 카테고리가 있다면 자식만 남겨두고 부모 카테고리만
+     *  삭제해서는 안 될 것이다. 그렇기 때문에 부모 카테고리가 삭제되는 경우 자식 카테고리까지 함께 삭제하는 방향으로 생각할 수 있다. 
+     */
+    
     try {
       open();
 
-      String sql = "delete from T_category where category_id = ?";
+      String sql = "DELETE FROM T_category WHERE category_id = ?";
+      
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
 
