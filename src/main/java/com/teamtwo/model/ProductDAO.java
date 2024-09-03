@@ -169,10 +169,17 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 
     @Override
     public void update(ProductDTO dto) {
+        /**
+         * TODO(24.09.03): 에러 발생 시 에러 던져주기
+         */
       
         try {
             open();
             
+            /**
+             * TODO(24.09.03): 상품의 이미지는 포함된 경우와 아닌 경우로 나뉘게 때문에 이를 구분하여 SQL을 작성해야한다.
+             * 현재 상태로는 에러가 발생.
+             */
             String sql = "update T_product set product_name = ?,"
                           + "product_price = ?, product_stock = ?,"
                           + "product_image = ?, product_updatedAt = sysdate,"
