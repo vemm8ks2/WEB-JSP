@@ -172,22 +172,24 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     try {
       open();
       
-      String sql = "select * from t_order where order_id = ?";
+      String sql = "SELELCT * FROM t_order WHERE order_id = ?";
             
       pstmt = conn.prepareStatement(sql);
-      
       pstmt.setInt(1, dto.getOrderId());
       
       rs = pstmt.executeQuery();
       
+      /**
+       * Q(24.09.03): 적절한 코드인지 고민해볼 필요가 있음.
+       */
       if(rs.next()) {
         if(dto.getOrderStatus().equals("발송대기")) {
-          sql = "update t_order set order_status = '배송중'";
+          sql = "UPDATE t_order SET order_status = '배송중'";
           
           pstmt = conn.prepareStatement(sql);
           
         } else if(dto.getOrderStatus().equals("배송중")) {
-          sql = "update t_order set order_status = '배송완료', order_delivered_at = sysdate";
+          sql = "UPDATE t_order SET order_status = '배송완료', order_delivered_at = sysdate";
           
           pstmt = conn.prepareStatement(sql);
           
