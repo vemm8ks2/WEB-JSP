@@ -124,6 +124,9 @@ public class CartDAO implements BaseDAO<CartDTO> {
       open();
 
       Integer newCartId = getCartId();
+      /**
+       * TODO(24.09.03): 에러 핸들링
+       */
       if (newCartId == null)
         throw new SQLException();
 
