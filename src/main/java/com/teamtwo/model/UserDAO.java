@@ -192,4 +192,80 @@ public class UserDAO implements BaseDAO<UserDTO> {
     }
   }
 
+  public int userCheck(String customer_login_id, String customer_password) {
+
+    int result = 0;
+
+    try {
+      open();
+
+      String sql = "select * from T_customer where customer_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setString(1, customer_login_id);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+
+        if (customer_password.equals(rs.getString("customer_password"))) {
+              result = 1;
+          } else {
+              result = -1;
+          }
+       }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return result;
+  }
+
+  public UserDTO getMember(String customer_login_id) {
+
+    UserDTO dto = null;
+
+    try {
+      open();
+      
+      String sql = "select * from T_customer where customer_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setString(1, customer_login_id);
+
+      rs = pstmt.executeQuery();
+      
+      if(rs.next()) {
+        
+        dto = new UserDTO();
+        
+        dto.setUserId(rs.getInt("customer_id"));
+        dto.setUserLoginId(rs.getString("customer_login_id"));
+        dto.setUserPassword(rs.getString("customer_password"));
+        dto.setUserName(rs.getString("customer_name"));
+        dto.setUserEmail(rs.getString("customer_email"));
+        dto.setUserPhoneNumber(rs.getString("customer_phone_number"));
+        dto.setUserGender(rs.getString("customer_gender"));
+        dto.setUserBirth(rs.getString("customer_birth"));
+        dto.setUserCreatedAt(rs.getString("customer_created_at"));
+        dto.setUserUpdatedAt(rs.getString("customer_updated_at"));
+        
+      }
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+    
+    return dto;
+  }
+
+
+
 }
