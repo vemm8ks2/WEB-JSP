@@ -125,27 +125,30 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
   @Override
   public void save(ShippingAddressDTO dto) {
-
-    int count = 0;
-
     try {
       open();
 
-      String sql = "select max(shipping_address_id) from T_shipping_address";
+      String sql = "SELECT max(shipping_address_id) FROM T_shipping_address";
 
       pstmt = conn.prepareStatement(sql);
-
       rs = pstmt.executeQuery();
 
-      if (rs.next()) {
-        count = rs.getInt(1);
-      }
+      Integer count = null;
 
-      sql = "insert into T_shipping_address values(?, ?, ?, ?)";
+      if (rs.next())
+        count = rs.getInt(1) + 1;
+
+      /**
+       * TODO(24.09.03): 에러 핸들링
+       */
+      if (count == null)
+        throw new SQLException();
+
+      sql = "INSERT INTO T_shipping_address VALUES(?, ?, ?, ?)";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, count + 1);
+      pstmt.setInt(1, count);
       pstmt.setString(2, dto.getShippingAddressAddress());
       pstmt.setString(3, dto.getShippingAddressIsDefault());
       pstmt.setInt(4, dto.getShippingAddressUserIdFk());
