@@ -61,24 +61,24 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
 
     try {
       open();
-      
+
       sql = "select * from t_ordered_product where ordered_product_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next()) {
         dto = new OrderedProductDTO();
         dto.getOrderedProductId();
         dto.getOrderedProductQunatity();
         dto.getOrderedProductUserIdFk();
         dto.getOrderedProductProdIdFk();
-        
+
       }
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -127,21 +127,18 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
   public void save(OrderedProductDTO dto) {
     try {
       open();
-      
-      sql = "insert into t_ordered_product (ordered_product_id, "
-          + "ordered_product_qunatity, ordered_product_order_fk, "
-          + "ordered_product_product_fk)"
-          + " values(?,?,?,?)";
-      
+
+      sql = "INSERT INTO t_ordered_product VALUES(?, ?, ?, ?)";
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, dto.getOrderedProductId());
       pstmt.setInt(2, dto.getOrderedProductQunatity());
       pstmt.setInt(3, dto.getOrderedProductUserIdFk());
       pstmt.setInt(4, dto.getOrderedProductProdIdFk());
-      
+
       pstmt.executeUpdate();
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -154,57 +151,57 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
 
     try {
       open();
-      
+
       sql = "update t_ordered_product set ordered_product_qunatity = ? "
           + " where ordered_product_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
-      
+
+
       pstmt.setInt(1, dto.getOrderedProductQunatity());
       pstmt.setInt(2, dto.getOrderedProductId());
-      
+
       pstmt.executeUpdate();
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
   } // update end
- 
+
   @Override
   public void delete(int id) {
 
     try {
       open();
-      
+
       sql = "select * from t_ordered_product where ordered_product_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
-        
+
+      if (rs.next()) {
+
         sql = "delete from t_ordered_product where ordered_product_id = ?";
-        
+
         pstmt = conn.prepareStatement(sql);
-        
+
         pstmt.setInt(1, id);
-        
+
         pstmt.executeUpdate();
-      
+
       } // if end
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
-    
+
   } // delete end
 
 } // class end
