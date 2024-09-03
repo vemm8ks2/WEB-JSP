@@ -153,9 +153,14 @@ public class CategoryDAO implements BaseDAO<CategoryDTO> {
     try {
       open();
 
+      /**
+       * Q(24.09.03): 카테고리 부모 외래키를 수정해도 될지 생각해보아야 한다.
+       */
       String sql =
-          "update T_category set category_name = ?, category_parent_fk = ? where category_id = ?";
+          "UPDATE T_category SET category_name = ?, category_parent_fk = ? WHERE category_id = ?";
+
       pstmt = conn.prepareStatement(sql);
+      
       pstmt.setString(1, dto.getCategoryName());
       pstmt.setInt(2, dto.getCategoryParentFk());
       pstmt.setInt(3, dto.getCategoryId());
