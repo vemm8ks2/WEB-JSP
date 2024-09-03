@@ -164,6 +164,9 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     try {
       open();
       
+      /**
+       * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
+       */
       String sql = "update T_shipping_address set "
                     + "shipping_address_destination = ?,"
                     + "shipping_address_is_default = ?, "
