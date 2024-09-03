@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.teamtwo.model.ShippingAddressDAO;
 import com.teamtwo.model.ShippingAddressDTO;
+import com.teamtwo.model.UserDAO;
+import com.teamtwo.model.UserDTO;
 
 public class ModifyAddressAction implements Action {
 
@@ -13,19 +15,21 @@ public class ModifyAddressAction implements Action {
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    String shippingAddressAddress = request.getParameter("shippingAddressAddress").trim();;
-    String shippingAddressIsDefault = request.getParameter("shippingAddressIsDefault").trim();;
-    int shippingAddressId = Integer.parseInt(request.getParameter("shippingAddressId").trim());
-    int shippingAddressUserIdFk = Integer.parseInt(request.getParameter("shippingAddressUserIdFk").trim());
+    String userPassword = request.getParameter("userPassword").trim();
+    String userName = request.getParameter("userName").trim();
+    String userEmail = request.getParameter("userEmail").trim();
+    String userPhoneNumber = request.getParameter("userPhoneNumber").trim();
+    String userBirth = request.getParameter("userBirth").trim();
 
-    ShippingAddressDTO dto = new ShippingAddressDTO();
+    UserDTO dto = new UserDTO();
 
-    dto.setShippingAddressAddress(shippingAddressAddress);
-    dto.setShippingAddressId(shippingAddressId);
-    dto.setShippingAddressIsDefault(shippingAddressIsDefault);
-    dto.setShippingAddressUserIdFk(shippingAddressUserIdFk);
+    dto.setUserPassword(userPassword);
+    dto.setUserName(userName);
+    dto.setUserEmail(userEmail);
+    dto.setUserPhoneNumber(userPhoneNumber);
+    dto.setUserBirth(userBirth);
 
-    ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
+    UserDAO dao = UserDAO.getInstance();
     dao.update(dto);
 
     return null;
