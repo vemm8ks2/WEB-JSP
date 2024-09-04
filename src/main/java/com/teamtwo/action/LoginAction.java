@@ -23,8 +23,8 @@ public class LoginAction implements Action {
 
     ActionForward forward = new ActionForward();
 
-    String customerLoginId = request.getParameter("customer_login_id").trim();
-    String customerPassword = request.getParameter("customer_password").trim();
+    String customerLoginId = request.getParameter("login_id").trim();
+    String customerPassword = request.getParameter("login_pwd").trim();
 
     UserDAO dao = UserDAO.getInstance();
 

@@ -256,6 +256,42 @@ public class UserDAO implements BaseDAO<UserDTO> {
     return dto;
   }
 
+  // 로그인
+  public int userCheck(String customerLoginId, String customerLoginPwd) {
+    
+    int result = 0;
+    
+    try {
+       open();
+      
+       String sql = "select * from T_customer where customer_login_id = ?";
+       
+       pstmt = conn.prepareStatement(sql);
+       
+       pstmt.setString(1, customerLoginPwd);
+       
+       rs = pstmt.executeQuery();
+       
+       if(rs.next()) {
+        
+         if(customerLoginPwd.equals(rs.getString("customer_password"))) {
+           System.out.println("환영합니다 회원님."); // 확인용
+           result = 1;
+           
+        } else { // 비번이 틀린 경우 or 로그인 정보가 없는 경우
+          result = -1;
+        }
+      }
+      
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+    
+    return result;
+    
+  }
 
 
 }
