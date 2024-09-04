@@ -7,7 +7,7 @@ INSERT INTO T_customer VALUES (5, 'dblack', '1234abcd', 'Saola', 'saola@example.
 INSERT INTO T_customer VALUES (6, 'egreen', 'password2024', 'Sumatran Orangutan', 'sumatranorangutan@example.com', '01067890123', 'F', TO_DATE('1991-01-12', 'YYYY-MM-DD'), SYSDATE, '');
 INSERT INTO T_customer VALUES (7, 'fwhite', 'simplepass', 'Northern Bald Ibis', 'northernbaldibis@example.com', '01078901234', 'M', TO_DATE('1989-12-08', 'YYYY-MM-DD'), SYSDATE, '');
 INSERT INTO T_customer VALUES (8, 'gblack', 'p@ssw0rd!', 'Yangtze Giant Softshell Turtle', 'yangtzegiants@example.com', '01089012345', 'F', TO_DATE('1994-09-19', 'YYYY-MM-DD'), SYSDATE, '');
-INSERT INTO T_customer VALUES (9, 'hgray', 'qwerty123', 'Psychedelic Rock Gecko', 'psychedelicrockgecko@example.com', '01090123456', 'M', TO_DATE('1987-06-30', 'YYYY-MM-DD'), SYSDATE, '');
+INSERT INTO T_customer VALUES (9, 'hgray', 'qwerty123', 'Psychedelic Rock Gecko', 'psychedelicrockgec@example.com', '01090123456', 'M', TO_DATE('1987-06-30', 'YYYY-MM-DD'), SYSDATE, '');
 INSERT INTO T_customer VALUES (10, 'ijones', '1234abcd!', 'Mountain Gorilla', 'mountaingorilla@example.com', '01001234567', 'F', TO_DATE('1993-03-15', 'YYYY-MM-DD'), SYSDATE, '');
 INSERT INTO T_customer VALUES (11, 'kgreen', 'greenpass1', 'Wollemi Pine', 'wollemi@example.com', '01012345671', 'F', TO_DATE('1983-11-30', 'YYYY-MM-DD'), SYSDATE, '');
 INSERT INTO T_customer VALUES (12, 'lblue', 'blue1234', 'Rafflesia arnoldii', 'rafflesia@example.com', '01023456782', 'M', TO_DATE('1990-07-22', 'YYYY-MM-DD'), SYSDATE, '');
