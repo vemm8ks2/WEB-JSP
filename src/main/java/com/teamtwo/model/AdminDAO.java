@@ -75,6 +75,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
         dto.setAdminLoginId(rs.getString("admin_login_id"));
         dto.setAdminPassword(rs.getString("admin_password"));
         dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminEmail(rs.getString("admin_email"));
         dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
         dto.setAdminCreateAt(rs.getString("admin_create_at"));
         dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
@@ -106,14 +107,15 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
 
         AdminDTO dto = new AdminDTO();
 
-        dto.setAdminId(rs.getInt("adminid"));
-        dto.setAdminLoginId(rs.getString("adminloginid"));
-        dto.setAdminPassword(rs.getString("adminpassword"));
-        dto.setAdminName(rs.getString("adminname"));
-        dto.setAdminPhoneNumber(rs.getString("adminPhonenumber"));
-        dto.setAdminCreateAt(rs.getString("admincreateat"));
-        dto.setAdminLastAccessedAt(rs.getString("adminlastaccessedat"));
-        dto.setAdminLastAccessedIp(rs.getString("adminlastaccessedip"));
+        dto.setAdminId(rs.getInt("adminId"));
+        dto.setAdminLoginId(rs.getString("adminLoginId"));
+        dto.setAdminPassword(rs.getString("adminPassword"));
+        dto.setAdminName(rs.getString("adminName"));
+        dto.setAdminEmail(rs.getString("adminEmail"));
+        dto.setAdminPhoneNumber(rs.getString("adminPhoneNumber"));
+        dto.setAdminCreateAt(rs.getString("adminCreateAt"));
+        dto.setAdminLastAccessedAt(rs.getString("adminlastAccessedAt"));
+        dto.setAdminLastAccessedIp(rs.getString("adminlastAccessedIp"));
 
         list.add(dto);
       }
@@ -133,8 +135,8 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       open();
 
       sql = "insert into t_admin (admin_id, admin_login_id, admin_password, "
-          + " admin_name, admin_phone_number, admin_create_at,"
-          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,sysdate,?,?)";
+          + " admin_name, admin_email, admin_phone_number, admin_create_at,"
+          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,?,sysdate,?,?)";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -142,9 +144,10 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       pstmt.setString(2, dto.getAdminLoginId());
       pstmt.setString(3, dto.getAdminPassword());
       pstmt.setString(4, dto.getAdminName());
-      pstmt.setString(5, dto.getAdminPhoneNumber());
-      pstmt.setString(6, dto.getAdminLastAccessedAt());
-      pstmt.setString(7, dto.getAdminLastAccessedIp());
+      pstmt.setString(5, dto.getAdminEmail());
+      pstmt.setString(6, dto.getAdminPhoneNumber());
+      pstmt.setString(7, dto.getAdminLastAccessedAt());
+      pstmt.setString(8, dto.getAdminLastAccessedIp());
 
       pstmt.executeUpdate();
 
@@ -172,7 +175,8 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       if (rs.next()) {
         if (dto.getAdminPassword().equals(rs.getString("adminloginid"))) {
 
-          sql = "update t_admin set" + " admin_name = ?" + " admin_phone_number = ?"
+          sql = "update t_admin set" + " admin_name = ?,"
+              + " admin_email = ?," + " admin_phone_number = ?"
               + " where admin_id = ?";
 
           pstmt = conn.prepareStatement(sql);
