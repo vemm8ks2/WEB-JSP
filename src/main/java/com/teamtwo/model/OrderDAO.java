@@ -60,18 +60,18 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
 
     try {
       open();
-      
+
       String sql = "select * from t_order where order_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next()) {
         dto = new OrderDTO();
-        
+
         dto.setOrderId(rs.getInt("orderid"));
         dto.setOrderReceiverName(rs.getString("orderreceivername"));
         dto.setOrderReceiverPhone(rs.getString("orderreceiverphone"));
@@ -80,7 +80,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
         dto.setOrderUserFk(rs.getInt("orderuserfk"));
-        
+
       }
 
     } catch (Exception e) {
@@ -132,32 +132,32 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
 
   @Override
   public void save(OrderDTO dto) {
-    
+
     int count = 0;
-    
+
     try {
       open();
-      
+
       String sql = "select max(order_id) from t_order";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next()) {
         count = rs.getInt(1) + 1;
       }
-      
+
       sql = "insert into T_order values (?,?,?,?,'발송대기',sysdate,'',?)";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, count);
       pstmt.setString(2, dto.getOrderReceiverName());
       pstmt.setString(3, dto.getOrderReceiverPhone());
       pstmt.setString(4, dto.getOrderReceiverAddr());
       pstmt.setInt(5, dto.getOrderUserFk());
-      
+
       pstmt.executeUpdate();
 
     } catch (Exception e) {
@@ -171,32 +171,32 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
   public void update(OrderDTO dto) {
     try {
       open();
-      
+
       String sql = "SELELCT * FROM t_order WHERE order_id = ?";
-            
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, dto.getOrderId());
-      
+
       rs = pstmt.executeQuery();
-      
+
       /**
        * Q(24.09.03): 적절한 코드인지 고민해볼 필요가 있음.
        */
-      if(rs.next()) {
-        if(dto.getOrderStatus().equals("발송대기")) {
+      if (rs.next()) {
+        if (dto.getOrderStatus().equals("발송대기")) {
           sql = "UPDATE t_order SET order_status = '배송중'";
-          
+
           pstmt = conn.prepareStatement(sql);
-          
-        } else if(dto.getOrderStatus().equals("배송중")) {
+
+        } else if (dto.getOrderStatus().equals("배송중")) {
           sql = "UPDATE t_order SET order_status = '배송완료', order_delivered_at = sysdate";
-          
+
           pstmt = conn.prepareStatement(sql);
-          
+
         }
-        
+
         pstmt.executeUpdate();
-        
+
       }
 
     } catch (Exception e) {
@@ -210,20 +210,55 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
   public void delete(int id) {
     try {
       open();
-      
+
       String sql = "delete from t_order where order_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, id);
-      
+
       pstmt.executeUpdate();
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
   } // delete(id) end
+
+
+  public List<OrderDTO> getOrder(int customerFk) {
+    List<OrderDTO> list = new ArrayList<>();
+    try {
+      open();
+      String sql = "select * from t_order where order_customer_fk = ?";
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, customerFk);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        OrderDTO dto = new OrderDTO();
+
+        dto.setOrderId(rs.getInt("orderid"));
+        dto.setOrderReceiverName(rs.getString("orderreceivername"));
+        dto.setOrderReceiverPhone(rs.getString("orderreceiverphone"));
+        dto.setOrderReceiverAddr(rs.getString("orderreceiveraddr"));
+        dto.setOrderStatus(rs.getString("orderstatus"));
+        dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
+        dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
+        dto.setOrderUserFk(rs.getInt("orderuserfk"));
+
+        list.add(dto);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  } // getOrder(customerFK) end
+
 
 }
