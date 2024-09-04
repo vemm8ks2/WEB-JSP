@@ -196,7 +196,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     /**
      * TODO(24.09.03): 에러 발생 시 throw
      */
-    
+
     try {
       open();
 
@@ -213,5 +213,34 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       close();
     }
   }
+
+  public void updateDefault(int id) {
+
+
+    try {
+      open();
+
+      String sql =
+          "update T_shipping_address set shipping_address_is_default = ? where shipping_address_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setString(1, "Y");
+      pstmt.setInt(2, id);
+
+      pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+
+
+  } // getupdate(id) end
+
+
 
 }
