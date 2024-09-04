@@ -56,21 +56,20 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 
   @Override
   public ProductDTO get(int id) {
+
     ProductDTO dto = null;
 
     try {
       open();
 
-      String sql = "select * from T_product where product_id = ?";
+      String sql = "SELECT * FROM T_product WHERE product_id = ?";
 
       pstmt = conn.prepareStatement(sql);
-
       pstmt.setInt(1, id);
 
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-
         dto = new ProductDTO();
 
         dto.setProductId(rs.getInt("product_id"));
@@ -99,14 +98,12 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      String sql = "select * from T_product order by product_id desc";
+      String sql = "SELECT * FROM T_product ORDER BY product_id DESC";
 
       pstmt = conn.prepareStatement(sql);
-
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-
         ProductDTO dto = new ProductDTO();
 
         dto.setProductId(rs.getInt("product_id"));
@@ -119,7 +116,6 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
         dto.setProductCategoryFk(rs.getInt("product_category_fk"));
 
         list.add(dto);
-
       }
 
     } catch (Exception e) {
@@ -134,26 +130,24 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
   @Override
   public void save(ProductDTO dto) {
 
-    int count = 0;
-
     try {
       open();
 
-      String sql = "select max(product_id) from T_product";
+      String sql = "SELECT max(product_id) FROM T_product";
 
       pstmt = conn.prepareStatement(sql);
-
       rs = pstmt.executeQuery();
 
-      if (rs.next()) {
-        count = rs.getInt(1);
-      }
+      int count = 0;
 
-      sql = "insert into T_product values(?, ?, ?, ?, ?, sysdate, '', ?)";
+      if (rs.next())
+        count = rs.getInt(1) + 1;
+
+      sql = "INSERT INTO T_product VALUES(?, ?, ?, ?, ?, sysdate, '', ?)";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, count + 1);
+      pstmt.setInt(1, count);
       pstmt.setString(2, dto.getProductName());
       pstmt.setInt(3, dto.getProductPrice());
       pstmt.setInt(4, dto.getProductStock());
@@ -183,8 +177,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
        * TODO(24.09.03): 상품의 이미지는 포함된 경우와 아닌 경우로 나뉘게 때문에 이를 구분하여 SQL을 작성해야한다. 현재 상태로는 에러가 발생.
        */
       String sql =
-          "update T_product set product_name = ?," + "product_price = ?, product_stock = ?,"
-              + "product_image = ?, product_updatedAt = sysdate," + "where product_id = ?";
+          "UPDATE T_product SET product_name = ?," + "product_price = ?, product_stock = ?,"
+              + "product_image = ?, product_updatedAt = sysdate," + "WHERE product_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -209,10 +203,9 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      String sql = "delete from T_produt where product_id = ?";
+      String sql = "DELETE FROM T_produt WHERE product_id = ?";
 
       pstmt = conn.prepareStatement(sql);
-
       pstmt.setInt(1, id);
 
       pstmt.executeUpdate();
@@ -226,14 +219,18 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
   }
 
 
-  public List<ProductDTO> search(String name) {
+  public List<ProductDTO> searchByKeyword(String name) {
+    
     List<ProductDTO> list = new ArrayList<>();
+    
     try {
       open();
 
-      String sql = "select * from T_product where product_name like ?";
+      String sql = "SELECT * FROM T_product WHERE product_name LIKE ?";
+
       pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,"%"+ name +"%");
+      pstmt.setString(1, "%" + name + "%");
+
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
@@ -257,9 +254,5 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     }
     return list;
   }
-
-  
-  
-  
 
 }
