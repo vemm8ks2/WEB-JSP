@@ -54,24 +54,27 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     }
   }
 
+  /**
+   * @param 주문의 식별자를 인자로 받습니다.
+   * @author skwns0472
+   */
   @Override
   public OrderDTO get(int id) {
     OrderDTO dto = null;
 
     try {
       open();
-      
-      String sql = "select * from t_order where order_id = ?";
-      
+
+      String sql = "SELECT * FROM t_order WHERE order_id = ?";
+
       pstmt = conn.prepareStatement(sql);
-      
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next()) {
         dto = new OrderDTO();
-        
+
         dto.setOrderId(rs.getInt("orderid"));
         dto.setOrderReceiverName(rs.getString("orderreceivername"));
         dto.setOrderReceiverPhone(rs.getString("orderreceiverphone"));
@@ -80,7 +83,6 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
         dto.setOrderUserFk(rs.getInt("orderuserfk"));
-        
       }
 
     } catch (Exception e) {
@@ -92,6 +94,9 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     return dto;
   } // get(id) end
 
+  /**
+   * @author skwns0472
+   */
   @Override
   public List<OrderDTO> getAll() {
     List<OrderDTO> list = new ArrayList<>();
@@ -99,10 +104,9 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     try {
       open();
 
-      String sql = "select * from t_order";
+      String sql = "SELECT * FROM t_order";
 
       pstmt = conn.prepareStatement(sql);
-
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
@@ -130,34 +134,39 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     return list;
   } // getAll() end
 
+  /**
+   * @param 주문 DTO를 인자로 받아서 새롭게 저장하는 메소드입니다.
+   * @author skwns0472
+   */
   @Override
   public void save(OrderDTO dto) {
-    
+
     int count = 0;
-    
+
     try {
       open();
-      
-      String sql = "select max(order_id) from t_order";
-      
+
+      /**
+       * Q(24.09.05): 주문의 식별자를 가져오는 역할을 하는 메소드를 새롭게 만드는 것을 고려해보자.
+       */
+      String sql = "SELECT max(order_id) FROM t_order";
+
       pstmt = conn.prepareStatement(sql);
-      
       rs = pstmt.executeQuery();
-      
-      if(rs.next()) {
+
+      if (rs.next())
         count = rs.getInt(1) + 1;
-      }
-      
-      sql = "insert into T_order values (?,?,?,?,'발송대기',sysdate,'',?)";
-      
+
+      sql = "INSERT INTO T_order VALUES (?, ?, ?, ?, '발송대기', sysdate, '', ?)";
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, count);
       pstmt.setString(2, dto.getOrderReceiverName());
       pstmt.setString(3, dto.getOrderReceiverPhone());
       pstmt.setString(4, dto.getOrderReceiverAddr());
       pstmt.setInt(5, dto.getOrderUserFk());
-      
+
       pstmt.executeUpdate();
 
     } catch (Exception e) {
@@ -167,36 +176,40 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     }
   } // save(dto) end
 
+  /**
+   * @param 주문 DTO 객체를 인자로 받습니다.
+   * @author skwns0472
+   */
   @Override
   public void update(OrderDTO dto) {
     try {
       open();
-      
+
       String sql = "SELELCT * FROM t_order WHERE order_id = ?";
-            
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, dto.getOrderId());
-      
+
       rs = pstmt.executeQuery();
-      
+
       /**
        * Q(24.09.03): 적절한 코드인지 고민해볼 필요가 있음.
        */
-      if(rs.next()) {
-        if(dto.getOrderStatus().equals("발송대기")) {
+      if (rs.next()) {
+        if (dto.getOrderStatus().equals("발송대기")) {
           sql = "UPDATE t_order SET order_status = '배송중'";
-          
+
           pstmt = conn.prepareStatement(sql);
-          
-        } else if(dto.getOrderStatus().equals("배송중")) {
+
+        } else if (dto.getOrderStatus().equals("배송중")) {
           sql = "UPDATE t_order SET order_status = '배송완료', order_delivered_at = sysdate";
-          
+
           pstmt = conn.prepareStatement(sql);
-          
+
         }
-        
+
         pstmt.executeUpdate();
-        
+
       }
 
     } catch (Exception e) {
@@ -206,24 +219,72 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     }
   } // update(dto) end
 
+  /**
+   * @param 주문의 식별자를 인자로 받습니다.
+   * @author skwns0472
+   */
   @Override
   public void delete(int id) {
     try {
       open();
-      
-      String sql = "delete from t_order where order_id = ?";
-      
+
+      String sql = "DELETE FROM t_order WHERE order_id = ?";
+
       pstmt = conn.prepareStatement(sql);
-      
+
       pstmt.setInt(1, id);
-      
       pstmt.executeUpdate();
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       close();
     }
   } // delete(id) end
+
+  /**
+   * 유저의 식별자를 인자로 받아서 해당하는 유저의 모든 주문 목록을 불러오는 메소드입니다.
+   * 
+   * @param 고객의 식별자를 인자로 받습니다.
+   * @return 고객의 모든 주문 목록을 리스트 형태로 반환합니다.
+   * @author vemm8ks2
+   */
+  public List<OrderDTO> getOrderListByCustomerId(int customerId) {
+
+    List<OrderDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+      String sql = "SELECT * FROM t_order WHERE order_customer_fk = ?";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, customerId);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+
+        OrderDTO dto = new OrderDTO();
+
+        dto.setOrderId(rs.getInt("order_id"));
+        dto.setOrderReceiverName(rs.getString("orderr_eceiver_name"));
+        dto.setOrderReceiverPhone(rs.getString("order_receiver_phone"));
+        dto.setOrderReceiverAddr(rs.getString("order_receiver_addr"));
+        dto.setOrderStatus(rs.getString("order_status"));
+        dto.setOrderCreatedAt(rs.getString("order_created_at"));
+        dto.setOrderDeliveredAt(rs.getString("order_delivered_at"));
+        dto.setOrderUserFk(rs.getInt("order_customer_fk"));
+
+        list.add(dto);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
 
 }
