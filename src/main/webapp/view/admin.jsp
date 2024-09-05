@@ -18,6 +18,10 @@
 
 <body>
   <div id="root"></div>
+  <script type="text/javascript">
+  	if (!location.hash) location.href = 'admin#/WEB-JSP/admin/dashboard'; 
+  	else location.href = 'admin' + location.hash;
+  </script>
 </body>
 
 </html>

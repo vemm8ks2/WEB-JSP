@@ -27,9 +27,6 @@ public class FrontController extends HttpServlet {
     request.setCharacterEncoding("UTF-8");
     response.setContentType("text/html; charset=UTF-8");
 
-    /*
-     * 24.09.02 TODO: 아래의 ctx를 제어하여 카테고리 데이터를 받아오고 전역적으로 관리하기.
-     */
     ServletContext ctx = getServletContext();
 
     if (ctx.getAttribute("categoryList") == null) {

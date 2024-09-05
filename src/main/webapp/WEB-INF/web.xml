@@ -23,6 +23,15 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>AdminController</servlet-name>
+		<servlet-class>com.teamtwo.controller.AdminController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminController</servlet-name>
+		<url-pattern>/admin</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 필터 정의 및 매핑 -->
     <filter>
         <filter-name>homeFilter</filter-name>
