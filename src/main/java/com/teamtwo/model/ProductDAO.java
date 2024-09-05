@@ -203,7 +203,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      String sql = "DELETE FROM T_produt WHERE product_id = ?";
+      String sql = "DELETE FROM T_product WHERE product_id = ?";
 
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
