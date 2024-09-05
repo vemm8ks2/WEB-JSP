@@ -54,31 +54,34 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     }
   }
 
+  /**
+   * @param 배송지의 식별자를 인자로 받습니다.
+   * @author bborib
+   */
   @Override
   public ShippingAddressDTO get(int id) {
+    
     ShippingAddressDTO dto = null;
 
     try {
       open();
 
-      String sql = "select * from T_shipping_address where shipping_address_id = ?";
+      String sql = "SELECT * FROM T_shipping_address WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
-
       pstmt.setInt(1, id);
-
+      
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-
         dto = new ShippingAddressDTO();
 
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
         dto.setShippingAddressAddress(rs.getString("shipping_address_destination"));
         dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
         dto.setShippingAddressUserIdFk(rs.getInt("shipping_address_customer_fk"));
-
       }
+      
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -88,6 +91,9 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     return dto;
   }
 
+  /**
+   * @author bborib
+   */
   @Override
   public List<ShippingAddressDTO> getAll() {
     List<ShippingAddressDTO> list = new ArrayList<>();
@@ -95,14 +101,12 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     try {
       open();
 
-      String sql = "select * from T_shipping_address order by shipping_address_id desc";
+      String sql = "SELECT * FROM T_shipping_address ORDER BY shipping_address_id DESC";
 
       pstmt = conn.prepareStatement(sql);
-
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-
         ShippingAddressDTO dto = new ShippingAddressDTO();
 
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
@@ -111,7 +115,6 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
         dto.setShippingAddressUserIdFk(rs.getInt("shipping_address_customer_fk"));
 
         list.add(dto);
-
       }
 
     } catch (Exception e) {
@@ -123,6 +126,10 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     return list;
   }
 
+  /**
+   * @param 배송지 DTO를 인자로 받아서 새롭게 저장하는 메소드입니다.
+   * @author bborib
+   */
   @Override
   public void save(ShippingAddressDTO dto) {
     try {
@@ -162,6 +169,10 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     }
   }
 
+  /**
+   * @param 배송지 DTO 객체를 인자로 받습니다.
+   * @author bborib
+   */
   @Override
   public void update(ShippingAddressDTO dto) {
     try {
@@ -170,9 +181,9 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       /**
        * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
        */
-      String sql = "update T_shipping_address set " + "shipping_address_destination = ?,"
+      String sql = "UPDATE T_shipping_address " + "SET shipping_address_destination = ?,"
           + "shipping_address_is_default = ?, " + "shipping_address_customer_fk = ?,"
-          + "where shipping_address_id = ?";
+          + "WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -191,12 +202,16 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     }
   }
 
+  /**
+   * @param 배송지의 식별자를 인자로 받습니다.
+   * @author bborib
+   */
   @Override
   public void delete(int id) {
     /**
      * TODO(24.09.03): 에러 발생 시 throw
      */
-    
+
     try {
       open();
 
@@ -213,5 +228,38 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       close();
     }
   }
+
+  /**
+   * 배송지의 식별자를 인자로 받아서 해당하는 배송지를 기본 배송지로 설정해주는 메소드입니다.
+   * 
+   * @param 배송지의 식별자를 인자로 받습니다.
+   * @author joohp
+   */
+  public void updateDefault(int id) {
+    /**
+     * TODO(24.09.05): 배송지를 새롭게 'Y'로 업데이트 해줄 뿐만 아니라 기존에 있던 기본 배송지도 'N'으로 업데이트해야 한다.
+     */
+
+    try {
+      open();
+
+      String sql =
+          "UPDATE T_shipping_address SET shipping_address_is_default = ? WHERE shipping_address_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setString(1, "Y");
+      pstmt.setInt(2, id);
+
+      pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  } // getupdate(id) end
+
+
 
 }
