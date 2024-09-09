@@ -136,7 +136,7 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
     try {
       open();
 
-      String sql = "INSERT INTO T_customer VALUES(?,?,?,?,?,?,?,?,sysdate,'')";
+      String sql = "INSERT INTO T_customer VALUES(?,?,?,?,'',?,'','',sysdate,'')";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -144,10 +144,7 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
       pstmt.setString(2, dto.getCustomerLoginId());
       pstmt.setString(3, dto.getCustomerPassword());
       pstmt.setString(4, dto.getCustomerName());
-      pstmt.setString(5, dto.getCustomerEmail());
-      pstmt.setString(6, dto.getCustomerPhoneNumber());
-      pstmt.setString(7, dto.getCustomerGender());
-      pstmt.setString(8, dto.getCustomerBirth());
+      pstmt.setString(5 , dto.getCustomerPhoneNumber());
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -291,6 +288,30 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
     
     return result;
     
+  }
+  
+  public Integer getCustomerId() {
+    Integer id = null;
+    
+    try {
+      open();
+      
+      String sql = "SELECT max(customer_id) from t_customer";
+      
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+      
+      if(rs.next())
+        id = rs.getInt(1) + 1;
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    
+    } finally {
+      close();
+    }
+    
+    return id;
   }
 
 
