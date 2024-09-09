@@ -13,6 +13,7 @@ public class ProductViewAction implements Action {
 			throws IOException, ServletException {
 
 		request.setAttribute("url", "product.jsp");
+        request.setAttribute("stylesheet", "product.css");
 		
 		ActionForward forward = new ActionForward();
 		

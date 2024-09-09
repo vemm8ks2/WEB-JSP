@@ -13,6 +13,7 @@ public class RegisterViewAction implements Action {
 			throws IOException, ServletException {
 
 		request.setAttribute("url", "register.jsp");
+        request.setAttribute("stylesheet", "register.css");
 		
 		ActionForward forward = new ActionForward();
 		
