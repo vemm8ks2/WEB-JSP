@@ -79,7 +79,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
         dto.setShippingAddressAddress(rs.getString("shipping_address_destination"));
         dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressUserIdFk(rs.getInt("shipping_address_customer_fk"));
+        dto.setShippingAddressCustomerIdFk(rs.getInt("shipping_address_customer_fk"));
       }
       
     } catch (Exception e) {
@@ -112,7 +112,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
         dto.setShippingAddressAddress(rs.getString("shipping_address_destination"));
         dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressUserIdFk(rs.getInt("shipping_address_customer_fk"));
+        dto.setShippingAddressCustomerIdFk(rs.getInt("shipping_address_customer_fk"));
 
         list.add(dto);
       }
@@ -158,7 +158,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       pstmt.setInt(1, count);
       pstmt.setString(2, dto.getShippingAddressAddress());
       pstmt.setString(3, dto.getShippingAddressIsDefault());
-      pstmt.setInt(4, dto.getShippingAddressUserIdFk());
+      pstmt.setInt(4, dto.getShippingAddressCustomerIdFk());
 
       pstmt.executeUpdate();
 
@@ -189,7 +189,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
       pstmt.setString(1, dto.getShippingAddressAddress());
       pstmt.setString(2, dto.getShippingAddressIsDefault());
-      pstmt.setInt(3, dto.getShippingAddressUserIdFk());
+      pstmt.setInt(3, dto.getShippingAddressCustomerIdFk());
       pstmt.setInt(4, dto.getShippingAddressId());
 
       pstmt.executeUpdate();

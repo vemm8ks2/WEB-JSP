@@ -21,20 +21,20 @@ public class ModifyShippingAdddress implements Action {
       throws IOException, ServletException {
 
     /**
-     * Q(24.09.03): shippingAddressUserFk를 파라미터로 받을 수 있을 지 고민을 해보아야 합니다.
+     * Q(24.09.03): shippingAddressCustomerFk를 파라미터로 받을 수 있을 지 고민을 해보아야 합니다.
      * 만약 파라미터로 받지 않기로 하였다면 유저 외래키를 가져올 다른 방법을 찾아보아야 합니다.
      */
     String shippingAddressAddress = request.getParameter("shippingAddressAddress").trim();;
     String shippingAddressIsDefault = request.getParameter("shippingAddressIsDefault").trim();;
     int shippingAddressId = Integer.parseInt(request.getParameter("shippingAddressId").trim());
-    int shippingAddressUserIdFk = Integer.parseInt(request.getParameter("shippingAddressUserIdFk").trim());
+    int shippingAddressCustomerIdFk = Integer.parseInt(request.getParameter("shippingAddressCustomerIdFk").trim());
 
     ShippingAddressDTO dto = new ShippingAddressDTO();
 
     dto.setShippingAddressAddress(shippingAddressAddress);
     dto.setShippingAddressId(shippingAddressId);
     dto.setShippingAddressIsDefault(shippingAddressIsDefault);
-    dto.setShippingAddressUserIdFk(shippingAddressUserIdFk);
+    dto.setShippingAddressCustomerIdFk(shippingAddressCustomerIdFk);
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
     dao.update(dto);

@@ -23,7 +23,7 @@ public class CreateOrderedProductAction implements Action {
      */
     int orderedProductId = Integer.parseInt(request.getParameter("orderedProductId").trim());
     int orderedProductQunatity = Integer.parseInt(request.getParameter("orderedProductQunatity").trim());
-    int orderedProductUserIdFk = Integer.parseInt(request.getParameter("orderedProductUserIdFk").trim());
+    int orderedProductCustomerIdFk = Integer.parseInt(request.getParameter("orderedProductCustomerIdFk").trim());
     int orderedProductProdIdFk = Integer.parseInt(request.getParameter("orderedProductProdIdFk").trim());
 
     OrderedProductDTO dto = new OrderedProductDTO();
@@ -31,7 +31,7 @@ public class CreateOrderedProductAction implements Action {
     dto.setOrderedProductId(orderedProductId);
     dto.setOrderedProductProdIdFk(orderedProductProdIdFk);
     dto.setOrderedProductQunatity(orderedProductQunatity);
-    dto.setOrderedProductUserIdFk(orderedProductUserIdFk);
+    dto.setOrderedProductCustomerIdFk(orderedProductCustomerIdFk);
     
     OrderedProductDAO dao = OrderedProductDAO.getInstance();
     

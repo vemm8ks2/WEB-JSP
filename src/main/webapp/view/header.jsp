@@ -65,7 +65,7 @@
           </g>
         </svg>
       </a>
-      <a href="userView.do">
+      <a href="customerView.do">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="9" r="3" />
           <circle cx="12" cy="12" r="10" />

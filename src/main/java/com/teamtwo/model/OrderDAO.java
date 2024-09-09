@@ -82,7 +82,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderStatus(rs.getString("orderstatus"));
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
-        dto.setOrderUserFk(rs.getInt("orderuserfk"));
+        dto.setOrderCustomerFk(rs.getInt("ordercustomerfk"));
       }
 
     } catch (Exception e) {
@@ -119,7 +119,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderStatus(rs.getString("orderstatus"));
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
-        dto.setOrderUserFk(rs.getInt("orderuserfk"));
+        dto.setOrderCustomerFk(rs.getInt("ordercustomerfk"));
 
         list.add(dto);
 
@@ -165,7 +165,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
       pstmt.setString(2, dto.getOrderReceiverName());
       pstmt.setString(3, dto.getOrderReceiverPhone());
       pstmt.setString(4, dto.getOrderReceiverAddr());
-      pstmt.setInt(5, dto.getOrderUserFk());
+      pstmt.setInt(5, dto.getOrderCustomerFk());
 
       pstmt.executeUpdate();
 
@@ -274,7 +274,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderStatus(rs.getString("order_status"));
         dto.setOrderCreatedAt(rs.getString("order_created_at"));
         dto.setOrderDeliveredAt(rs.getString("order_delivered_at"));
-        dto.setOrderUserFk(rs.getInt("order_customer_fk"));
+        dto.setOrderCustomerFk(rs.getInt("order_customer_fk"));
 
         list.add(dto);
       }

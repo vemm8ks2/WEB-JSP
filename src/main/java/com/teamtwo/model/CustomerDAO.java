@@ -12,19 +12,19 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class UserDAO implements BaseDAO<UserDTO> {
+public class CustomerDAO implements BaseDAO<CustomerDTO> {
 
   private Connection conn = null;
   private PreparedStatement pstmt = null;
   private ResultSet rs = null;
 
-  private static UserDAO instance = null;
+  private static CustomerDAO instance = null;
 
-  private UserDAO() {}
+  private CustomerDAO() {}
 
-  public static UserDAO getInstance() {
+  public static CustomerDAO getInstance() {
     if (instance == null)
-      instance = new UserDAO();
+      instance = new CustomerDAO();
 
     return instance;
   }
@@ -55,9 +55,9 @@ public class UserDAO implements BaseDAO<UserDTO> {
   }
 
   @Override
-  public UserDTO get(int id) {
+  public CustomerDTO get(int id) {
 
-    UserDTO dto = null;
+    CustomerDTO dto = null;
 
     try {
       open();
@@ -70,18 +70,18 @@ public class UserDAO implements BaseDAO<UserDTO> {
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-        dto = new UserDTO();
+        dto = new CustomerDTO();
 
-        dto.setUserId(rs.getInt("customer_id"));
-        dto.setUserLoginId(rs.getString("customer_login_id"));
-        dto.setUserPassword(rs.getString("customer_password"));
-        dto.setUserName(rs.getString("customer_name"));
-        dto.setUserEmail(rs.getString("customer_email"));
-        dto.setUserPhoneNumber(rs.getString("customer_phone_number"));
-        dto.setUserGender(rs.getString("customer_gender"));
-        dto.setUserBirth(rs.getString("customer_birth"));
-        dto.setUserCreatedAt(rs.getString("customer_created_at"));
-        dto.setUserUpdatedAt(rs.getString("customer_updated_at"));
+        dto.setCustomerId(rs.getInt("customer_id"));
+        dto.setCustomerLoginId(rs.getString("customer_login_id"));
+        dto.setCustomerPassword(rs.getString("customer_password"));
+        dto.setCustomerName(rs.getString("customer_name"));
+        dto.setCustomerEmail(rs.getString("customer_email"));
+        dto.setCustomerPhoneNumber(rs.getString("customer_phone_number"));
+        dto.setCustomerGender(rs.getString("customer_gender"));
+        dto.setCustomerBirth(rs.getString("customer_birth"));
+        dto.setCustomerCreatedAt(rs.getString("customer_created_at"));
+        dto.setCustomerUpdatedAt(rs.getString("customer_updated_at"));
       }
 
     } catch (Exception e) {
@@ -94,9 +94,9 @@ public class UserDAO implements BaseDAO<UserDTO> {
   }
 
   @Override
-  public List<UserDTO> getAll() {
+  public List<CustomerDTO> getAll() {
 
-    List<UserDTO> list = new ArrayList<>();
+    List<CustomerDTO> list = new ArrayList<>();
 
     try {
       open();
@@ -106,18 +106,18 @@ public class UserDAO implements BaseDAO<UserDTO> {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-        UserDTO dto = new UserDTO();
+        CustomerDTO dto = new CustomerDTO();
 
-        dto.setUserId(rs.getInt("customer_id"));
-        dto.setUserLoginId(rs.getString("customer_login_id"));
-        dto.setUserPassword(rs.getString("customer_password"));
-        dto.setUserName(rs.getString("customer_name"));
-        dto.setUserEmail(rs.getString("customer_email"));
-        dto.setUserPhoneNumber(rs.getString("customer_phone_number"));
-        dto.setUserGender(rs.getString("customer_gender"));
-        dto.setUserBirth(rs.getString("customer_birth"));
-        dto.setUserCreatedAt(rs.getString("customer_created_at"));
-        dto.setUserUpdatedAt(rs.getString("customer_updated_at"));
+        dto.setCustomerId(rs.getInt("customer_id"));
+        dto.setCustomerLoginId(rs.getString("customer_login_id"));
+        dto.setCustomerPassword(rs.getString("customer_password"));
+        dto.setCustomerName(rs.getString("customer_name"));
+        dto.setCustomerEmail(rs.getString("customer_email"));
+        dto.setCustomerPhoneNumber(rs.getString("customer_phone_number"));
+        dto.setCustomerGender(rs.getString("customer_gender"));
+        dto.setCustomerBirth(rs.getString("customer_birth"));
+        dto.setCustomerCreatedAt(rs.getString("customer_created_at"));
+        dto.setCustomerUpdatedAt(rs.getString("customer_updated_at"));
 
         list.add(dto);
       }
@@ -132,7 +132,7 @@ public class UserDAO implements BaseDAO<UserDTO> {
   }
 
   @Override
-  public void save(UserDTO dto) {
+  public void save(CustomerDTO dto) {
     try {
       open();
 
@@ -140,14 +140,14 @@ public class UserDAO implements BaseDAO<UserDTO> {
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, dto.getUserId());
-      pstmt.setString(2, dto.getUserLoginId());
-      pstmt.setString(3, dto.getUserPassword());
-      pstmt.setString(4, dto.getUserName());
-      pstmt.setString(5, dto.getUserEmail());
-      pstmt.setString(6, dto.getUserPhoneNumber());
-      pstmt.setString(7, dto.getUserGender());
-      pstmt.setString(8, dto.getUserBirth());
+      pstmt.setInt(1, dto.getCustomerId());
+      pstmt.setString(2, dto.getCustomerLoginId());
+      pstmt.setString(3, dto.getCustomerPassword());
+      pstmt.setString(4, dto.getCustomerName());
+      pstmt.setString(5, dto.getCustomerEmail());
+      pstmt.setString(6, dto.getCustomerPhoneNumber());
+      pstmt.setString(7, dto.getCustomerGender());
+      pstmt.setString(8, dto.getCustomerBirth());
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -157,14 +157,14 @@ public class UserDAO implements BaseDAO<UserDTO> {
   }
 
   @Override
-  public void update(UserDTO dto) {
+  public void update(CustomerDTO dto) {
     try {
       open();
 
       String sql = "SELECT * FROM T_customer WHERE customer_id=?";
 
       pstmt = conn.prepareStatement(sql);
-      pstmt.setInt(1, dto.getUserId());
+      pstmt.setInt(1, dto.getCustomerId());
 
       rs = pstmt.executeQuery();
 
@@ -175,11 +175,11 @@ public class UserDAO implements BaseDAO<UserDTO> {
 
         pstmt = conn.prepareStatement(sql);
 
-        pstmt.setString(1, dto.getUserPassword());
-        pstmt.setString(2, dto.getUserName());
-        pstmt.setString(3, dto.getUserEmail());
-        pstmt.setString(4, dto.getUserPhoneNumber());
-        pstmt.setString(5, dto.getUserBirth());
+        pstmt.setString(1, dto.getCustomerPassword());
+        pstmt.setString(2, dto.getCustomerName());
+        pstmt.setString(3, dto.getCustomerEmail());
+        pstmt.setString(4, dto.getCustomerPhoneNumber());
+        pstmt.setString(5, dto.getCustomerBirth());
 
         pstmt.executeUpdate(sql);
       }
@@ -218,9 +218,9 @@ public class UserDAO implements BaseDAO<UserDTO> {
     }
   }
 
-  public UserDTO getCustomerByLoginId(String customerLoginId) {
+  public CustomerDTO getCustomerByLoginId(String customerLoginId) {
 
-    UserDTO dto = null;
+    CustomerDTO dto = null;
 
     try {
       open();
@@ -233,18 +233,18 @@ public class UserDAO implements BaseDAO<UserDTO> {
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
-        dto = new UserDTO();
+        dto = new CustomerDTO();
 
-        dto.setUserId(rs.getInt("customer_id"));
-        dto.setUserLoginId(rs.getString("customer_login_id"));
-        dto.setUserPassword(rs.getString("customer_password"));
-        dto.setUserName(rs.getString("customer_name"));
-        dto.setUserEmail(rs.getString("customer_email"));
-        dto.setUserPhoneNumber(rs.getString("customer_phone_number"));
-        dto.setUserGender(rs.getString("customer_gender"));
-        dto.setUserBirth(rs.getString("customer_birth"));
-        dto.setUserCreatedAt(rs.getString("customer_created_at"));
-        dto.setUserUpdatedAt(rs.getString("customer_updated_at"));
+        dto.setCustomerId(rs.getInt("customer_id"));
+        dto.setCustomerLoginId(rs.getString("customer_login_id"));
+        dto.setCustomerPassword(rs.getString("customer_password"));
+        dto.setCustomerName(rs.getString("customer_name"));
+        dto.setCustomerEmail(rs.getString("customer_email"));
+        dto.setCustomerPhoneNumber(rs.getString("customer_phone_number"));
+        dto.setCustomerGender(rs.getString("customer_gender"));
+        dto.setCustomerBirth(rs.getString("customer_birth"));
+        dto.setCustomerCreatedAt(rs.getString("customer_created_at"));
+        dto.setCustomerUpdatedAt(rs.getString("customer_updated_at"));
       }
 
     } catch (Exception e) {
@@ -257,7 +257,7 @@ public class UserDAO implements BaseDAO<UserDTO> {
   }
 
   // 로그인
-  public int userCheck(String customerLoginId, String customerLoginPwd) {
+  public int customerCheck(String customerLoginId, String customerLoginPwd) {
     
     int result = 0;
     

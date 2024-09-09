@@ -5,7 +5,7 @@ public class ShippingAddressDTO {
 	private int shippingAddressId;
 	private String shippingAddressAddress;
 	private String shippingAddressIsDefault;
-	private int shippingAddressUserIdFk;
+	private int shippingAddressCustomerIdFk;
 	
 	public int getShippingAddressId() {
 		return shippingAddressId;
@@ -31,12 +31,12 @@ public class ShippingAddressDTO {
 		this.shippingAddressIsDefault = shippingAddressIsDefault;
 	}
 	
-	public int getShippingAddressUserIdFk() {
-		return shippingAddressUserIdFk;
+	public int getShippingAddressCustomerIdFk() {
+		return shippingAddressCustomerIdFk;
 	}
 	
-	public void setShippingAddressUserIdFk(int shippingAddressUserIdFk) {
-		this.shippingAddressUserIdFk = shippingAddressUserIdFk;
+	public void setShippingAddressCustomerIdFk(int shippingAddressCustomerIdFk) {
+		this.shippingAddressCustomerIdFk = shippingAddressCustomerIdFk;
 	}
 	
 }

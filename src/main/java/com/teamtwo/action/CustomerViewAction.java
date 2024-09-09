@@ -6,14 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UserViewAction implements Action {
+public class CustomerViewAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-		request.setAttribute("url", "user.jsp");
-        request.setAttribute("stylesheet", "user.css");
+		request.setAttribute("url", "customer.jsp");
+        request.setAttribute("stylesheet", "customer.css");
 		
 		ActionForward forward = new ActionForward();
 		

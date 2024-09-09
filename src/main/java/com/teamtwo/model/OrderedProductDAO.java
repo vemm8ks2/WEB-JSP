@@ -74,7 +74,7 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
         dto = new OrderedProductDTO();
         dto.getOrderedProductId();
         dto.getOrderedProductQunatity();
-        dto.getOrderedProductUserIdFk();
+        dto.getOrderedProductCustomerIdFk();
         dto.getOrderedProductProdIdFk();
 
       }
@@ -107,7 +107,7 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
 
         dto.setOrderedProductId(rs.getInt("orderedproductid"));
         dto.setOrderedProductQunatity(rs.getInt("orderedproductqunatity"));
-        dto.setOrderedProductUserIdFk(rs.getInt("orderedproductuseridfk"));
+        dto.setOrderedProductCustomerIdFk(rs.getInt("orderedproductcustomeridfk"));
         dto.setOrderedProductProdIdFk(rs.getInt("orderedproductprodidfk"));
 
         list.add(dto);
@@ -134,7 +134,7 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
 
       pstmt.setInt(1, dto.getOrderedProductId());
       pstmt.setInt(2, dto.getOrderedProductQunatity());
-      pstmt.setInt(3, dto.getOrderedProductUserIdFk());
+      pstmt.setInt(3, dto.getOrderedProductCustomerIdFk());
       pstmt.setInt(4, dto.getOrderedProductProdIdFk());
 
       pstmt.executeUpdate();
