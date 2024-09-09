@@ -13,6 +13,7 @@ public class LoginViewAction implements Action {
 			throws IOException, ServletException {
 
 		request.setAttribute("url", "login.jsp");
+        request.setAttribute("stylesheet", "login.css");
 		
 		ActionForward forward = new ActionForward();
 		

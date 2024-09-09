@@ -13,6 +13,7 @@ public class MainViewAction implements Action {
 			throws IOException, ServletException {
 
 		request.setAttribute("url", "main.jsp");
+		request.setAttribute("stylesheet", "main.css");
 		
 		ActionForward forward = new ActionForward();
 		
