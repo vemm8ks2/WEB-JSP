@@ -4,8 +4,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.teamtwo.model.UserDAO;
-import com.teamtwo.model.UserDTO;
+import com.teamtwo.model.CustomerDAO;
+import com.teamtwo.model.CustomerDTO;
 
 public class ModifyAccountAction implements Action {
 
@@ -19,15 +19,15 @@ public class ModifyAccountAction implements Action {
     String customer_phone_number = request.getParameter("customer_phone_number").trim();
     String customer_birth = request.getParameter("customer_birth").trim();
 
-    UserDTO dto = new UserDTO();
+    CustomerDTO dto = new CustomerDTO();
 
-    dto.setUserPassword(customer_password);
-    dto.setUserName(customer_name);
-    dto.setUserEmail(customer_email);
-    dto.setUserPhoneNumber(customer_phone_number);
-    dto.setUserBirth(customer_birth);
+    dto.setCustomerPassword(customer_password);
+    dto.setCustomerName(customer_name);
+    dto.setCustomerEmail(customer_email);
+    dto.setCustomerPhoneNumber(customer_phone_number);
+    dto.setCustomerBirth(customer_birth);
 
-    UserDAO dao = UserDAO.getInstance();
+    CustomerDAO dao = CustomerDAO.getInstance();
 
     dao.update(dto);
 

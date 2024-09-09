@@ -4,7 +4,7 @@ public class OrderedProductDTO {
 
 	private int orderedProductId;
 	private int orderedProductQunatity;
-	private int orderedProductUserIdFk;
+	private int orderedProductCustomerIdFk;
 	private int orderedProductProdIdFk;
 	
 	public int getOrderedProductId() {
@@ -23,12 +23,12 @@ public class OrderedProductDTO {
 		this.orderedProductQunatity = orderedProductQunatity;
 	}
 	
-	public int getOrderedProductUserIdFk() {
-		return orderedProductUserIdFk;
+	public int getOrderedProductCustomerIdFk() {
+		return orderedProductCustomerIdFk;
 	}
 	
-	public void setOrderedProductUserIdFk(int orderedProductUserIdFk) {
-		this.orderedProductUserIdFk = orderedProductUserIdFk;
+	public void setOrderedProductCustomerIdFk(int orderedProductCustomerIdFk) {
+		this.orderedProductCustomerIdFk = orderedProductCustomerIdFk;
 	}
 	
 	public int getOrderedProductProdIdFk() {

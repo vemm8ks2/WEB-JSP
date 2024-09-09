@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.teamtwo.model.UserDAO;
-import com.teamtwo.model.UserDTO;
+import com.teamtwo.model.CustomerDAO;
+import com.teamtwo.model.CustomerDTO;
 
 public class ShowAllCustomerAction implements Action {
 
@@ -15,17 +15,17 @@ public class ShowAllCustomerAction implements Action {
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     
-    UserDAO dao = UserDAO.getInstance();
+    CustomerDAO dao = CustomerDAO.getInstance();
     
-    List<UserDTO> list = dao.getAll();
+    List<CustomerDTO> list = dao.getAll();
         
-    request.setAttribute("userList", list);
+    request.setAttribute("customerList", list);
     
     ActionForward forward = new ActionForward();
     
     forward.setRedirect(false);
     
-    forward.setPath("view/user_list.jsp");
+    forward.setPath("view/customer_list.jsp");
     
     return forward;
     

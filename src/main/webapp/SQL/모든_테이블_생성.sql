@@ -10,7 +10,7 @@ CREATE TABLE T_admin (
 	admin_last_accessed_ip VARCHAR2(16)	NOT NULL
 );
 
--- 유저 User 테이블
+-- 유저 Customer 테이블
 CREATE TABLE T_customer(
 	customer_id NUMBER(9),							-- 유저식별자
 	customer_login_id VARCHAR2(30) NOT NULL,		-- 유저아이디

@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teamtwo.model.UserDAO;
-import com.teamtwo.model.UserDTO;
+import com.teamtwo.model.CustomerDAO;
+import com.teamtwo.model.CustomerDTO;
 
 /**
  * 유저의 로그인 Action 입니다.
@@ -26,9 +26,9 @@ public class LoginAction implements Action {
     String customerLoginId = request.getParameter("login_id").trim();
     String customerPassword = request.getParameter("login_pwd").trim();
 
-    UserDAO dao = UserDAO.getInstance();
+    CustomerDAO dao = CustomerDAO.getInstance();
 
-    UserDTO customer = dao.getCustomerByLoginId(customerLoginId);
+    CustomerDTO customer = dao.getCustomerByLoginId(customerLoginId);
 
     if (customer == null) {
       /**
@@ -37,7 +37,7 @@ public class LoginAction implements Action {
       return null;
     }
 
-    if (!isCorrectPassword(customerPassword, customer.getUserPassword())) {
+    if (!isCorrectPassword(customerPassword, customer.getCustomerPassword())) {
       /**
        * TODO(24.09.03): 로그인 유저의 패스워드가 틀린 경우
        */
