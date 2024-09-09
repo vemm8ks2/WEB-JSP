@@ -21,8 +21,10 @@ public class CreateOrderedProductAction implements Action {
     /**
      * TODO(24.09.03): orderedProductId 는 파라미터로 받는 게 아니고 dao 메소드를 호출하여 생성한다.
      */
-    int orderedProductId = Integer.parseInt(request.getParameter("orderedProductId").trim());
-    int orderedProductQunatity = Integer.parseInt(request.getParameter("orderedProductQunatity").trim());
+    OrderedProductDAO dao = OrderedProductDAO.getInstance();
+    
+    int orderedProductId = dao.getOrderedProductId();
+    int orderedProductQuantity = Integer.parseInt(request.getParameter("orderedProductQunatity").trim());
     int orderedProductCustomerIdFk = Integer.parseInt(request.getParameter("orderedProductCustomerIdFk").trim());
     int orderedProductProdIdFk = Integer.parseInt(request.getParameter("orderedProductProdIdFk").trim());
 
@@ -30,10 +32,10 @@ public class CreateOrderedProductAction implements Action {
     
     dto.setOrderedProductId(orderedProductId);
     dto.setOrderedProductProdIdFk(orderedProductProdIdFk);
-    dto.setOrderedProductQunatity(orderedProductQunatity);
+    dto.setOrderedProductQunatity(orderedProductQuantity);
     dto.setOrderedProductCustomerIdFk(orderedProductCustomerIdFk);
     
-    OrderedProductDAO dao = OrderedProductDAO.getInstance();
+   
     
     dao.save(dto);
     

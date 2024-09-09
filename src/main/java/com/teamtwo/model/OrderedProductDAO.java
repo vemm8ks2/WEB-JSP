@@ -204,4 +204,27 @@ public class OrderedProductDAO implements BaseDAO<OrderedProductDTO> {
 
   } // delete end
 
+  public Integer getOrderedProductId() {
+    Integer id = null;
+
+    try {
+      open();
+
+      String sql = "SELECT max(ordered_product_id) FROM t_ordered_product";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        id = rs.getInt(1) + 1;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return id;
+  }//getOrderedProductId end
+
 } // class end
