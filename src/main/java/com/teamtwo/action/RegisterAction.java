@@ -10,7 +10,7 @@ import com.teamtwo.model.CustomerDTO;
 import com.teamtwo.model.ShippingAddressDAO;
 import com.teamtwo.model.ShippingAddressDTO;
 
-public class ReigsterAction implements Action {
+public class RegisterAction implements Action {
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
