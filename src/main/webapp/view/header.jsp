@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.teamtwo.model.CategoryDTO"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	List<CategoryDTO> categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
@@ -40,9 +40,8 @@
       </button>
     </form>
     
-	<c:set var="customerId" value="${customer}"/>	
     <!-- 로그인 UI -->
-    <c:if test="${ !empty customerId }">
+    <c:if test="${ !empty customer }">
     <div class="header-top__logged-in">
       <a href="#">
         <svg
@@ -80,7 +79,7 @@
 	</c:if>
 	
     <!-- 비로그인 UI -->
-    <c:if test="${ empty customerId }">
+    <c:if test="${ empty customer }">
     <div class="header-top__logged-out">
       <a href="loginView.do">
         <button class="primary-btn default-btn-color">로그인</button>
