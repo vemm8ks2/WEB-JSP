@@ -39,9 +39,11 @@
         </svg>
       </button>
     </form>
-
+    
+	<c:set var="customerId" value="${customer}"/>	
     <!-- 로그인 UI -->
-    <!-- <div class="header-top__logged-in">
+    <c:if test="${ !empty customerId }">
+    <div class="header-top__logged-in">
       <a href="#">
         <svg
           version="1.1"
@@ -74,9 +76,11 @@
           />
         </svg>
       </a>
-    </div> -->
-
+    </div>
+	</c:if>
+	
     <!-- 비로그인 UI -->
+    <c:if test="${ empty customerId }">
     <div class="header-top__logged-out">
       <a href="loginView.do">
         <button class="primary-btn default-btn-color">로그인</button>
@@ -85,6 +89,7 @@
         <button class="primary-btn reverse-btn-color">회원가입</button>
       </a>
     </div>
+    </c:if>
   </div>
 
   <!-- 카테고리 바 -->
