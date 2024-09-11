@@ -13,6 +13,7 @@ public class ModifyAccountAction implements Action {
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
+	int customer_id = Integer.parseInt(request.getParameter("customer_id").trim());
     String customer_password = request.getParameter("customer_password").trim();
     String customer_name = request.getParameter("customer_name").trim();
     String customer_email = request.getParameter("customer_email").trim();
@@ -21,6 +22,7 @@ public class ModifyAccountAction implements Action {
 
     CustomerDTO dto = new CustomerDTO();
 
+    dto.setCustomerId(customer_id);
     dto.setCustomerPassword(customer_password);
     dto.setCustomerName(customer_name);
     dto.setCustomerEmail(customer_email);
