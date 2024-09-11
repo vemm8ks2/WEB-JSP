@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="customer-wrapper">
   <div class="customer-wrapper__image">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -11,16 +11,16 @@
       />
     </svg>
   </div>
+  <c:set var="dto" value="${customer}"/>
   <div>
-    <p class="customer-wrapper__name">이지은</p>
-    <p>OOOO@naver.com</p>
+    <p class="customer-wrapper__name">${dto.getCustomerName() }</p>
+    <p>${dto.getCustomerPhoneNumber() }</p>
   </div>
   <hr />
   <div>
+  <c:set var="ddto" value="${address}"/>
     <p>기본 배송지</p>
-    <p class="customer-wrapper__address">
-      경기도 화성시 병점3로 12 신성빌딩 4층
-    </p>
+    <p class="customer-wrapper__address">${ddto.getShippingAddressDestination()}</p>
   </div>
   <hr />
   <div>
