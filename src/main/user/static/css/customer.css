@@ -1,4 +1,4 @@
-.user-wrapper {
+.customer-wrapper {
   border-width: 1px;
   display: flex;
   flex-direction: column;
@@ -11,32 +11,32 @@
   margin: 0 auto;
   padding: 2rem 1.5rem;
   border-radius: 0.5rem; }
-  .user-wrapper > hr {
+  .customer-wrapper > hr {
     width: 100%; }
-  .user-wrapper > div:not(:first-of-type) {
+  .customer-wrapper > div:not(:first-of-type) {
     width: 100%; }
 
-.user-wrapper__image {
+.customer-wrapper__image {
   width: 8rem;
   height: 8rem; }
-  .user-wrapper__image > svg {
+  .customer-wrapper__image > svg {
     width: 100%;
     fill: none; }
-    .user-wrapper__image > svg > path {
+    .customer-wrapper__image > svg > path {
       stroke-linecap: round; }
-    .user-wrapper__image > svg circle,
-    .user-wrapper__image > svg path {
+    .customer-wrapper__image > svg circle,
+    .customer-wrapper__image > svg path {
       stroke-width: 1px;
       stroke: var(--gray-500); }
 
-.user-wrapper__name {
+.customer-wrapper__name {
   font-size: 1.125rem;
   line-height: 1.75rem; }
 
-.user-wrapper__address {
+.customer-wrapper__address {
   margin-top: 0.25rem; }
 
-.user-wrapper__link {
+.customer-wrapper__link {
   display: inline-block;
   width: 100%;
   padding: 0.25rem 0; }

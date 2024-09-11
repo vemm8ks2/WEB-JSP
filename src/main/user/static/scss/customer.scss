@@ -1,4 +1,4 @@
-.user-wrapper {
+.customer-wrapper {
   border-width: 1px;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
   }
 }
 
-.user-wrapper__image {
+.customer-wrapper__image {
   width: 8rem;
   height: 8rem;
 
@@ -41,16 +41,16 @@
   }
 }
 
-.user-wrapper__name {
+.customer-wrapper__name {
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
 
-.user-wrapper__address {
+.customer-wrapper__address {
   margin-top: 0.25rem;
 }
 
-.user-wrapper__link {
+.customer-wrapper__link {
   display: inline-block;
   width: 100%;
   padding: 0.25rem 0;
