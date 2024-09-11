@@ -181,19 +181,14 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       /**
        * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
        */
-      String sql = "UPDATE T_shipping_address " + "SET shipping_address_destination = ?,"
-          + "shipping_address_is_default = ?, " + "shipping_address_customer_fk = ?,"
-          + "WHERE shipping_address_id = ?";
+      String sql = "UPDATE T_shipping_address shipping_address_is_default = ? WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setString(1, dto.getShippingAddressAddress());
-      pstmt.setString(2, dto.getShippingAddressIsDefault());
-      pstmt.setInt(3, dto.getShippingAddressCustomerIdFk());
-      pstmt.setInt(4, dto.getShippingAddressId());
+      pstmt.setString(1, dto.getShippingAddressIsDefault());
+      pstmt.setInt(2, dto.getShippingAddressId());
 
       pstmt.executeUpdate();
-
 
     } catch (Exception e) {
       e.printStackTrace();
