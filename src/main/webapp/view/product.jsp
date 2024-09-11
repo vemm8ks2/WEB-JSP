@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 상품 상세 페이지 상단 -->
-<nav>
+<c:set var="dto" value="${product}"/>
+<nav>	
   <ul class="product-category">
     <li><a href="#">태블릿&#183;모바일&#183;게임</a></li>
     <span></span>
@@ -18,7 +19,7 @@
     </div>
   </div>
   <div>
-    <p class="product-top__name">플레이스테이션 5 슬림 1TB 본체</p>
+    <p class="product-top__name">${dto.getProductName()}</p>
     <div class="product-top__review">
       <div>
         <svg
