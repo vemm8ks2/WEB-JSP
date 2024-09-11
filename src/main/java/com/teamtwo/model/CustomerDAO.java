@@ -145,6 +145,8 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
       pstmt.setString(3, dto.getCustomerPassword());
       pstmt.setString(4, dto.getCustomerName());
       pstmt.setString(5 , dto.getCustomerPhoneNumber());
+      
+      pstmt.executeUpdate();
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -178,7 +180,7 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
         pstmt.setString(4, dto.getCustomerPhoneNumber());
         pstmt.setString(5, dto.getCustomerBirth());
 
-        pstmt.executeUpdate(sql);
+        pstmt.executeUpdate();
       }
     } catch (Exception e) {
       e.printStackTrace();

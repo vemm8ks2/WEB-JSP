@@ -16,11 +16,11 @@ public class RegisterAction implements Action {
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    String customer_loginid = request.getParameter("customer_loginid");
-    String customer_pwd = request.getParameter("customer_pwd");
-    String customer_name = request.getParameter("customer_name");
-    String customer_phone = request.getParameter("customer_phone");
-    String customer_addr = request.getParameter("customer_addr");
+    String customer_loginid = request.getParameter("register_id");
+    String customer_pwd = request.getParameter("register_pwd");
+    String customer_name = request.getParameter("register_name");
+    String customer_phone = request.getParameter("register_phone");
+    String customer_addr = request.getParameter("register_addr");
 
 
     CustomerDAO dao = CustomerDAO.getInstance();
@@ -44,11 +44,12 @@ public class RegisterAction implements Action {
     dto2.setShippingAddressCustomerIdFk(customerId);
 
     dao2.save(dto2);
-
+    
     ActionForward forward = new ActionForward();
 
-    forward.setPath("");
-
+    forward.setPath("mainView.do");
+    forward.setRedirect(false);
+    
     return forward;
   }
 
