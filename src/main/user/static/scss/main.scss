@@ -1,0 +1,33 @@
+.banner-01 {
+  height: 20rem;
+  border-radius: 0.5rem;
+  background-image: linear-gradient(to top right, #e2e8f0, #fefce8);
+}
+
+.display-products__first-wrapper {
+  margin-top: 3rem;
+}
+
+.display-products__wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+}
+
+.display-products__header {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.display-products {
+  margin-top: 4rem;
+}
+
+.banner-02 {
+  margin-top: 3rem;
+  height: 10rem;
+  border-radius: 0.5rem;
+  background-image: linear-gradient(to top right, #e2e8f0, #f0fdf4);
+}
