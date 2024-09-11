@@ -39,9 +39,9 @@ public class RegisterAction implements Action {
     ShippingAddressDAO dao2 = ShippingAddressDAO.getInstance();
     ShippingAddressDTO dto2 = new ShippingAddressDTO();
 
-    dto2.setShippingAddressAddress(customer_addr);
+    dto2.setShippingAddressDestination(customer_addr);
     dto2.setShippingAddressIsDefault("Y");
-    dto2.setShippingAddressCustomerIdFk(customerId);
+    dto2.setShippingAddressCustomerFk(customerId);
 
     dao2.save(dto2);
 
