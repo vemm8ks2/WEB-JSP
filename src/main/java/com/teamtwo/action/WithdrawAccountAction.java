@@ -4,7 +4,11 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.teamtwo.model.CartDAO;
 import com.teamtwo.model.CustomerDAO;
+import com.teamtwo.model.OrderDAO;
+import com.teamtwo.model.ShippingAddressDAO;
 
 /**
  * 유저의 계정을 삭제하는 Action 입니다.
@@ -23,9 +27,24 @@ public class WithdrawAccountAction implements Action {
      */
     int customerId = Integer.parseInt(request.getParameter("customerId").trim());
     
-    CustomerDAO dao = CustomerDAO.getInstance();
+    ShippingAddressDAO sdao = ShippingAddressDAO.getInstance();
+    sdao.delete(customerId);
     
+    CartDAO cdao = CartDAO.getInstance();
+    cdao.delete(customerId);
+    
+    //OrderDAO odao = OrderDAO.getInstance();
+    //odao.delete(customerId);
+    
+    CustomerDAO dao = CustomerDAO.getInstance();
     dao.delete(customerId);
+    
+    
+    /**
+     * 주문은 삭제하면 안될 것 같은디 회원탈퇴를 하더라도 주문내역을 볼 수 있도록 해야함 ex)전화번호 조회
+     * 배송완료가 되지 않은 상품을 봐야하니까 ~ 
+     * 
+     */
     
     return null;
   }
