@@ -23,15 +23,15 @@ public class CreateShippingAddressAction implements Action {
     /**
      * Q(24.09.03): 배송지를 생성한다는 것은 유저가 로그인 된 상태를 전제로 한다. 그러므로 세션이 있기 때문에 세션의 유저 식별자를 사용해도 될 것 같다.
      */
-    int getShippingAddressCustomerIdFk = Integer.parseInt(request.getParameter("getShippingAddressCustomerIdFk").trim());
+    int getshippingAddressCustomerFk = Integer.parseInt(request.getParameter("getshippingAddressCustomerFk").trim());
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
     
     ShippingAddressDTO dto = new ShippingAddressDTO();
     
-    dto.setShippingAddressAddress(shippingAddressAddress);
+    dto.setShippingAddressDestination(shippingAddressAddress);
     dto.setShippingAddressIsDefault(shippingAddressIsDefault);
-    dto.setShippingAddressCustomerIdFk(getShippingAddressCustomerIdFk);
+    dto.setShippingAddressCustomerFk(getshippingAddressCustomerFk);
     
     dao.save(dto);
     
