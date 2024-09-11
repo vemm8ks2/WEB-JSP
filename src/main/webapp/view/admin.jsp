@@ -12,8 +12,8 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vite + React + TS</title>
-  <script type="module" crossorigin src="static/admin/index-Lc89p5mo.min.js"></script>
-  <link rel="stylesheet" crossorigin href="static/admin/index-C5CKoFBv.css">
+  <script type="module" crossorigin src="static/admin/admin-index.min.js"></script>
+  <link rel="stylesheet" crossorigin href="static/admin/admin-index.css">
 </head>
 
 <body>
