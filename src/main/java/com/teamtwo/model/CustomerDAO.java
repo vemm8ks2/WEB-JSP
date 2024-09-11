@@ -168,7 +168,7 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
       if (rs.next()) {
         sql = "UPDATE T_customer SET customer_password = ?, customer_name = ?,"
             + "customer_email = ?, customer_phone_number = ?,"
-            + "customer_birth = ?, customer_updated_at = sysdate";
+            + "customer_birth = ?, customer_updated_at = sysdate where customer_id = ?";
 
         pstmt = conn.prepareStatement(sql);
 
@@ -177,6 +177,7 @@ public class CustomerDAO implements BaseDAO<CustomerDTO> {
         pstmt.setString(3, dto.getCustomerEmail());
         pstmt.setString(4, dto.getCustomerPhoneNumber());
         pstmt.setString(5, dto.getCustomerBirth());
+        pstmt.setInt(6, dto.getCustomerId());
 
         pstmt.executeUpdate(sql);
       }
