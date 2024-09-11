@@ -14,250 +14,282 @@ import javax.sql.DataSource;
 
 public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
-  private Connection conn = null;
-  private PreparedStatement pstmt = null;
-  private ResultSet rs = null;
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
 
-  private static ShippingAddressDAO instance = null;
+	private static ShippingAddressDAO instance = null;
 
-  private ShippingAddressDAO() {}
+	private ShippingAddressDAO() {
+	}
 
-  public static ShippingAddressDAO getInstance() {
-    if (instance == null)
-      instance = new ShippingAddressDAO();
+	public static ShippingAddressDAO getInstance() {
+		if (instance == null)
+			instance = new ShippingAddressDAO();
 
-    return instance;
-  }
+		return instance;
+	}
 
-  private void open() {
-    try {
-      Context initCtx = new InitialContext();
-      Context ctx = (Context) initCtx.lookup("java:comp/env");
-      DataSource ds = (DataSource) ctx.lookup("jdbc/myoracle");
+	private void open() {
+		try {
+			Context initCtx = new InitialContext();
+			Context ctx = (Context) initCtx.lookup("java:comp/env");
+			DataSource ds = (DataSource) ctx.lookup("jdbc/myoracle");
 
-      conn = ds.getConnection();
-    } catch (NamingException | SQLException e) {
-      e.printStackTrace();
-    }
-  }
+			conn = ds.getConnection();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-  private void close() {
-    try {
-      if (rs != null)
-        rs.close();
-      if (pstmt != null)
-        pstmt.close();
-      if (conn != null)
-        conn.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
+	private void close() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+			if (conn != null)
+				conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-  /**
-   * @param 배송지의 식별자를 인자로 받습니다.
-   * @author bborib
-   */
-  @Override
-  public ShippingAddressDTO get(int id) {
-    
-    ShippingAddressDTO dto = null;
+	/**
+	 * @param 배송지의 식별자를 인자로 받습니다.
+	 * @author bborib
+	 */
+	@Override
+	public ShippingAddressDTO get(int id) {
 
-    try {
-      open();
+		ShippingAddressDTO dto = null;
 
-      String sql = "SELECT * FROM T_shipping_address WHERE shipping_address_id = ?";
+		try {
+			open();
 
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setInt(1, id);
-      
-      rs = pstmt.executeQuery();
+			String sql = "SELECT * FROM T_shipping_address WHERE shipping_address_id = ?";
 
-      if (rs.next()) {
-        dto = new ShippingAddressDTO();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
 
-        dto.setShippingAddressId(rs.getInt("shipping_address_id"));
-        dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
-        dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
-      }
-      
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
+			rs = pstmt.executeQuery();
 
-    return dto;
-  }
+			if (rs.next()) {
+				dto = new ShippingAddressDTO();
 
-  /**
-   * @author bborib
-   */
-  @Override
-  public List<ShippingAddressDTO> getAll() {
-    List<ShippingAddressDTO> list = new ArrayList<>();
+				dto.setShippingAddressId(rs.getInt("shipping_address_id"));
+				dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
+				dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
+				dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
+			}
 
-    try {
-      open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
 
-      String sql = "SELECT * FROM T_shipping_address ORDER BY shipping_address_id DESC";
+		return dto;
+	}
 
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
+	/**
+	 * @author bborib
+	 */
+	@Override
+	public List<ShippingAddressDTO> getAll() {
+		List<ShippingAddressDTO> list = new ArrayList<>();
 
-      while (rs.next()) {
-        ShippingAddressDTO dto = new ShippingAddressDTO();
+		try {
+			open();
 
-        dto.setShippingAddressId(rs.getInt("shipping_address_id"));
-        dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
-        dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
+			String sql = "SELECT * FROM T_shipping_address ORDER BY shipping_address_id DESC";
 
-        list.add(dto);
-      }
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
+			while (rs.next()) {
+				ShippingAddressDTO dto = new ShippingAddressDTO();
 
-    return list;
-  }
+				dto.setShippingAddressId(rs.getInt("shipping_address_id"));
+				dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
+				dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
+				dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
 
-  /**
-   * @param 배송지 DTO를 인자로 받아서 새롭게 저장하는 메소드입니다.
-   * @author bborib
-   */
-  @Override
-  public void save(ShippingAddressDTO dto) {
-    try {
-      open();
+				list.add(dto);
+			}
 
-      String sql = "SELECT max(shipping_address_id) FROM T_shipping_address";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
 
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
+		return list;
+	}
 
-      Integer count = null;
+	/**
+	 * @param 배송지 DTO를 인자로 받아서 새롭게 저장하는 메소드입니다.
+	 * @author bborib
+	 */
+	@Override
+	public void save(ShippingAddressDTO dto) {
+		try {
+			open();
 
-      if (rs.next())
-        count = rs.getInt(1) + 1;
+			String sql = "SELECT max(shipping_address_id) FROM T_shipping_address";
 
-      /**
-       * TODO(24.09.03): 에러 핸들링
-       */
-      if (count == null)
-        throw new SQLException();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
-      sql = "INSERT INTO T_shipping_address VALUES(?, ?, ?, ?)";
+			Integer count = null;
 
-      pstmt = conn.prepareStatement(sql);
+			if (rs.next())
+				count = rs.getInt(1) + 1;
 
-      pstmt.setInt(1, count);
-      pstmt.setString(2, dto.getShippingAddressDestination());
-      pstmt.setString(3, dto.getShippingAddressIsDefault());
-      pstmt.setInt(4, dto.getShippingAddressCustomerFk());
+			/**
+			 * TODO(24.09.03): 에러 핸들링
+			 */
+			if (count == null)
+				throw new SQLException();
 
-      pstmt.executeUpdate();
+			sql = "INSERT INTO T_shipping_address VALUES(?, ?, ?, ?)";
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
-  }
+			pstmt = conn.prepareStatement(sql);
 
-  /**
-   * @param 배송지 DTO 객체를 인자로 받습니다.
-   * @author bborib
-   */
-  @Override
-  public void update(ShippingAddressDTO dto) {
-    try {
-      open();
+			pstmt.setInt(1, count);
+			pstmt.setString(2, dto.getShippingAddressDestination());
+			pstmt.setString(3, dto.getShippingAddressIsDefault());
+			pstmt.setInt(4, dto.getShippingAddressCustomerFk());
 
-      /**
-       * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
-       */
-      String sql = "UPDATE T_shipping_address " + "SET shipping_address_destination = ?,"
-          + "shipping_address_is_default = ?, "
-          + "WHERE shipping_address_id = ?";
+			pstmt.executeUpdate();
 
-      pstmt = conn.prepareStatement(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
-      pstmt.setString(1, dto.getShippingAddressDestination());
-      pstmt.setString(2, dto.getShippingAddressIsDefault());
-      pstmt.setInt(3, dto.getShippingAddressId());
+	/**
+	 * @param 배송지 DTO 객체를 인자로 받습니다.
+	 * @author bborib
+	 */
+	@Override
+	public void update(ShippingAddressDTO dto) {
+		try {
+			open();
 
-      pstmt.executeUpdate();
+			/**
+			 * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
+			 */
+			String sql = "UPDATE T_shipping_address " + "SET shipping_address_destination = ?,"
+					+ "shipping_address_is_default = ?, " + "WHERE shipping_address_id = ?";
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
-  }
+			pstmt = conn.prepareStatement(sql);
 
-  /**
-   * @param 배송지의 식별자를 인자로 받습니다.
-   * @author bborib
-   */
-  @Override
-  public void delete(int id) {
-    /**
-     * TODO(24.09.03): 에러 발생 시 throw
-     */
+			pstmt.setString(1, dto.getShippingAddressDestination());
+			pstmt.setString(2, dto.getShippingAddressIsDefault());
+			pstmt.setInt(3, dto.getShippingAddressId());
 
-    try {
-      open();
+			pstmt.executeUpdate();
 
-      String sql = "DELETE FROM T_shipping_address WHERE shipping_address_id = ?";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
-      pstmt = conn.prepareStatement(sql);
+	/**
+	 * @param 배송지의 식별자를 인자로 받습니다.
+	 * @author bborib
+	 */
+	@Override
+	public void delete(int id) {
+		/**
+		 * TODO(24.09.03): 에러 발생 시 throw
+		 */
 
-      pstmt.setInt(1, id);
-      pstmt.executeUpdate();
+		try {
+			open();
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
-  }
+			String sql = "DELETE FROM T_shipping_address WHERE shipping_address_id = ?";
 
-  /**
-   * 배송지의 식별자를 인자로 받아서 해당하는 배송지를 기본 배송지로 설정해주는 메소드입니다.
-   * 
-   * @param 배송지의 식별자를 인자로 받습니다.
-   * @author joohp
-   */
-  public void updateDefault(int id) {
-    /**
-     * TODO(24.09.05): 배송지를 새롭게 'Y'로 업데이트 해줄 뿐만 아니라 기존에 있던 기본 배송지도 'N'으로 업데이트해야 한다.
-     */
+			pstmt = conn.prepareStatement(sql);
 
-    try {
-      open();
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
 
-      String sql =
-          "UPDATE T_shipping_address SET shipping_address_is_default = ? WHERE shipping_address_id = ?";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
-      pstmt = conn.prepareStatement(sql);
+	/**
+	 * 배송지의 식별자를 인자로 받아서 해당하는 배송지를 기본 배송지로 설정해주는 메소드입니다.
+	 * 
+	 * @param 배송지의 식별자를 인자로 받습니다.
+	 * @author joohp
+	 */
+	public void updateDefault(int id) {
+		/**
+		 * TODO(24.09.05): 배송지를 새롭게 'Y'로 업데이트 해줄 뿐만 아니라 기존에 있던 기본 배송지도 'N'으로 업데이트해야 한다.
+		 */
 
-      pstmt.setString(1, "Y");
-      pstmt.setInt(2, id);
+		try {
+			open();
 
-      pstmt.executeUpdate();
+			String sql = "UPDATE T_shipping_address SET shipping_address_is_default = ? WHERE shipping_address_id = ?";
 
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
-  } // getupdate(id) end
+			pstmt = conn.prepareStatement(sql);
 
+			pstmt.setString(1, "Y");
+			pstmt.setInt(2, id);
 
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	} // getupdate(id) end
+
+	public List<ShippingAddressDTO> getcustomeraddr(int fk) {
+		List<ShippingAddressDTO> list = new ArrayList<>();
+		try {
+			open();
+			String sql = "SELECT * FROM T_shipping_address WHERE shipping_address_customer_fk = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, fk);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ShippingAddressDTO dto = new ShippingAddressDTO();
+				dto.setShippingAddressId(rs.getInt("shipping_address_id"));
+				dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
+				dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
+				dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
+
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }
