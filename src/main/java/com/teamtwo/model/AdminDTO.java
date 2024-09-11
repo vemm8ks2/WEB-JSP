@@ -5,7 +5,8 @@ public class AdminDTO {
 	private int adminId;				//관리자식별자
 	private String adminLoginId; 		//관리자아이디
 	private String adminPassword;		//관리자비밀번호
-	private String adminName;			//관리자이메일
+	private String adminName;			//관리자이름
+	private String adminEmail;			//관리자이메일
 	private String adminPhoneNumber;	//관리자연락처
 	private String adminCreateAt;		//관리자등록일
 	private String adminLastAccessedAt;	//마지막접속일
@@ -37,6 +38,14 @@ public class AdminDTO {
 	
 	public String getAdminName() {
 		return adminName;
+	}
+	
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+	
+	public String getAdminEmail() {
+		return adminEmail;
 	}
 	
 	public void setAdminName(String adminName) {

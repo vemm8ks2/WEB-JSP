@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="static/css/base.css" />
+    <link rel="stylesheet" href="static/css/login.css" />
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <app-header></app-header>
+      <main>
+        <div class="login-wrapper">
+          <p class="login-typo">로그인</p>
+          <form action="" class="login-form">
+            <label for="login_id" class="primary-input">
+              <input id="login_id" placeholder="&nbsp;" />
+              <span>아이디</span>
+            </label>
+            <label for="login_pwd" class="primary-input">
+              <input id="login_pwd" type="password" placeholder="&nbsp;" />
+              <span>비밀번호</span>
+            </label>
+            <div>
+              <a href="#">아이디 찾기</a>
+              <span>|</span>
+              <a href="#">비밀번호 찾기</a>
+            </div>
+            <button class="primary-btn default-btn-color">로그인</button>
+            <a href="register.html">
+              <button type="button" class="primary-btn reverse-btn-color">
+                회원가입
+              </button>
+            </a>
+          </form>
+        </div>
+      </main>
+      <app-footer></app-footer>
+    </div>
+  </body>
+</html>

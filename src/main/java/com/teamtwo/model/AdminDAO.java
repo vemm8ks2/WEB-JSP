@@ -75,6 +75,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
         dto.setAdminLoginId(rs.getString("admin_login_id"));
         dto.setAdminPassword(rs.getString("admin_password"));
         dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminEmail(rs.getString("admin_email"));
         dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
         dto.setAdminCreateAt(rs.getString("admin_create_at"));
         dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
@@ -110,6 +111,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
         dto.setAdminLoginId(rs.getString("adminloginid"));
         dto.setAdminPassword(rs.getString("adminpassword"));
         dto.setAdminName(rs.getString("adminname"));
+        dto.setAdminEmail(rs.getString("adminemail"));
         dto.setAdminPhoneNumber(rs.getString("adminPhonenumber"));
         dto.setAdminCreateAt(rs.getString("admincreateat"));
         dto.setAdminLastAccessedAt(rs.getString("adminlastaccessedat"));
@@ -133,8 +135,8 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       open();
 
       sql = "insert into t_admin (admin_id, admin_login_id, admin_password, "
-          + " admin_name, admin_phone_number, admin_create_at,"
-          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,sysdate,?,?)";
+          + " admin_name, admin_email, admin_phone_number, admin_create_at,"
+          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,?,sysdate,?,?)";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -142,9 +144,10 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       pstmt.setString(2, dto.getAdminLoginId());
       pstmt.setString(3, dto.getAdminPassword());
       pstmt.setString(4, dto.getAdminName());
-      pstmt.setString(5, dto.getAdminPhoneNumber());
-      pstmt.setString(6, dto.getAdminLastAccessedAt());
-      pstmt.setString(7, dto.getAdminLastAccessedIp());
+      pstmt.setString(5, dto.getAdminEmail());
+      pstmt.setString(6, dto.getAdminPhoneNumber());
+      pstmt.setString(7, dto.getAdminLastAccessedAt());
+      pstmt.setString(8, dto.getAdminLastAccessedIp());
 
       pstmt.executeUpdate();
 

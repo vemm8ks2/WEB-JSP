@@ -78,7 +78,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderId(rs.getInt("orderid"));
         dto.setOrderReceiverName(rs.getString("orderreceivername"));
         dto.setOrderReceiverPhone(rs.getString("orderreceiverphone"));
-        dto.setOrderReceiverAddr(rs.getString("orderreceiveraddr"));
+        dto.setOrderReceiverAddr(rs.getString("orderrecipientaddr"));
         dto.setOrderStatus(rs.getString("orderstatus"));
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
@@ -115,7 +115,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderId(rs.getInt("orderid"));
         dto.setOrderReceiverName(rs.getString("orderreceivername"));
         dto.setOrderReceiverPhone(rs.getString("orderreceiverphone"));
-        dto.setOrderReceiverAddr(rs.getString("orderreceiveraddr"));
+        dto.setOrderReceiverAddr(rs.getString("orderRecipientaddr"));
         dto.setOrderStatus(rs.getString("orderstatus"));
         dto.setOrderCreatedAt(rs.getString("ordercreatedat"));
         dto.setOrderDeliveredAt(rs.getString("orderdeliveredat"));
@@ -270,7 +270,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderId(rs.getInt("order_id"));
         dto.setOrderReceiverName(rs.getString("orderr_eceiver_name"));
         dto.setOrderReceiverPhone(rs.getString("order_receiver_phone"));
-        dto.setOrderReceiverAddr(rs.getString("order_receiver_addr"));
+        dto.setOrderReceiverAddr(rs.getString("order_recipient_addr")); 
         dto.setOrderStatus(rs.getString("order_status"));
         dto.setOrderCreatedAt(rs.getString("order_created_at"));
         dto.setOrderDeliveredAt(rs.getString("order_delivered_at"));
