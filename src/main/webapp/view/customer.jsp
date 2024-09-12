@@ -22,13 +22,13 @@
   </div>
   <hr />
   <div>
-    <a href="#" class="customer-wrapper__link">
+    <a href="personalOrderListView.do" class="customer-wrapper__link">
       <button>주문목록</button>
     </a>
   </div>
   <hr />
   <div>
-    <a href="#" class="customer-wrapper__link">
+    <a href="personalInfoView.do" class="customer-wrapper__link">
       <button>마이페이지</button>
     </a>
   </div>
