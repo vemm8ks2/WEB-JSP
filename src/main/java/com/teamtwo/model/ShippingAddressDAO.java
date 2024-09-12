@@ -60,7 +60,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
    */
   @Override
   public ShippingAddressDTO get(int id) {
-    
+
     ShippingAddressDTO dto = null;
 
     try {
@@ -70,7 +70,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
-      
+
       rs = pstmt.executeQuery();
 
       if (rs.next()) {
@@ -79,9 +79,9 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
         dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
         dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
+        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customer_Fk"));
       }
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -112,7 +112,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
         dto.setShippingAddressId(rs.getInt("shipping_address_id"));
         dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
         dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
-        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customerFk"));
+        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customer_Fk"));
 
         list.add(dto);
       }
@@ -182,8 +182,7 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
        * TODO(24.09.03): 유저의 외래키를 수정할 일은 없어야 합니다.
        */
       String sql = "UPDATE T_shipping_address " + "SET shipping_address_destination = ?,"
-          + "shipping_address_is_default = ?, "
-          + "WHERE shipping_address_id = ?";
+          + " shipping_address_is_default = ?, " + " WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -257,6 +256,40 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
       close();
     }
   } // getupdate(id) end
+
+  public List<ShippingAddressDTO> getShippingAddressByCustomer(int id) {
+
+    List<ShippingAddressDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+      String sql = "SELECT * FROM T_shipping_address WHERE shipping_address_customer_fk = ?";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, id);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        ShippingAddressDTO dto = new ShippingAddressDTO();
+
+        dto.setShippingAddressId(rs.getInt("shipping_address_id"));
+        dto.setShippingAddressDestination(rs.getString("shipping_address_destination"));
+        dto.setShippingAddressIsDefault(rs.getString("shipping_address_is_default"));
+        dto.setShippingAddressCustomerFk(rs.getInt("shipping_address_customer_fK"));
+
+        list.add(dto);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
 
 
 

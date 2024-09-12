@@ -40,6 +40,7 @@
       </button>
     </form>
     
+    <c:set var="dto" value="${customer}"/>
     <!-- 로그인 UI -->
     <c:if test="${ !empty customer }">
     <div class="header-top__logged-in">
