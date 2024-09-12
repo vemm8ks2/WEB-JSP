@@ -288,9 +288,14 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     return list;
   }
 
+  /**
+   * 주문의 식별자와 상태를 인자로 받아서 주문의 상태를 변경해주는 메소드입니다.
+   * 
+   * @param 주문의 식별자와 상태를 인자로 받습니다.
+   * @author aeranixia 
+   */
   // 주문 상태 변경 메서드
   public void switchOrderStatus(int orderId, String orderStatus) {
-
     try {
       open();
 
