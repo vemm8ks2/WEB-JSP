@@ -24,8 +24,8 @@
     </h1>
 
     <!-- 검색창 -->
-    <form class="header-top__search">
-      <input id="header-search" placeholder="Search" />
+    <form method="GET" action="searchView.do" class="header-top__search">
+      <input id="header-search" name="keyword" placeholder="Search" />
       <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"

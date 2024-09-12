@@ -220,9 +220,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 
 
   public List<ProductDTO> searchByKeyword(String name) {
-    
     List<ProductDTO> list = new ArrayList<>();
-    
+
     try {
       open();
 
@@ -235,6 +234,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 
       while (rs.next()) {
         ProductDTO dto = new ProductDTO();
+
         dto.setProductId(rs.getInt("product_id"));
         dto.setProductName(rs.getString("product_name"));
         dto.setProductPrice(rs.getInt("product_price"));
@@ -252,6 +252,96 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     } finally {
       close();
     }
+
+    return list;
+  }
+
+  public List<ProductDTO> searchByKeywordAndFilter(SearchDTO dto) {
+    List<ProductDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+      String sql = "SELECT * " + "FROM T_product " + "WHERE upper(product_name) LIKE upper(?)";
+
+      if (dto.getPrice() != null) {
+        String price = dto.getPrice();
+
+        sql += " AND ";
+
+        if (price.equals("60000~")) {
+          sql += "product_price >= 60000";
+        } else if (price.equals("30000~60000")) {
+          sql += "product_price BETWEEN 30000 AND 60000";
+        } else if (price.equals("10000~30000")) {
+          sql += "product_price BETWEEN 10000 AND 30000";
+        } else if (price.equals("~10000")) {
+          sql += "produce_price <= 10000";
+        }
+      }
+
+      /**
+       * TODO(24.09.12): 현재는 카테고리가 정확하게 맞아야 해당하는 상품을 보여주지만 부모 카테고리를 선택했을 때 자식 카테고리에
+       * 해당하는 상품도 보여지도록 하는 것이 적절할 것이다.
+       */
+      if (dto.getCategories() != null && dto.getCategories().length > 0) {
+        String[] categories = dto.getCategories();
+
+        sql += " AND product_category_fk in(";
+
+        for (int i = 0; i < categories.length; i++) {
+          if (i == categories.length - 1) {
+            sql += categories[i];
+          } else {
+            sql += (categories[i] + ",");
+          }
+        }
+
+        sql += ")";
+      }
+
+      if (dto.getSort() != null) {
+        String sort = dto.getSort();
+
+        sql += " ORDER BY ";
+
+        if (sort.equals("latest")) {
+          sql += "product_created_at";
+        } else if (sort.equals("earliest")) {
+          sql += "product_created_at DESC";
+        } else if (sort.equals("low-to-high")) {
+          sql += "product_price";
+        } else if (sort.equals("high-to-low")) {
+          sql += "product_price DESC";
+        }
+      }
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, "%" + dto.getKeyword() + "%");
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        ProductDTO product = new ProductDTO();
+
+        product.setProductId(rs.getInt("product_id"));
+        product.setProductName(rs.getString("product_name"));
+        product.setProductPrice(rs.getInt("product_price"));
+        product.setProductStock(rs.getInt("product_stock"));
+        product.setProductImage(rs.getString("product_image"));
+        product.setProductCreatedAt(rs.getString("product_created_at"));
+        product.setProductUpdatedAt(rs.getString("product_updated_at"));
+        product.setProductCategoryFk(rs.getInt("product_category_fk"));
+
+        list.add(product);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
     return list;
   }
 
