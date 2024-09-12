@@ -98,7 +98,7 @@
     <ul class="header-bottom__wrapper">
 	  <c:forEach var="root" items="${ rootCategory }">
 	  <li class="header-bottom__category-level-1">
-	    <a href="searchView.do?categoryId=${ root.getCategoryId() }">
+	    <a href="searchView.do?category-filter=${ root.getCategoryId() }">
           <span>${ root.getCategoryName() }</span>
         </a>
 	    <ul class="header-bottom__category-level-2__wrapper">
@@ -110,7 +110,7 @@
       	<c:forEach var="level1" items="${ categoryList }">
       	  <c:if test="${ root.getCategoryId() == level1.getCategoryParentFk() }">
             <div>
-	          <a href="searchView.do?categoryId=${ level1.getCategoryId() }">
+	          <a href="searchView.do?category-filter=${ level1.getCategoryId() }">
 	            <span>${ level1.getCategoryName() }</span>
 	          </a>
 	      	  <li class="header-bottom__category-level-2">
@@ -120,7 +120,7 @@
 			      <c:forEach var="level2" items="${ categoryList }">
 			        <c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
 		              <li class="header-bottom__category-level-3">
-		                <a href="searchView.do?categoryId=${ level2.getCategoryId() }">
+		                <a href="searchView.do?category-filter=${ level2.getCategoryId() }">
 		                  ${ level2.getCategoryName() }
 		                </a>
 		              </li>
