@@ -76,6 +76,7 @@
           />
         </svg>
       </a>
+      <a href="logout.do">로그아웃</a>
     </div>
 	</c:if>
 	
