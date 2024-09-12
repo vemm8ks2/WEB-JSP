@@ -232,4 +232,43 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     
   } // delete() end
 
+public AdminDTO getAdminByLoginId(String id) {
+
+	AdminDTO dto = null;
+	
+	try {
+		open();
+		
+		sql = "select * from t_admin where admin_login_id = ?";
+		
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		
+		rs = pstmt.executeQuery();
+		
+		if (rs.next()) {
+	        dto = new AdminDTO();
+	        
+	        dto.setAdminId(rs.getInt("admin_id"));
+	        dto.setAdminLoginId(rs.getString("admin_login_id"));
+	        dto.setAdminPassword(rs.getString("admin_password"));
+	        dto.setAdminName(rs.getString("admin_name"));
+	        dto.setAdminEmail(rs.getString("admin_email"));
+	        dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
+	        dto.setAdminCreateAt(rs.getString("admin_create_at"));
+	        dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
+	        dto.setAdminLastAccessedIp(rs.getString("admin_last_accessed_ip"));
+	      }
+		
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		close();
+	}
+	
+	return dto;
+	
+} // getAdminByLoginId() end
+
 } // class end
