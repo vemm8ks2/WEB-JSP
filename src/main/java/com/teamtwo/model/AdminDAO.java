@@ -107,15 +107,15 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
 
         AdminDTO dto = new AdminDTO();
 
-        dto.setAdminId(rs.getInt("adminid"));
-        dto.setAdminLoginId(rs.getString("adminloginid"));
-        dto.setAdminPassword(rs.getString("adminpassword"));
-        dto.setAdminName(rs.getString("adminname"));
-        dto.setAdminEmail(rs.getString("adminemail"));
-        dto.setAdminPhoneNumber(rs.getString("adminPhonenumber"));
-        dto.setAdminCreateAt(rs.getString("admincreateat"));
-        dto.setAdminLastAccessedAt(rs.getString("adminlastaccessedat"));
-        dto.setAdminLastAccessedIp(rs.getString("adminlastaccessedip"));
+        dto.setAdminId(rs.getInt("admin_id"));
+        dto.setAdminLoginId(rs.getString("admin_login_id"));
+        dto.setAdminPassword(rs.getString("admin_password"));
+        dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminEmail(rs.getString("admin_email"));
+        dto.setAdminPhoneNumber(rs.getString("admin_Phone_number"));
+        dto.setAdminCreateAt(rs.getString("admin_create_at"));
+        dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
+        dto.setAdminLastAccessedIp(rs.getString("admin-last_accessed_ip"));
 
         list.add(dto);
       }
