@@ -1,12 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <h3 class="head-typo">
-  <span>&apos;플레이스테이션&apos;</span>에 대한 검색 결과
+  <c:if test="${!empty keyword}">
+    <span>&apos;${keyword}&apos;</span>에 대한 검색 결과
+  </c:if>
+  <c:if test="${empty keyword}">
+    <span>전체 상품 검색 결과</span>
+  </c:if>
 </h3>
 <div class="display-products__container">
-  <div class="display-products__filter">
+  <form method="GET" action="searchView.do" name="search-filter-form" class="display-products__filter">
+    <input type="hidden" name="keyword" value="${keyword}">
+            
     <p>필터</p>
     <hr />
     <div class="display-products__filter-sort">
@@ -18,6 +27,8 @@
               type="radio"
               id="sort-option-radio-1"
               name="sort-filter"
+              value="latest"
+              onclick="handleFilter()"
               class="primary-checkmark-radio"
             />
             <label for="sort-option-radio-1">최신순</label>
@@ -27,6 +38,8 @@
               type="radio"
               id="sort-option-radio-2"
               name="sort-filter"
+              value="earliest"
+              onclick="handleFilter()"
               class="primary-checkmark-radio"
             />
             <label for="sort-option-radio-2">과거순</label>
@@ -36,6 +49,8 @@
               type="radio"
               id="sort-option-radio-3"
               name="sort-filter"
+              value="low-to-high"
+              onclick="handleFilter()"
               class="primary-checkmark-radio"
             />
             <label for="sort-option-radio-3">낮은 가격순</label>
@@ -45,6 +60,8 @@
               type="radio"
               id="sort-option-radio-4"
               name="sort-filter"
+              value="high-to-low"
+              onclick="handleFilter()"
               class="primary-checkmark-radio"
             />
             <label for="sort-option-radio-4">높은 가격순</label>
@@ -61,6 +78,8 @@
             type="radio"
             id="price-option-radio-1"
             name="price-filter"
+            value="60000~"
+            onclick="handleFilter()"
             class="primary-radio"
           />
           <label for="price-option-radio-1">60,000원 이상</label>
@@ -70,6 +89,8 @@
             type="radio"
             id="price-option-radio-2"
             name="price-filter"
+            value="30000~60000"
+            onclick="handleFilter()"
             class="primary-radio"
           />
           <label for="price-option-radio-2">30,000원 ~ 60,000원</label>
@@ -79,6 +100,8 @@
             type="radio"
             id="price-option-radio-3"
             name="price-filter"
+            value="10000~30000"
+            onclick="handleFilter()"
             class="primary-radio"
           />
           <label for="price-option-radio-3">10,000원 ~ 30,000원</label>
@@ -88,6 +111,8 @@
             type="radio"
             id="price-option-radio-4"
             name="price-filter"
+            value="~10000"
+            onclick="handleFilter()"
             class="primary-radio"
           />
           <label for="price-option-radio-4">10,000원 미만</label>
@@ -104,7 +129,9 @@
           <input
             type="checkbox"
             id="filter-category__item-${ root.getCategoryName() }"
-            name="computer_laptop"
+            name="category-filter"
+            value="${ root.getCategoryId() }"
+            onclick="handleFilter()"
             class="display-products__filter-category__checkbox primary-checkbox"
           />
           <label for="filter-category__item-${ root.getCategoryName() }" 
@@ -120,7 +147,9 @@
               <input
                 type="checkbox"
                 id="filter-category__item-${ level1.getCategoryName() }"
-                name="labtop_desktop"
+	            name="category-filter"
+	            value="${ level1.getCategoryId() }"
+	            onclick="handleFilter()"
                 class="display-products__filter-category__checkbox primary-checkbox"
               />
               <label for="filter-category__item-${ level1.getCategoryName() }"
@@ -135,9 +164,11 @@
                  <li>
                    <input
                      type="checkbox"
-                     class="primary-checkbox"
                      id="filter-category__item-${ level2.getCategoryName() }"
-                     name="labtop_desktop"
+		             name="category-filter"
+		             value="${ level2.getCategoryId() }"
+		             onclick="handleFilter()"
+                     class="primary-checkbox"
                    />
                    <label for="filter-category__item-${ level2.getCategoryName() }"
                      >${ level2.getCategoryName() }</label
@@ -157,108 +188,21 @@
       
       </ul>
     </div>
-  </div>
+  </form>
   <div class="display-product__container">
-    <p>총 14건</p>
+    <p>총 ${list.size()}건</p>
     <div class="display-products__wrapper">
+      <c:forEach var="p" items="${list}">
       <div class="display-products__product">
-        <a href="productView.do">
+        <a href="productView.do?id=${p.getProductId()}">
           <div class="display-products__skeleton"></div>
-          <p>[해운대암소갈비집] 한우 소불고기 전골</p>
-          <p>15,900원</p>
+          <p>${p.getProductName()}</p>
+          <p>
+          	<fmt:formatNumber value="${p.getProductPrice()}" pattern="#,###" />원
+          </p>
         </a>
       </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[오쏘몰] 오쏘몰 이뮨 드링크+정제 2박스 (60일분)</p>
-          <p>169,000원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>미국산 생 블루베리 2종</p>
-          <p>4,990원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[소반옥] 인기 냉면 2종 (택1)</p>
-          <p>8,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[해운대암소갈비집] 한우 소불고기 전골</p>
-          <p>15,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[오쏘몰] 오쏘몰 이뮨 드링크+정제 2박스 (60일분)</p>
-          <p>169,000원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>미국산 생 블루베리 2종</p>
-          <p>4,990원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[소반옥] 인기 냉면 2종 (택1)</p>
-          <p>8,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[해운대암소갈비집] 한우 소불고기 전골</p>
-          <p>15,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[오쏘몰] 오쏘몰 이뮨 드링크+정제 2박스 (60일분)</p>
-          <p>169,000원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>미국산 생 블루베리 2종</p>
-          <p>4,990원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[소반옥] 인기 냉면 2종 (택1)</p>
-          <p>8,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[해운대암소갈비집] 한우 소불고기 전골</p>
-          <p>15,900원</p>
-        </a>
-      </div>
-      <div class="display-products__product">
-        <a href="productView.do">
-          <div class="display-products__skeleton"></div>
-          <p>[오쏘몰] 오쏘몰 이뮨 드링크+정제 2박스 (60일분)</p>
-          <p>169,000원</p>
-        </a>
-      </div>
+      </c:forEach>
     </div>
   </div>
 </div>
