@@ -315,9 +315,14 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
           sql += "product_price DESC";
         }
       }
-
+      
       pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1, "%" + dto.getKeyword() + "%");
+      
+      if (dto.getKeyword() == null) {
+        pstmt.setString(1, "%" + "%");
+      } else {
+        pstmt.setString(1, "%" + dto.getKeyword() + "%");
+      }
 
       rs = pstmt.executeQuery();
 
