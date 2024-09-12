@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.teamtwo.model.CategoryDTO"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	List<CategoryDTO> categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
@@ -39,9 +39,10 @@
         </svg>
       </button>
     </form>
-
+    
     <!-- 로그인 UI -->
-    <!-- <div class="header-top__logged-in">
+    <c:if test="${ !empty customer }">
+    <div class="header-top__logged-in">
       <a href="#">
         <svg
           version="1.1"
@@ -74,9 +75,11 @@
           />
         </svg>
       </a>
-    </div> -->
-
+    </div>
+	</c:if>
+	
     <!-- 비로그인 UI -->
+    <c:if test="${ empty customer }">
     <div class="header-top__logged-out">
       <a href="loginView.do">
         <button class="primary-btn default-btn-color">로그인</button>
@@ -85,6 +88,7 @@
         <button class="primary-btn reverse-btn-color">회원가입</button>
       </a>
     </div>
+    </c:if>
   </div>
 
   <!-- 카테고리 바 -->
