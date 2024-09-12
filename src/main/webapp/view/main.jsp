@@ -6,7 +6,7 @@
   <p class="display-products__header">지금 가장 많이 담는 특가</p>
   <div class="display-products__wrapper">
     <div class="display-products__product">
-      <a href="productView.do">
+      <a href="productView.do?id=1">
         <div class="display-products__skeleton"></div>
         <p>[해운대암소갈비집] 한우 소불고기 전골</p>
         <p>15,900원</p>
