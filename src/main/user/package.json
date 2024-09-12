@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "tailwind": "npx tailwindcss -i ./tailwind.css -o ./base.css --watch",
+    "sass": "node-sass -r ./static/scss -o ./static/css",
+    "sass-jsp": "node-sass -r ./static/scss -o ../webapp/static/css --output-style compressed"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.7"
+  },
+  "dependencies": {
+    "node-sass": "^9.0.0"
+  }
+}

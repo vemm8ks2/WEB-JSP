@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.teamtwo.model.CategoryDTO"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	List<CategoryDTO> categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
@@ -39,9 +39,11 @@
         </svg>
       </button>
     </form>
-
+    
+    <c:set var="dto" value="${customer}"/>
     <!-- 로그인 UI -->
-    <!-- <div class="header-top__logged-in">
+    <c:if test="${ !empty customer }">
+    <div class="header-top__logged-in">
       <a href="#">
         <svg
           version="1.1"
@@ -74,9 +76,12 @@
           />
         </svg>
       </a>
-    </div> -->
-
+      <a href="logout.do">로그아웃</a>
+    </div>
+	</c:if>
+	
     <!-- 비로그인 UI -->
+    <c:if test="${ empty customer }">
     <div class="header-top__logged-out">
       <a href="loginView.do">
         <button class="primary-btn default-btn-color">로그인</button>
@@ -85,6 +90,7 @@
         <button class="primary-btn reverse-btn-color">회원가입</button>
       </a>
     </div>
+    </c:if>
   </div>
 
   <!-- 카테고리 바 -->
@@ -92,7 +98,7 @@
     <ul class="header-bottom__wrapper">
 	  <c:forEach var="root" items="${ rootCategory }">
 	  <li class="header-bottom__category-level-1">
-	    <a href="#">
+	    <a href="searchView.do?categoryId=${ root.getCategoryId() }">
           <span>${ root.getCategoryName() }</span>
         </a>
 	    <ul class="header-bottom__category-level-2__wrapper">
@@ -104,7 +110,7 @@
       	<c:forEach var="level1" items="${ categoryList }">
       	  <c:if test="${ root.getCategoryId() == level1.getCategoryParentFk() }">
             <div>
-	          <a href="#">
+	          <a href="searchView.do?categoryId=${ level1.getCategoryId() }">
 	            <span>${ level1.getCategoryName() }</span>
 	          </a>
 	      	  <li class="header-bottom__category-level-2">
@@ -114,7 +120,9 @@
 			      <c:forEach var="level2" items="${ categoryList }">
 			        <c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
 		              <li class="header-bottom__category-level-3">
-		                <a href="#">${ level2.getCategoryName() }</a>
+		                <a href="searchView.do?categoryId=${ level2.getCategoryId() }">
+		                  ${ level2.getCategoryName() }
+		                </a>
 		              </li>
 		              <hr />
 			        </c:if>

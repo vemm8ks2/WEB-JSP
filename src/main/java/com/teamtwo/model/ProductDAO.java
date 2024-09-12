@@ -77,8 +77,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
         dto.setProductPrice(rs.getInt("product_price"));
         dto.setProductStock(rs.getInt("product_stock"));
         dto.setProductImage(rs.getString("product_image"));
-        dto.setProductCreatedAt(rs.getString("product_createdAt"));
-        dto.setProductUpdatedAt(rs.getString("product_updatedAt"));
+        dto.setProductCreatedAt(rs.getString("product_created_at"));
+        dto.setProductUpdatedAt(rs.getString("product_updated_at"));
         dto.setProductCategoryFk(rs.getInt("product_category_fk"));
       }
 
@@ -111,8 +111,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
         dto.setProductPrice(rs.getInt("product_price"));
         dto.setProductStock(rs.getInt("product_stock"));
         dto.setProductImage(rs.getString("product_image"));
-        dto.setProductCreatedAt(rs.getString("product_createdAt"));
-        dto.setProductUpdatedAt(rs.getString("product_updatedAt"));
+        dto.setProductCreatedAt(rs.getString("product_created_at"));
+        dto.setProductUpdatedAt(rs.getString("product_updated_at"));
         dto.setProductCategoryFk(rs.getInt("product_category_fk"));
 
         list.add(dto);
@@ -240,8 +240,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
         dto.setProductPrice(rs.getInt("product_price"));
         dto.setProductStock(rs.getInt("product_stock"));
         dto.setProductImage(rs.getString("product_image"));
-        dto.setProductCreatedAt(rs.getString("product_createdAt"));
-        dto.setProductUpdatedAt(rs.getString("product_updatedAt"));
+        dto.setProductCreatedAt(rs.getString("product_created_at"));
+        dto.setProductUpdatedAt(rs.getString("product_updated_at"));
         dto.setProductCategoryFk(rs.getInt("product_category_fk"));
 
         list.add(dto);

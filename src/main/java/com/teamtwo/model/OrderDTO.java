@@ -5,7 +5,7 @@ public class OrderDTO {
 	private int orderId; 				// 주문식별자 [id] // orderNo => orderId로 변경함.
 	private String orderReceiverName; 	// 수취인 이름[receiver_name]
 	private String orderReceiverPhone; 	// 수취인 연락처[receiver_phone]
-	private String orderReceiverAddr; 	// 수취인 주소 [receiver_addr]
+	private String orderRecipientAddr; 	// 수취인 주소 [receiver_addr] 
 	private String orderStatus; 		// 주문상태 [order_status]
 	private String orderCreatedAt; 		// 주문일 [creater_at]
 	private String orderDeliveredAt; 	// 배송완료일 [delivered_at]
@@ -36,11 +36,11 @@ public class OrderDTO {
 	}
 	
 	public String getOrderReceiverAddr() {
-		return orderReceiverAddr;
+		return orderRecipientAddr;
 	}
 	
 	public void setOrderReceiverAddr(String orderReceiverAddr) {
-		this.orderReceiverAddr = orderReceiverAddr;
+		this.orderRecipientAddr = orderReceiverAddr;
 	}
 	
 	public String getOrderStatus() {
