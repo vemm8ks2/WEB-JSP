@@ -287,7 +287,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     return list;
   }
   
-  //주문 상태 변경 메서드
+  //주문 상태 변경 메서드 
   public void switchOrderStatus(int orderId, String orderStatus) {
 	  
 	  try {
