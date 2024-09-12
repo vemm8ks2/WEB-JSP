@@ -197,14 +197,15 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
        */
       if (rs.next()) {
         if (dto.getOrderStatus().equals("발송대기")) {
-          sql = "UPDATE t_order SET order_status = '배송중'";
-
+          sql = "UPDATE t_order SET order_status = '배송중' where order_id = ?";
           pstmt = conn.prepareStatement(sql);
+          pstmt.setInt(1, dto.getOrderId());
 
         } else if (dto.getOrderStatus().equals("배송중")) {
-          sql = "UPDATE t_order SET order_status = '배송완료', order_delivered_at = sysdate";
-
+          sql =
+              "UPDATE t_order SET order_status = '배송완료', order_delivered_at = sysdate where order_id = ?";
           pstmt = conn.prepareStatement(sql);
+          pstmt.setInt(1, dto.getOrderId());
 
         }
 
@@ -270,7 +271,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         dto.setOrderId(rs.getInt("order_id"));
         dto.setOrderReceiverName(rs.getString("orderr_eceiver_name"));
         dto.setOrderReceiverPhone(rs.getString("order_receiver_phone"));
-        dto.setOrderReceiverAddr(rs.getString("order_recipient_addr")); 
+        dto.setOrderReceiverAddr(rs.getString("order_recipient_addr"));
         dto.setOrderStatus(rs.getString("order_status"));
         dto.setOrderCreatedAt(rs.getString("order_created_at"));
         dto.setOrderDeliveredAt(rs.getString("order_delivered_at"));
@@ -286,5 +287,49 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
 
     return list;
   }
+
+  /**
+   * 주문의 식별자와 상태를 인자로 받아서 주문의 상태를 변경해주는 메소드입니다.
+   * 
+   * @param 주문의 식별자와 상태를 인자로 받습니다.
+   * @author aeranixia 
+   */
+  // 주문 상태 변경 메서드
+  public void switchOrderStatus(int orderId, String orderStatus) {
+    try {
+      open();
+
+      // 주문 테이블에서 주문번호로 모든 정보 불러오기
+      String sql = "SELECT * from t_order WHERE order_id = ?";
+      
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, orderId);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        // orderStatus(주문 상태) : 발송대기, 배송중, 배송완료, 주문취소
+        if (orderStatus.equals("배송중")) {
+          sql = "UPDATE t_order SET order_status = ? WHERE order_id = ?";
+        } else if (orderStatus.equals("배송완료")) {
+          sql = "UPDATE t_order SET order_status = ?, order_delivered_at = sysdate WHERE order_id = ?";
+        } else if (orderStatus.equals("주문취소")) {
+          sql = "UPDATE t_order SET order_status = ?, order_delivered_at = '' WHERE order_id = ?";
+        }
+        
+        pstmt = conn.prepareStatement(sql);
+        
+        pstmt.setString(1, orderStatus);
+        pstmt.setInt(2, orderId);
+        
+        pstmt.executeUpdate();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  } // switchOrderStatus() end
 
 }

@@ -24,8 +24,8 @@
     </h1>
 
     <!-- 검색창 -->
-    <form class="header-top__search">
-      <input id="header-search" placeholder="Search" />
+    <form method="GET" action="searchView.do" class="header-top__search">
+      <input id="header-search" name="keyword" placeholder="Search" />
       <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +40,7 @@
       </button>
     </form>
     
+    <c:set var="dto" value="${customer}"/>
     <!-- 로그인 UI -->
     <c:if test="${ !empty customer }">
     <div class="header-top__logged-in">
@@ -75,6 +76,7 @@
           />
         </svg>
       </a>
+      <a href="logout.do">로그아웃</a>
     </div>
 	</c:if>
 	
@@ -96,7 +98,7 @@
     <ul class="header-bottom__wrapper">
 	  <c:forEach var="root" items="${ rootCategory }">
 	  <li class="header-bottom__category-level-1">
-	    <a href="#">
+	    <a href="searchView.do?categoryId=${ root.getCategoryId() }">
           <span>${ root.getCategoryName() }</span>
         </a>
 	    <ul class="header-bottom__category-level-2__wrapper">
@@ -108,7 +110,7 @@
       	<c:forEach var="level1" items="${ categoryList }">
       	  <c:if test="${ root.getCategoryId() == level1.getCategoryParentFk() }">
             <div>
-	          <a href="#">
+	          <a href="searchView.do?categoryId=${ level1.getCategoryId() }">
 	            <span>${ level1.getCategoryName() }</span>
 	          </a>
 	      	  <li class="header-bottom__category-level-2">
@@ -118,7 +120,9 @@
 			      <c:forEach var="level2" items="${ categoryList }">
 			        <c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
 		              <li class="header-bottom__category-level-3">
-		                <a href="#">${ level2.getCategoryName() }</a>
+		                <a href="searchView.do?categoryId=${ level2.getCategoryId() }">
+		                  ${ level2.getCategoryName() }
+		                </a>
 		              </li>
 		              <hr />
 			        </c:if>

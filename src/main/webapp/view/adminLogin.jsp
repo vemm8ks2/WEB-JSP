@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +31,10 @@
 	            	</td>
 	         	</tr>
 			</table>
-		</form>
+		</form>	
+		<c:if test="${isValid == false}">
+		<p>아이디 혹은 비밀번호가 틀렸습니다.</p>
+		</c:if>
 	</div>
 </body>
 </html>

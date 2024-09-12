@@ -27,7 +27,7 @@ public class SwitchOrderStatusAction implements Action {
     
     dto.setOrderStatus(orderStatus);
     
-    dao.update(dto);
+    dao.switchOrderStatus(orderId, orderStatus); 
     
     return null;
   }
