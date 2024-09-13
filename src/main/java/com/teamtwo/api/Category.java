@@ -22,7 +22,7 @@ public class Category extends HttpServlet {
     json.put("categoryList", dao.getAll());
     
     response.setContentType("application/json; charset=utf-8");
-    response.getWriter().print(json);
+    response.getWriter().print(json); 
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
