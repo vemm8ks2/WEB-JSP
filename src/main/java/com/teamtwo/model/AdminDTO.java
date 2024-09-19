@@ -8,7 +8,7 @@ public class AdminDTO {
 	private String adminName;			//관리자이름
 	private String adminEmail;			//관리자이메일
 	private String adminPhoneNumber;	//관리자연락처
-	private String adminCreateAt;		//관리자등록일
+	private String adminCreatedAt;		//관리자등록일
 	private String adminLastAccessedAt;	//마지막접속일
 	private String adminLastAccessedIp;	//마지막접속아이피
 	
@@ -60,12 +60,12 @@ public class AdminDTO {
 		this.adminPhoneNumber = adminPhoneNumber;
 	}
 	
-	public String getAdminCreateAt() {
-		return adminCreateAt;
+	public String getAdminCreatedAt() {
+		return adminCreatedAt;
 	}
 	
-	public void setAdminCreateAt(String adminCreateAt) {
-		this.adminCreateAt = adminCreateAt;
+	public void setAdminCreatedAt(String adminCreatedAt) {
+		this.adminCreatedAt = adminCreatedAt;
 	}
 	
 	public String getAdminLastAccessedAt() {
