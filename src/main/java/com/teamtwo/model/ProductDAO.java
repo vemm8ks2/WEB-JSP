@@ -306,9 +306,9 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
         sql += " ORDER BY ";
 
         if (sort.equals("latest")) {
-          sql += "product_created_at";
-        } else if (sort.equals("earliest")) {
           sql += "product_created_at DESC";
+        } else if (sort.equals("earliest")) {
+          sql += "product_created_at";
         } else if (sort.equals("low-to-high")) {
           sql += "product_price";
         } else if (sort.equals("high-to-low")) {
