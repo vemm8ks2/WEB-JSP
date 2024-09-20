@@ -173,20 +173,14 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      /**
-       * TODO(24.09.03): 상품의 이미지는 포함된 경우와 아닌 경우로 나뉘게 때문에 이를 구분하여 SQL을 작성해야한다. 현재 상태로는 에러가 발생.
-       */
       String sql =
-          "UPDATE T_product SET product_name = ?," + "product_price = ?, product_stock = ?,"
-              + "product_image = ?, product_updatedAt = sysdate," + "WHERE product_id = ?";
+          "UPDATE T_product SET product_price = ?, product_stock = ?, product_updated_at = sysdate WHERE product_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setString(1, dto.getProductName());
-      pstmt.setInt(2, dto.getProductPrice());
-      pstmt.setInt(3, dto.getProductStock());
-      pstmt.setString(4, dto.getProductImage());
-      pstmt.setInt(5, dto.getProductId());
+      pstmt.setInt(1, dto.getProductPrice());
+      pstmt.setInt(2, dto.getProductStock());
+      pstmt.setInt(3, dto.getProductId());
 
       pstmt.executeUpdate();
 
@@ -281,8 +275,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
       }
 
       /**
-       * TODO(24.09.12): 현재는 카테고리가 정확하게 맞아야 해당하는 상품을 보여주지만 부모 카테고리를 선택했을 때 자식 카테고리에
-       * 해당하는 상품도 보여지도록 하는 것이 적절할 것이다.
+       * TODO(24.09.12): 현재는 카테고리가 정확하게 맞아야 해당하는 상품을 보여주지만 부모 카테고리를 선택했을 때 자식 카테고리에 해당하는 상품도 보여지도록
+       * 하는 것이 적절할 것이다.
        */
       if (dto.getCategories() != null && dto.getCategories().length > 0) {
         String[] categories = dto.getCategories();
@@ -315,9 +309,9 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
           sql += "product_price DESC";
         }
       }
-      
+
       pstmt = conn.prepareStatement(sql);
-      
+
       if (dto.getKeyword() == null) {
         pstmt.setString(1, "%" + "%");
       } else {
