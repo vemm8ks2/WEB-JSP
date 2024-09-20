@@ -8,6 +8,8 @@ CREATE TABLE T_admin (
 	admin_created_at DATE NOT NULL,
 	admin_last_accessed_at DATE	NOT NULL,
 	admin_last_accessed_ip VARCHAR2(16)	NOT NULL
+	
+	PRIMARY KEY(admin_id)
 );
 
 -- 유저 Customer 테이블
