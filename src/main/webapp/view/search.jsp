@@ -160,21 +160,21 @@
               >
               
                 <c:forEach var="level2" items="${ categoryList }">
-                	<c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
-                 <li>
-                   <input
-                     type="checkbox"
-                     id="filter-category__item-${ level2.getCategoryName() }"
-		             name="category-filter"
-		             value="${ level2.getCategoryId() }"
-		             onclick="handleFilter()"
-                     class="primary-checkbox"
-                   />
+                  <c:if test="${ level1.getCategoryId() == level2.getCategoryParentFk() }">
+                  <li>
+                    <input
+                      type="checkbox"
+                      id="filter-category__item-${ level2.getCategoryName() }"
+		              name="category-filter"
+		              value="${ level2.getCategoryId() }"
+		              onclick="handleFilter()"
+                      class="primary-checkbox"
+                    />
                    <label for="filter-category__item-${ level2.getCategoryName() }"
                      >${ level2.getCategoryName() }</label
-                   >
-                 </li>
-               </c:if>
+                    >
+                  </li>
+                  </c:if>
                 </c:forEach>
                 
               </ul>
@@ -206,3 +206,13 @@
     </div>
   </div>
 </div>
+<script>
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const opennedCategories = ${ opennedCategories };
+  
+  checkboxes.forEach((checkbox) => {
+	  if (opennedCategories.includes(Number(checkbox.value))) {
+		  checkbox.classList.add('display-products__filter-category__open')
+	  }
+  })
+</script>

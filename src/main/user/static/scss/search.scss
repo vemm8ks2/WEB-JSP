@@ -69,6 +69,7 @@
   }
 }
 
+.display-products__filter-category__open,
 .display-products__filter-category__checkbox[type="checkbox"]:checked {
   & ~ ul {
     display: flex;
