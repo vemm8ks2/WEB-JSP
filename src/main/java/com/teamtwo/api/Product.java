@@ -66,10 +66,71 @@ public class Product extends ApiServlet {
   }
 
   protected void doPut(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {}
+      throws ServletException, IOException {
+    
+    JSONObject jsonObject = readJsonFormat(request);
+    
+    int id = jsonObject.getInt("product_id");
+    String name = jsonObject.getString("product_name");
+    int price = jsonObject.getInt("updated_price");
+    int stock = jsonObject.getInt("updated_stock");
+    
+    ProductDAO dao = ProductDAO.getInstance();
+    ProductDTO dto = dao.get(id);
+    
+    boolean isValid = dto.getProductId() == id && dto.getProductName().equals(name);
+    
+    /**
+     * TODO(24.09.20): 유효하지 않을 경우 에러 핸들링
+     */
+    if (!isValid) {
+      return;
+    }
+    
+    ProductDTO updatedProduct = new ProductDTO();
+    
+    updatedProduct.setProductId(id);
+    updatedProduct.setProductName(name);
+    updatedProduct.setProductPrice(price);
+    updatedProduct.setProductStock(stock);
+    
+    dao.update(updatedProduct);
+    
+    JSONObject responseJson = new JSONObject();
+    responseJson.put("msg", "상품 수정 성공.");
+
+    response.setContentType("application/json; charset=utf-8");
+    response.getWriter().print(responseJson);
+    
+  }
 
   protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {}
+      throws ServletException, IOException {
+    
+    JSONObject jsonObject = readJsonFormat(request);
+    
+    int id = jsonObject.getInt("product_id");
+    String name = jsonObject.getString("product_name");
+    
+    ProductDAO dao = ProductDAO.getInstance();
+    ProductDTO dto = dao.get(id);
+    
+    boolean isValid = dto.getProductId() == id && dto.getProductName().equals(name);
 
+    /**
+     * TODO(24.09.20): 유효하지 않을 경우 에러 핸들링
+     */
+    if (!isValid) {
+      return;
+    }
+    
+    dao.delete(id);
+    
+    JSONObject responseJson = new JSONObject();
+    responseJson.put("msg", "상품 삭제 성공.");
+
+    response.setContentType("application/json; charset=utf-8");
+    response.getWriter().print(responseJson);
+  }
   
 }
