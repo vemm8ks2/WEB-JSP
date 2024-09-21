@@ -750,6 +750,7 @@ header {
 }
 
 .header-top__logged-in {
+  position: relative;
   display: flex;
   gap: 1rem;
 
@@ -782,6 +783,46 @@ header {
       path {
         stroke: var(--primary-color);
       }
+    }
+  }
+}
+
+.header-top__logged-in__user {
+  padding-bottom: 0.5rem;
+
+  &:hover {
+    & + ul {
+      display: block;
+    }
+  }
+}
+
+.header-top__logged-in__dropdown {
+  position: absolute;
+  display: none;
+  top: 40px;
+  right: -10px;
+  background-color: var(--white);
+  border-width: 1px;
+  padding: 0.5rem 0;
+  border-radius: 0.375rem;
+
+  &:hover {
+    display: block;
+  }
+
+  & > hr {
+    margin: 0.5rem;
+  }
+
+  & > li > a {
+    display: inline-block;
+    min-width: max-content;
+    width: 100%;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: var(--primary-point-color);
     }
   }
 }
