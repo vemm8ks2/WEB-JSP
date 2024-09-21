@@ -4,10 +4,18 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"base-Regular"', 'ui-sans-serif', 'system-ui', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"']
-      }
+        sans: [
+          '"base-Regular"',
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"',
+        ],
+      },
     },
   },
   plugins: [],
-}
-
+};

@@ -29,7 +29,7 @@
   <hr />
   <div>
     <a href="personalInfoView.do" class="customer-wrapper__link">
-      <button>마이페이지</button>
+      <button>개인정보</button>
     </a>
   </div>
   <hr />

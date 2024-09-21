@@ -67,7 +67,7 @@
           </g>
         </svg>
       </a>
-      <a href="customerView.do">
+      <a href="customerView.do" class="header-top__logged-in__user">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="9" r="3" />
           <circle cx="12" cy="12" r="10" />
@@ -76,7 +76,15 @@
           />
         </svg>
       </a>
-      <a href="logout.do">로그아웃</a>
+      <ul class="header-top__logged-in__dropdown">
+        <li>
+          <a href="customerView.do">마이페이지</a>
+        </li>
+        <hr />
+        <li>
+          <a href="logout.do">로그아웃</a>
+        </li>
+      </ul>
     </div>
 	</c:if>
 	
