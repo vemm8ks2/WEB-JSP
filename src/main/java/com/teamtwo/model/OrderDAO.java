@@ -269,7 +269,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         OrderDTO dto = new OrderDTO();
 
         dto.setOrderId(rs.getInt("order_id"));
-        dto.setOrderReceiverName(rs.getString("orderr_eceiver_name"));
+        dto.setOrderReceiverName(rs.getString("order_receiver_name"));
         dto.setOrderReceiverPhone(rs.getString("order_receiver_phone"));
         dto.setOrderReceiverAddr(rs.getString("order_recipient_addr"));
         dto.setOrderStatus(rs.getString("order_status"));
