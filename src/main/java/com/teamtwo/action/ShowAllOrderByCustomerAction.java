@@ -36,7 +36,7 @@ public class ShowAllOrderByCustomerAction implements Action {
     ActionForward forward = new ActionForward();
     
     forward.setRedirect(false);
-    forward.setPath("");
+    forward.setPath("view/personalOrderList.jsp");
     
     return forward;
   }
