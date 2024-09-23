@@ -33,7 +33,7 @@ public class ShowPersonalAddressListAction implements Action {
     ActionForward forward = new ActionForward();
 
     forward.setRedirect(false);
-    forward.setPath("");
+    forward.setPath("view/customerAddressList.jsp");
 
     return forward;
 
