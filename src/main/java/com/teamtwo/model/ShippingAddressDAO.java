@@ -257,6 +257,13 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     }
   } // getupdate(id) end
 
+
+  /**
+   * 유저의 식별자를 인자로 받아서 해당하는 유저의 모든 배송지 리스트를 반환해주는 메소드입니다.
+   * 
+   * @param 유저의 식별자를 인자로 받습니다.
+   * @author vemm8ks2
+   */
   public List<ShippingAddressDTO> getShippingAddressByCustomer(int id) {
 
     List<ShippingAddressDTO> list = new ArrayList<>();
@@ -290,7 +297,5 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
 
     return list;
   }
-
-
 
 }
