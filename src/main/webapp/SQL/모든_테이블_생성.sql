@@ -1,29 +1,31 @@
 CREATE TABLE T_admin (
 	admin_id NUMBER(9) NOT NULL,
-	admin_login_id VARCHAR2(30) NOT NULL,
+	admin_login_id VARCHAR2(30) NOT NULL UNIQUE,
 	admin_password VARCHAR2(256) NOT NULL,
 	admin_name VARCHAR2(30) NOT NULL,
 	admin_email VARCHAR2(30),
-	admin_phone_numbr VARCHAR2(11) NOT NULL,
+	admin_phone_numbr VARCHAR2(11) NOT NULL UNIQUE,
 	admin_created_at DATE NOT NULL,
 	admin_last_accessed_at DATE	NOT NULL,
 	admin_last_accessed_ip VARCHAR2(16)	NOT NULL
+	
+	PRIMARY KEY(admin_id)
 );
 
 -- 유저 Customer 테이블
 CREATE TABLE T_customer(
-	customer_id NUMBER(9),							-- 유저식별자
-	customer_login_id VARCHAR2(30) NOT NULL,		-- 유저아이디
-	customer_password VARCHAR2(256) NOT NULL,		-- 유저비밀번호
-	customer_name VARCHAR2(30) NOT NULL,			-- 유저이름
-	customer_email VARCHAR2(30),					-- 유저이메일
-	customer_phone_number VARCHAR2(11) NOT NULL,	-- 유저연락처
-	customer_gender VARCHAR2(20),					-- 유저성별
-	customer_birth 	DATE,							-- 유저생일
-	customer_created_at DATE NOT NULL,				-- 회원가입일
-	customer_updated_at DATE,						-- 업데이트일
+	customer_id NUMBER(9),								-- 유저식별자
+	customer_login_id VARCHAR2(30) NOT NULL UNIQUE,		-- 유저아이디
+	customer_password VARCHAR2(256) NOT NULL,			-- 유저비밀번호
+	customer_name VARCHAR2(30) NOT NULL,				-- 유저이름
+	customer_email VARCHAR2(30),						-- 유저이메일
+	customer_phone_number VARCHAR2(11) NOT NULL UNIQUE,	-- 유저연락처
+	customer_gender VARCHAR2(20),						-- 유저성별
+	customer_birth 	DATE,								-- 유저생일
+	customer_created_at DATE NOT NULL,					-- 회원가입일
+	customer_updated_at DATE,							-- 업데이트일
 	
-	PRIMARY KEY(customer_id)						-- 기본키
+	PRIMARY KEY(customer_id)							-- 기본키
 );
 
 -- 주문 Order 테이블
@@ -59,7 +61,7 @@ CREATE TABLE T_product(
 	product_stock NUMBER(5) DEFAULT 0 NOT NULL,					-- 상품재고
 	product_image VARCHAR2(1000) NOT NULL,						-- 상품이미지
 	product_created_at DATE NOT NULL,							-- 상품생성일
-	product_updated_at DATE,										-- 업데이트일
+	product_updated_at DATE,									-- 업데이트일
 	product_category_fk NUMBER(9),								-- 카테고리식별자
 	
 	PRIMARY KEY(product_id),											-- 기본키
@@ -68,7 +70,7 @@ CREATE TABLE T_product(
 
 -- 주문하다 Order_product 테이블
 CREATE TABLE T_ordered_product(
-	ordered_product_id NUMBER(9),												--주문하다식별자
+	ordered_product_id NUMBER(9),												-- 주문하다식별자
 	ordered_product_qunatity NUMBER(4) NOT NULL,								-- 주문수량
 	ordered_product_order_fk NUMBER(9),										    -- 주문외래키
 	ordered_product_product_fk NUMBER(9),										-- 상품외래키

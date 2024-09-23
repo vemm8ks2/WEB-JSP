@@ -77,7 +77,7 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
         dto.setAdminName(rs.getString("admin_name"));
         dto.setAdminEmail(rs.getString("admin_email"));
         dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
-        dto.setAdminCreateAt(rs.getString("admin_create_at"));
+        dto.setAdminCreatedAt(rs.getString("admin_created_at"));
         dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
         dto.setAdminLastAccessedIp(rs.getString("admin_last_accessed_ip"));
       }
@@ -107,15 +107,15 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
 
         AdminDTO dto = new AdminDTO();
 
-        dto.setAdminId(rs.getInt("adminid"));
-        dto.setAdminLoginId(rs.getString("adminloginid"));
-        dto.setAdminPassword(rs.getString("adminpassword"));
-        dto.setAdminName(rs.getString("adminname"));
-        dto.setAdminEmail(rs.getString("adminemail"));
-        dto.setAdminPhoneNumber(rs.getString("adminPhonenumber"));
-        dto.setAdminCreateAt(rs.getString("admincreateat"));
-        dto.setAdminLastAccessedAt(rs.getString("adminlastaccessedat"));
-        dto.setAdminLastAccessedIp(rs.getString("adminlastaccessedip"));
+        dto.setAdminId(rs.getInt("admin_id"));
+        dto.setAdminLoginId(rs.getString("admin_login_id"));
+        dto.setAdminPassword(rs.getString("admin_password"));
+        dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminEmail(rs.getString("admin_email"));
+        dto.setAdminPhoneNumber(rs.getString("admin_Phone_number"));
+        dto.setAdminCreatedAt(rs.getString("admin_created_at"));
+        dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
+        dto.setAdminLastAccessedIp(rs.getString("admin-last_accessed_ip"));
 
         list.add(dto);
       }
@@ -135,8 +135,9 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
       open();
 
       sql = "insert into t_admin (admin_id, admin_login_id, admin_password, "
-          + " admin_name, admin_email, admin_phone_number, admin_create_at,"
-          + " admin_last_accessed_at, admin_last_accessed_ip) " + " values(?,?,?,?,?,?,sysdate,?,?)";
+          + " admin_name, admin_email, admin_phone_number, admin_created_at,"
+          + " admin_last_accessed_at, admin_last_accessed_ip) "
+          + " values(?,?,?,?,?,?,sysdate,?,?)";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -229,7 +230,56 @@ public class AdminDAO implements BaseDAO<AdminDTO> {
     } finally {
       close();
     }
-    
+
   } // delete() end
+
+  /**
+   * 로그인 아이디로 어드민 데이터를 가져옵니다.
+   * 
+   * @param 어드민의 로그인 아이디를 인자로 받습니다.
+   * @author skwns0472
+   */
+  public AdminDTO getAdminByLoginId(String loginId) { 
+    AdminDTO dto = null;
+
+    try {
+      open();
+
+      sql = "SELECT * FROM t_admin WHERE admin_login_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, loginId);
+
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        dto = new AdminDTO();
+
+        dto.setAdminId(rs.getInt("admin_id"));
+        dto.setAdminLoginId(rs.getString("admin_login_id"));
+        dto.setAdminPassword(rs.getString("admin_password"));
+        dto.setAdminName(rs.getString("admin_name"));
+        dto.setAdminEmail(rs.getString("admin_email"));
+        /**
+         * TODO(24.09.12): 어드민 테이블의 열 이름이 틀렸으므로 수정해야합니다.
+         * 현재 어드민으로 로그인 시 부적합한 열 이름 에러가 발생하는 게 맞습니다.
+         * admin_phone_numbr -> admin_phone_number
+         */
+        dto.setAdminPhoneNumber(rs.getString("admin_phone_number"));
+        dto.setAdminCreatedAt(rs.getString("admin_created_at"));
+        dto.setAdminLastAccessedAt(rs.getString("admin_last_accessed_at"));
+        dto.setAdminLastAccessedIp(rs.getString("admin_last_accessed_ip"));
+      }
+
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return dto;
+
+  } // getAdminByLoginId() end
 
 } // class end

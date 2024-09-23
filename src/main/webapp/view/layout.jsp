@@ -11,6 +11,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="static/css/base.css">
   <link rel="stylesheet" href="static/css/${ requestScope.stylesheet }">
+  <c:if test="${ !empty requestScope.javascript }">
+  <script src="static/js/${ requestScope.javascript }"></script>
+  </c:if>
 </head>
 
 <body>

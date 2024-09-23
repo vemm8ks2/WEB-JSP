@@ -7,16 +7,61 @@
     <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/search.css" />
     <script src="main.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const url = new URL(location.href);
+        const params = new URLSearchParams(url.search);
+
+        const keyword = params.get('keyword');
+        const sort = params.get('sort-filter');
+        const price = params.get('price-filter');
+        const categories = params.getAll('category-filter');
+
+        const filterForm = document['search-filter-form'];
+        const sortFilter = filterForm['sort-filter'];
+
+        console.log(keyword);
+        console.log(sort);
+        console.log(price);
+        console.log(categories);
+
+        if (sort) {
+          const radio = document.querySelector(`input[name='sort-filter'][value='${sort}']`)
+          if (radio) radio.checked = true;
+        }
+
+        if (price) {
+          const radio = document.querySelector(`input[name='price-filter'][value='${price}']`)
+          if (radio) radio.checked = true;
+        }
+
+        categories.forEach(value => {
+          const checkbox = document.querySelector(`input[name='category-filter'][value='${value}']`)
+          console.log(checkbox)
+          if (checkbox) checkbox.checked = true;
+        })
+      })
+
+      const handleFilter = () => {
+        const filterForm = document['search-filter-form'];
+        console.log(filterForm);
+
+        filterForm.submit();
+      }
+    </script>
   </head>
   <body>
     <div id="container">
       <app-header></app-header>
-      <main>
+      <main>  
         <h3 class="head-typo">
           <span>&apos;플레이스테이션&apos;</span>에 대한 검색 결과
         </h3>
         <div class="display-products__container">
-          <div class="display-products__filter">
+          <form name="search-filter-form" class="display-products__filter">
+            <input type="hidden" name="keyword" value="플레이스테이션">
+            <!-- <input type="hidden" name="sort" value=""> -->
+
             <p>필터</p>
             <hr />
             <div class="display-products__filter-sort">
@@ -28,6 +73,8 @@
                       type="radio"
                       id="sort-option-radio-1"
                       name="sort-filter"
+                      value="latest"
+                      onclick="handleFilter()"
                       class="primary-checkmark-radio"
                     />
                     <label for="sort-option-radio-1">최신순</label>
@@ -37,6 +84,8 @@
                       type="radio"
                       id="sort-option-radio-2"
                       name="sort-filter"
+                      value="earliest"
+                      onclick="handleFilter()"
                       class="primary-checkmark-radio"
                     />
                     <label for="sort-option-radio-2">과거순</label>
@@ -46,6 +95,8 @@
                       type="radio"
                       id="sort-option-radio-3"
                       name="sort-filter"
+                      value="low-to-high"
+                      onclick="handleFilter()"
                       class="primary-checkmark-radio"
                     />
                     <label for="sort-option-radio-3">낮은 가격순</label>
@@ -55,6 +106,8 @@
                       type="radio"
                       id="sort-option-radio-4"
                       name="sort-filter"
+                      value="high-to-low"
+                      onclick="handleFilter()"
                       class="primary-checkmark-radio"
                     />
                     <label for="sort-option-radio-4">높은 가격순</label>
@@ -71,6 +124,8 @@
                     type="radio"
                     id="price-option-radio-1"
                     name="price-filter"
+                    value="60000~"
+                    onclick="handleFilter()"
                     class="primary-radio"
                   />
                   <label for="price-option-radio-1">60,000원 이상</label>
@@ -80,6 +135,8 @@
                     type="radio"
                     id="price-option-radio-2"
                     name="price-filter"
+                    value="30000~60000"
+                    onclick="handleFilter()"
                     class="primary-radio"
                   />
                   <label for="price-option-radio-2">30,000원 ~ 60,000원</label>
@@ -89,6 +146,8 @@
                     type="radio"
                     id="price-option-radio-3"
                     name="price-filter"
+                    value="10000~30000"
+                    onclick="handleFilter()"
                     class="primary-radio"
                   />
                   <label for="price-option-radio-3">10,000원 ~ 30,000원</label>
@@ -98,9 +157,11 @@
                     type="radio"
                     id="price-option-radio-4"
                     name="price-filter"
+                    value="~10000"
+                    onclick="handleFilter()"
                     class="primary-radio"
                   />
-                  <label for="price-option-radio-4">10,000원 미만</label>
+                  <label for="price-option-radio-4">10,000원 이하</label>
                 </div>
               </fieldset>
             </div>
@@ -112,7 +173,9 @@
                   <input
                     type="checkbox"
                     id="filter-category__item-1"
-                    name="computer_laptop"
+                    name="category-filter"
+                    value="1"
+                    onclick="handleFilter()"
                     class="display-products__filter-category__checkbox primary-checkbox"
                   />
                   <label for="filter-category__item-1"
@@ -125,7 +188,9 @@
                       <input
                         type="checkbox"
                         id="filter-category__item-2"
-                        name="labtop_desktop"
+                        name="category-filter"
+                        value="2"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-2"
@@ -137,9 +202,11 @@
                         <li>
                           <input
                             type="checkbox"
-                            class="primary-checkbox"
                             id="filter-category__item-3"
-                            name="labtop_desktop"
+                            name="category-filter"
+                            value="3"
+                            onclick="handleFilter()"
+                            class="primary-checkbox"
                           />
                           <label for="filter-category__item-3"
                             >게이밍 노트북</label
@@ -148,9 +215,11 @@
                         <li>
                           <input
                             type="checkbox"
-                            class="primary-checkbox"
                             id="filter-category__item-4"
-                            name="labtop_desktop"
+                            name="category-filter"
+                            value="4"
+                            onclick="handleFilter()"
+                            class="primary-checkbox"
                           />
                           <label for="filter-category__item-4"
                             >사무용 노트북</label
@@ -159,18 +228,22 @@
                         <li>
                           <input
                             type="checkbox"
-                            class="primary-checkbox"
                             id="filter-category__item-5"
-                            name="labtop_desktop"
+                            name="category-filter"
+                            value="5"
+                            onclick="handleFilter()"
+                            class="primary-checkbox"
                           />
                           <label for="filter-category__item-5">브랜드 PC</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
-                            class="primary-checkbox"
                             id="filter-category__item-6"
-                            name="labtop_desktop"
+                            name="category-filter"
+                            value="6"
+                            onclick="handleFilter()"
+                            class="primary-checkbox"
                           />
                           <label for="filter-category__item-6"
                             >AI/딥러닝 PC</label
@@ -182,7 +255,9 @@
                       <input
                         type="checkbox"
                         id="filter-category__item-7"
-                        name="i/o_device"
+                        name="category-filter"
+                        value="7"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-7">입출력장치</label>
@@ -192,45 +267,51 @@
                         <li>
                           <input
                             type="checkbox"
-                            class="primary-checkbox"
                             id="filter-category__item-8"
-                            name="labtop_desktop"
+                            name="category-filter"
+                            value="8"
+                            onclick="handleFilter()"
+                            class="primary-checkbox"
                           />
                           <label for="filter-category__item-8">모니터</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="9"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-9"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-9">키보드</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="10"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-10"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-10">마우스</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="11"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-11"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-11">웹캠</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="12"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-12"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-12">프린터</label>
                         </li>
@@ -239,8 +320,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-13"
-                        name="pc_parts"
+                        name="category-filter"
+                        value="13"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-13">PC부품</label>
@@ -250,27 +332,30 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="14"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-14"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-14">CPU</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="15"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-15"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-15">RAM</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="16"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-16"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-16">SSD</label>
                         </li>
@@ -281,8 +366,9 @@
                 <li>
                   <input
                     type="checkbox"
-                    id="filter-category__item-17"
-                    name="appliances_tv"
+                    name="category-filter"
+                    value="17"
+                    onclick="handleFilter()"
                     class="display-products__filter-category__checkbox primary-checkbox"
                   />
                   <label for="filter-category__item-17">가전&#183;TV</label>
@@ -292,8 +378,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-18"
-                        name="video/audio_appliances"
+                        name="category-filter"
+                        value="18"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-18"
@@ -305,36 +392,40 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="19"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-19"
-                            name="tv"
                           />
                           <label for="filter-category__item-19">TV</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="20"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-20"
-                            name="projector"
                           />
                           <label for="filter-category__item-20">프로젝터</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="21"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-21"
-                            name="set-top_box"
                           />
                           <label for="filter-category__item-21">셋톱박스</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="22"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-22"
-                            name="amplifier"
                           />
                           <label for="filter-category__item-22">앰프</label>
                         </li>
@@ -343,8 +434,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-23"
-                        name="living/seasonal_appliances"
+                        name="category-filter"
+                        value="23"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-23"
@@ -356,36 +448,40 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="24"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-24"
-                            name="washing_machine"
                           />
                           <label for="filter-category__item-24">세탁기</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="25"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-25"
-                            name="dryer"
                           />
                           <label for="filter-category__item-25">건조기</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="26"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-26"
-                            name="vacuum_cleaner"
                           />
                           <label for="filter-category__item-26">청소기</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="27"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-27"
-                            name="labtop_desktop"
                           />
                           <label for="filter-category__item-27">에어컨</label>
                         </li>
@@ -394,8 +490,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-28"
-                        name="kitchen_appliances"
+                        name="category-filter"
+                        value="28"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-28">주방가전</label>
@@ -405,18 +502,20 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="29"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-29"
-                            name="refrigerator"
                           />
                           <label for="filter-category__item-29">냉장고</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="30"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-30"
-                            name="kimchi_refrigerator"
                           />
                           <label for="filter-category__item-30"
                             >김치냉장고</label
@@ -425,9 +524,10 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="31"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-31"
-                            name="rice_cooker"
                           />
                           <label for="filter-category__item-31">전기밥솥</label>
                         </li>
@@ -438,8 +538,9 @@
                 <li>
                   <input
                     type="checkbox"
-                    id="filter-category__item-32"
-                    name="tablet_mobile_game"
+                    name="category-filter"
+                    value="32"
+                    onclick="handleFilter()"
                     class="display-products__filter-category__checkbox primary-checkbox"
                   />
                   <label for="filter-category__item-32"
@@ -451,8 +552,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-33"
-                        name="tablet/smartphone"
+                        name="category-filter"
+                        value="33"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-33"
@@ -464,27 +566,30 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="34"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-34"
-                            name="samsung"
                           />
                           <label for="filter-category__item-34">삼성</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="35"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-35"
-                            name="apple"
                           />
                           <label for="filter-category__item-35">애플</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="36"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-36"
-                            name="xiaomi"
                           />
                           <label for="filter-category__item-36">샤오미</label>
                         </li>
@@ -493,8 +598,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-37"
-                        name="peripheral"
+                        name="category-filter"
+                        value="37"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-37">주변기기</label>
@@ -504,9 +610,10 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="38"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-38"
-                            name="smartwatch"
                           />
                           <label for="filter-category__item-38"
                             >스마트워치</label
@@ -515,9 +622,10 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="39"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-39"
-                            name="mobile_accessory"
                           />
                           <label for="filter-category__item-39"
                             >모바일 악세사리</label
@@ -526,9 +634,10 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="40"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-40"
-                            name="power_bank"
                           />
                           <label for="filter-category__item-40"
                             >보조배터리</label
@@ -539,8 +648,9 @@
                     <li>
                       <input
                         type="checkbox"
-                        id="filter-category__item-41"
-                        name="video_game_console"
+                        name="category-filter"
+                        value="41"
+                        onclick="handleFilter()"
                         class="display-products__filter-category__checkbox primary-checkbox"
                       />
                       <label for="filter-category__item-41">게임기</label>
@@ -550,18 +660,20 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="42"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-42"
-                            name="nintendo_switch"
                           />
                           <label for="filter-category__item-42">스위치</label>
                         </li>
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="43"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-43"
-                            name="play_station"
                           />
                           <label for="filter-category__item-43"
                             >플레이스테이션</label
@@ -570,9 +682,10 @@
                         <li>
                           <input
                             type="checkbox"
+                            name="category-filter"
+                            value="44"
+                            onclick="handleFilter()"
                             class="primary-checkbox"
-                            id="filter-category__item-44"
-                            name="xbox"
                           />
                           <label for="filter-category__item-44">엑스박스</label>
                         </li>
@@ -582,7 +695,7 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </form>
           <div class="display-product__container">
             <p>총 14건</p>
             <div class="display-products__wrapper">
