@@ -23,22 +23,23 @@ function requestPay() {
 			// 결제 종료 시 호출되는 콜백 함수
 			// response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
 			// 결제 결과를 처리하는 로직을 작성합니다.
-
- 		    if (response.success) {
- 				console.log(response);
-			} else {
-				console.log(response);
+			
+			console.log(response);
+			
+			if (response.error_code != null) {
+				return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
 			}
-			/*$.ajax({
-              type: 'POST',
-              url: '/verify/' + rsp.imp_uid
-            }).done(function(data) {
-              if(rsp.paid_amount === data.response.amount){
-                alert("결제 성공");
-              } else {
-                alert("결제 실패");
-              }
-            });*/
+			
+			const SERVER_BASE_URL = 'http://localhost:8585/WEB-JSP';
+			
+			fetch(`${SERVER_BASE_URL}/paymentComplete.do`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					imp_uid: response.imp_uid,
+					merchant_uid: response.merchant_uid,
+				})
+			})
 		}
 	);
 }
