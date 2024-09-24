@@ -344,4 +344,50 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     return list;
   }
 
+  public List<ProductDTO> getProductsByIds(String[] ids) {
+    List<ProductDTO> list = new ArrayList<>();
+
+    if (ids.length == 0)
+      return list;
+
+    try {
+      open();
+
+      String sql = "SELECT * FROM t_product WHERE product_id in (";
+
+      for (int i = 0; i < ids.length; i++) {
+        if (i == ids.length - 1)
+          sql += ids[i];
+        else
+          sql += ids[i] + ",";
+      }
+
+      sql += ")";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        ProductDTO product = new ProductDTO();
+
+        product.setProductId(rs.getInt("product_id"));
+        product.setProductName(rs.getString("product_name"));
+        product.setProductPrice(rs.getInt("product_price"));
+        product.setProductStock(rs.getInt("product_stock"));
+        product.setProductImage(rs.getString("product_image"));
+        product.setProductCreatedAt(rs.getString("product_created_at"));
+        product.setProductUpdatedAt(rs.getString("product_updated_at"));
+        product.setProductCategoryFk(rs.getInt("product_category_fk"));
+
+        list.add(product);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
+
 }

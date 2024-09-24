@@ -174,7 +174,9 @@
       </p>
     </div>
     <div class="product-top__purchase-wrapper">
-      <button class="primary-btn default-btn-color">바로구매</button>
+      <button onclick="location.href='paymentView.do?id=${product.getProductId()}'" class="primary-btn default-btn-color">
+        바로구매
+      </button>
       <button>
         <svg
           version="1.1"
