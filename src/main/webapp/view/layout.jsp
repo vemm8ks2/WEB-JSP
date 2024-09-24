@@ -10,7 +10,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="static/css/base.css">
+  
+  <c:if test="${ !empty requestScope.stylesheet }">
   <link rel="stylesheet" href="static/css/${ requestScope.stylesheet }">
+  </c:if>
+  
+  <c:forEach items="${ externalJavascriptList }" var="source">
+  <script src="${ source }"></script>
+  </c:forEach>
+  
   <c:if test="${ !empty requestScope.javascript }">
   <script src="static/js/${ requestScope.javascript }"></script>
   </c:if>
