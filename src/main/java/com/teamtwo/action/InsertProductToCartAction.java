@@ -15,44 +15,45 @@ import com.teamtwo.model.ProductDTO;
 
 public class InsertProductToCartAction implements Action {
 
-	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		
-		int productid = Integer.parseInt(request.getParameter("id").trim());
-		int productcount = Integer.parseInt(request.getParameter("count").trim());
-		
-		HttpSession session = request.getSession();
-	    CustomerDTO customer = (CustomerDTO) session.getAttribute("customer");
-	    	    
-	    ActionForward forward = new ActionForward();
-	    
-	    forward.setRedirect(false);
-	    forward.setPath("view/layout.jsp");
+  @Override
+  public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
 
-	    if (customer == null) {
-	      request.setAttribute("url", "login.jsp");
-	      request.setAttribute("stylesheet", "login.css");
-	      return forward;
-	    }
-	    
-	    ProductDAO productdao = ProductDAO.getInstance();
-	    ProductDTO productdto = productdao.get(productid);
-	    
-	    CartDAO cartdao = CartDAO.getInstance();
-	    
-	    CartDTO cartdto = new CartDTO();
-	    cartdto.setCartId(cartdao.getCartId());
-	    cartdto.setCartProductFk(productdto.getProductId());
-	    cartdto.setCartProductCount(productcount);
-	    cartdto.setCartCustomerFk(customer.getCustomerId());
-	    
-	    cartdao.save(cartdto);
+    int productid = Integer.parseInt(request.getParameter("id").trim());
+    int productcount = Integer.parseInt(request.getParameter("count").trim());
 
-	    request.setAttribute("url", "cart.jsp");
-	    request.setAttribute("stylesheet", "");
-	    
-		return forward;
-	}
+    HttpSession session = request.getSession();
+    CustomerDTO customer = (CustomerDTO) session.getAttribute("customer");
+
+    ActionForward forward = new ActionForward();
+
+    forward.setRedirect(false);
+    forward.setPath("view/layout.jsp");
+
+    if (customer == null) {
+      request.setAttribute("url", "login.jsp");
+      request.setAttribute("stylesheet", "login.css");
+      return forward;
+    }
+
+    ProductDAO productdao = ProductDAO.getInstance();
+    ProductDTO productdto = productdao.get(productid);
+
+    CartDAO cartdao = CartDAO.getInstance();
+
+    CartDTO cartdto = new CartDTO();
+    
+    cartdto.setCartId(cartdao.getCartId());
+    cartdto.setCartProductFk(productdto.getProductId());
+    cartdto.setCartProductCount(productcount);
+    cartdto.setCartCustomerFk(customer.getCustomerId());
+
+    cartdao.save(cartdto);
+
+    request.setAttribute("url", "cart.jsp");
+    request.setAttribute("stylesheet", "");
+
+    return forward;
+  }
 
 }

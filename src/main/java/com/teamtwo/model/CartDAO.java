@@ -76,7 +76,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
         dto.setCartCustomerFk(rs.getInt("cart_customer_fk"));
         dto.setCartProductFk(rs.getInt("cart_product_fk"));
       }
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -123,13 +123,6 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      // Integer newCartId = getCartId();
-      /**
-       * TODO(24.09.03): 에러 핸들링
-       */
-      /*if (newCartId == null)
-        throw new SQLException();*/
-
       String sql = "INSERT INTO T_cart VALUES(?, ?, ?, ?)";
 
       pstmt = conn.prepareStatement(sql);
@@ -144,8 +137,9 @@ public class CartDAO implements BaseDAO<CartDTO> {
       /*
        * TODO: 업데이트에 실패하였을 때 에러 핸들링
        */
-      /*if (result > 0)
-        throw new SQLException();*/
+      /*
+       * if (result > 0) throw new SQLException();
+       */
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -191,12 +185,12 @@ public class CartDAO implements BaseDAO<CartDTO> {
        */
       if (dto == null)
         throw new SQLException();
-      
+
       String sql = "DELETE FROM T_cart WHERE cart_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
-      
+
       int result = pstmt.executeUpdate();
       /*
        * TODO: 삭제에 실패하였을 때 에러 핸들링. 아래는 임시 코드입니다.
@@ -211,8 +205,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
   }
 
   /*
-   * 데이터베이스에 저장되어 있는 데이터 중 cart_id가 가장 큰 값을 가져온 후
-   * 1을 더하여 새로운 cart_id 번호를 반환합니다.
+   * 데이터베이스에 저장되어 있는 데이터 중 cart_id가 가장 큰 값을 가져온 후 1을 더하여 새로운 cart_id 번호를 반환합니다.
    */
   public Integer getCartId() {
     Integer id = null;
@@ -227,7 +220,7 @@ public class CartDAO implements BaseDAO<CartDTO> {
 
       if (rs.next())
         id = rs.getInt(1) + 1;
-      
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
