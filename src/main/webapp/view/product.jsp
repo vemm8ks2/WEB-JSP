@@ -177,7 +177,7 @@
       <button onclick="location.href='paymentView.do?id=${product.getProductId()}'" class="primary-btn default-btn-color">
         바로구매
       </button>
-      <button>
+      <button onclick="">
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
