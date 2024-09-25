@@ -1,45 +1,70 @@
-IMP.init("imp73344216");
+const SERVER_BASE_URL = 'http://localhost:8585/WEB-JSP';
 
-function requestPay() {
+function proceedPay(){
 	const paymentName = document.querySelector('input[type="hidden"][name="payment-name"]');
 	const paymentAmount = document.querySelector('input[type="hidden"][name="payment-amount"]');
 	const buyerName = document.querySelector('input[type="hidden"][name="payment-buyer-name"]');
 	const buyerTel = document.querySelector('input[type="hidden"][name="payment-buyer-tel"]');
 	const buyerAddr = document.querySelector('input[type="hidden"][name="payment-buyer-addr"]');
+	const productIds = document.querySelectorAll('input[type="hidden"][name="purchase-product-id"]');
+	const productsQty = document.querySelectorAll('input[type="hidden"][name="purchase-product-qty"]');
 	
+	const data = {
+		payment_name: paymentName.value,
+		payment_amount: paymentAmount.value,
+		buyer_name: buyerName.value,
+		buyer_tel: buyerTel.value,
+		buyer_addr: buyerAddr.value,
+		product_ids: Array.from(productIds).map(node => node.value),
+		products_qty: Array.from(productsQty).map(input => input.value)
+	}
+	
+	fetch(`${SERVER_BASE_URL}/paymentProceed.do`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: new URLSearchParams(data),
+	})
+		.then(res => res.json())
+		.then(data => {
+			requestPay(data)
+		})
+}
+
+function requestPay(data) {
+	IMP.init("imp73344216");
 	IMP.request_pay(
 		{
 			pg: "html5_inicis.INIpayTest",
 			pay_method: "card",
-			merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
-			name: paymentName.value,
-			amount: paymentAmount.value,
-			buyer_name: buyerName,
-			buyer_tel: buyerTel,
-			buyer_addr: buyerAddr,
+			merchant_uid: data.orderId,
+			name: data.paymentName,
+			amount: data.paymentAmount,
+          	buyer_email: "",
+			buyer_name: data.buyerName,
+			buyer_tel: data.buyerTel,
+			buyer_addr: data.buyerAddr,
 		},
 		function(response) {
-			// TODO(24.09.24)
-			// 결제 종료 시 호출되는 콜백 함수
-			// response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
-			// 결제 결과를 처리하는 로직을 작성합니다.
+			if (!response.success) return;
 			
-			console.log(response);
-			
-			if (response.error_code != null) {
-				return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
-			}
-			
-			const SERVER_BASE_URL = 'http://localhost:8585/WEB-JSP';
-			
-			fetch(`${SERVER_BASE_URL}/paymentComplete.do`, {
+			fetch(`${SERVER_BASE_URL}/paymentToken.do`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: new URLSearchParams({ 
 					imp_uid: response.imp_uid,
 					merchant_uid: response.merchant_uid,
 				})
 			})
+				.then(res => res.json())
+				.then(data => {
+					if (data.complete) {
+						alert('상품 결제 완료');
+						location.href = '';
+					} else {
+						alert('상품 결제 중 에러 발생');
+						location.href = '';
+					}
+				})
 		}
 	);
 }

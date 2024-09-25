@@ -140,28 +140,14 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
    */
   @Override
   public void save(OrderDTO dto) {
-
-    int count = 0;
-
     try {
       open();
 
-      /**
-       * Q(24.09.05): 주문의 식별자를 가져오는 역할을 하는 메소드를 새롭게 만드는 것을 고려해보자.
-       */
-      String sql = "SELECT max(order_id) FROM t_order";
-
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
-
-      if (rs.next())
-        count = rs.getInt(1) + 1;
-
-      sql = "INSERT INTO T_order VALUES (?, ?, ?, ?, '발송대기', sysdate, '', ?)";
+      String sql = "INSERT INTO T_order VALUES (?, ?, ?, ?, '발송대기', sysdate, '', ?)";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, count);
+      pstmt.setInt(1, dto.getOrderId());
       pstmt.setString(2, dto.getOrderReceiverName());
       pstmt.setString(3, dto.getOrderReceiverPhone());
       pstmt.setString(4, dto.getOrderReceiverAddr());
@@ -243,6 +229,29 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
     }
   } // delete(id) end
 
+  public Integer getOrderId() {
+    Integer id = null;
+
+    try {
+      open();
+
+      String sql = "SELECT max(order_id) FROM T_order";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        id = rs.getInt(1) + 1;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return id;
+  }
+
   /**
    * 유저의 식별자를 인자로 받아서 해당하는 유저의 모든 주문 목록을 불러오는 메소드입니다.
    * 
@@ -292,7 +301,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
    * 주문의 식별자와 상태를 인자로 받아서 주문의 상태를 변경해주는 메소드입니다.
    * 
    * @param 주문의 식별자와 상태를 인자로 받습니다.
-   * @author aeranixia 
+   * @author aeranixia
    */
   // 주문 상태 변경 메서드
   public void switchOrderStatus(int orderId, String orderStatus) {
@@ -301,7 +310,7 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
 
       // 주문 테이블에서 주문번호로 모든 정보 불러오기
       String sql = "SELECT * from t_order WHERE order_id = ?";
-      
+
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, orderId);
 
@@ -312,16 +321,17 @@ public class OrderDAO implements BaseDAO<OrderDTO> {
         if (orderStatus.equals("배송중")) {
           sql = "UPDATE t_order SET order_status = ? WHERE order_id = ?";
         } else if (orderStatus.equals("배송완료")) {
-          sql = "UPDATE t_order SET order_status = ?, order_delivered_at = sysdate WHERE order_id = ?";
+          sql =
+              "UPDATE t_order SET order_status = ?, order_delivered_at = sysdate WHERE order_id = ?";
         } else if (orderStatus.equals("주문취소")) {
           sql = "UPDATE t_order SET order_status = ?, order_delivered_at = '' WHERE order_id = ?";
         }
-        
+
         pstmt = conn.prepareStatement(sql);
-        
+
         pstmt.setString(1, orderStatus);
         pstmt.setInt(2, orderId);
-        
+
         pstmt.executeUpdate();
       }
 
