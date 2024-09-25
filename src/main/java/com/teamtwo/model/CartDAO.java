@@ -123,12 +123,12 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      Integer newCartId = getCartId();
+      // Integer newCartId = getCartId();
       /**
        * TODO(24.09.03): 에러 핸들링
        */
-      if (newCartId == null)
-        throw new SQLException();
+      /*if (newCartId == null)
+        throw new SQLException();*/
 
       String sql = "INSERT INTO T_cart VALUES(?, ?, ?, ?)";
 
@@ -139,13 +139,13 @@ public class CartDAO implements BaseDAO<CartDTO> {
       pstmt.setInt(3, dto.getCartCustomerFk());
       pstmt.setInt(4, dto.getCartProductFk());
 
-      int result = pstmt.executeUpdate(sql);
+      int result = pstmt.executeUpdate();
 
       /*
        * TODO: 업데이트에 실패하였을 때 에러 핸들링
        */
-      if (result > 0)
-        throw new SQLException();
+      /*if (result > 0)
+        throw new SQLException();*/
 
     } catch (Exception e) {
       e.printStackTrace();
