@@ -26,6 +26,11 @@
   <div style="display:flex; gap:10px">
     <input type="hidden" name="product-id" value="${p.getProductId()}" />
     <p>${p.getProductName()}</p>
+	<c:forEach items="${purchaseList}" var="purchaseProduct">
+	  <c:if test="${purchaseProduct.getProductId() == p.getProductId()}">
+	  <p>${purchaseProduct.getProductQty()}개</p>
+	  </c:if>
+	</c:forEach>
     <p>${p.getProductPrice()}원</p>
   </div>
   </c:forEach>

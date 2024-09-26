@@ -37,6 +37,9 @@ public class PaymentView implements Action {
       return forward;
     }
 
+    /**
+     * TODO(24.09.26): JSON 데이터로 받기
+     */
     String[] productIds = request.getParameterValues("id");
     String[] productsQty = request.getParameterValues("qty");
 
