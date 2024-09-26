@@ -12,7 +12,6 @@
 </head>
 
 <body>
-  <!-- 히든 input 넣고 결제 시 DOM 객체로 불러오기 -->
   <input type="hidden" name="payment-name" value="${paymentName}" />
   <input type="hidden" name="payment-amount" value="${paymentAmount}" />
   <input type="hidden" name="payment-buyer-name" value="${customer.getCustomerName()}" />
@@ -26,8 +25,6 @@
   <c:forEach items="${productList}" var="p" varStatus="status" >
   <div style="display:flex; gap:10px">
     <input type="hidden" name="product-id" value="${p.getProductId()}" />
-    <!-- <input type="hidden" name="product-qty" value="${productsQty}" /> -->
-    <!-- <input name="product-qty" value="${productsQty}" /> -->
     <p>${p.getProductName()}</p>
     <p>${p.getProductPrice()}원</p>
   </div>
