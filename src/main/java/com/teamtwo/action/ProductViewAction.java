@@ -22,6 +22,7 @@ public class ProductViewAction implements Action {
     request.setAttribute("product", product);
     request.setAttribute("url", "product.jsp");
     request.setAttribute("stylesheet", "product.css");
+    request.setAttribute("javascript", "product.js");
 
     ActionForward forward = new ActionForward();
 

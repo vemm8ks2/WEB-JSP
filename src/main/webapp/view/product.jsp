@@ -19,6 +19,9 @@
     </div>
   </div>
   <div>
+  	<input type="hidden" name="product-id" value="${product.getProductId()}" />
+  	<input type="hidden" name="unit-price" value="${product.getProductPrice()}" />
+  
     <p class="product-top__name">${product.getProductName()}</p>
     <div class="product-top__review">
       <div>
@@ -133,10 +136,9 @@
     <hr />
     <div class="product-top__total-price-wrapper">
       <div>
-        <button>
+        <button class="minus-btn">
           <svg
             version="1.1"
-            id="Capa_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 459.313 459.314"
@@ -150,11 +152,10 @@
             </g>
           </svg>
         </button>
-        <span>1</span>
-        <button>
+        <span class="product-quantity-number">1</span>
+        <button class="plus-btn">
           <svg
             version="1.1"
-            id="Capa_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 45.402 45.402"
@@ -170,11 +171,11 @@
         </button>
       </div>
       <p class="product-top__total-price-typo">
-        총 상품금액 : &nbsp;<span>669,000</span> <span>원</span>
+        총 상품금액 : &nbsp;<span class="total-price"><fmt:formatNumber value="${product.getProductPrice()}" pattern="#,###" /></span> <span>원</span>
       </p>
     </div>
     <div class="product-top__purchase-wrapper">
-      <button onclick="location.href='paymentView.do?id=${product.getProductId()}'" class="primary-btn default-btn-color">
+      <button name="purchase-btn" class="primary-btn default-btn-color">
         바로구매
       </button>
       <button onclick="">
