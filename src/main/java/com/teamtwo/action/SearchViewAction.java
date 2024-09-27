@@ -2,6 +2,7 @@ package com.teamtwo.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +35,27 @@ public class SearchViewAction implements Action {
     if (categoryIds != null) {
       for (String categoryId : categoryIds) {
         int id = Integer.parseInt(categoryId);
-        parentCategoryIdList.addAll(findAllParentId(id, categoryList));
+        parentCategoryIdList.addAll(findAllParentIds(id, categoryList));
       }
+    }
+
+
+    /* 임시 코드 영역 START */
+    for (String categoryId : categoryIds)
+      System.out.println("선택된 카테고리: " + categoryId);
+    for (int parentCategoryId : parentCategoryIdList)
+      System.out.println("부모 카테고리: " + parentCategoryId);
+    /* 임시 코드 영역 END */
+
+    List<String> categoryIdsIncludingChild = new ArrayList<>();
+    categoryIdsIncludingChild.addAll(Arrays.stream(categoryIds).map(id -> id.toString()).toList());
+
+    for (String categoryId : categoryIds) {
+      int id = Integer.parseInt(categoryId);
+      List<Integer> childCategories = findChildCategoryIds(id, categoryList);
+
+      List<String> parsedCategories = childCategories.stream().map(num -> num.toString()).toList();
+      categoryIdsIncludingChild.addAll(parsedCategories);
     }
 
     SearchDTO dto = new SearchDTO();
@@ -43,7 +63,7 @@ public class SearchViewAction implements Action {
     dto.setKeyword(keyword);
     dto.setSort(sort);
     dto.setPrice(price);
-    dto.setCategories(categoryIds);
+    dto.setCategories(categoryIdsIncludingChild.toArray(new String[0]));
 
     ProductDAO dao = ProductDAO.getInstance();
 
@@ -51,6 +71,7 @@ public class SearchViewAction implements Action {
 
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
+    request.setAttribute("selectedCategories", ""); /* TODO(24.09.27): 선택되어진 카테고리 목록을 JSP 페이지로 보낸 후 선택되게 하기 */
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
 
     request.setAttribute("url", "search.jsp");
@@ -65,7 +86,7 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private List<Integer> findAllParentId(int categoryId, List<CategoryDTO> categoryList) {
+  private List<Integer> findAllParentIds(int categoryId, List<CategoryDTO> categoryList) {
     List<Integer> parentCategories = new ArrayList<>();
 
     /* 1. 인자로 받은 categoryId의 부모 카테고리의 식별자를 찾은 후 변수에 할당합니다. */
@@ -91,6 +112,17 @@ public class SearchViewAction implements Action {
     }
 
     return parentCategories;
+  }
+
+  private List<Integer> findChildCategoryIds(int categoryId, List<CategoryDTO> categoryList) {
+    List<Integer> childCategories = new ArrayList<>(categoryId);
+
+    for (CategoryDTO category : categoryList) {
+      if (category.getCategoryParentFk() == categoryId)
+        childCategories.add(category.getCategoryId());
+    }
+
+    return childCategories;
   }
 
 }
