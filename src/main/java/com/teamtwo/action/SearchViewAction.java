@@ -13,6 +13,10 @@ import com.teamtwo.model.SearchDTO;
 
 public class SearchViewAction implements Action {
 
+  List<CategoryDTO> categoryList;
+  ArrayList<CategoryDTO>[] categoryGraph;
+  boolean[] visited;
+
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -26,15 +30,25 @@ public class SearchViewAction implements Action {
     String price = request.getParameter("price-filter");
     String[] categoryIds = request.getParameterValues("category-filter");
 
-    List<CategoryDTO> categoryList =
-        (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryGraph =
+        (ArrayList<CategoryDTO>[]) request.getServletContext().getAttribute("categoryGraph");
+    visited = new boolean[categoryList.size() + 1];
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
-    if (categoryIds != null) {
-      for (String categoryId : categoryIds) {
-        int id = Integer.parseInt(categoryId);
-        parentCategoryIdList.addAll(findAllParentId(id, categoryList));
+    for (String categoryId : categoryIds) {
+      int id = Integer.parseInt(categoryId);
+
+      parentCategoryIdList.addAll(findAllParentIds(id));
+      findChildCategoryIds(id);
+    }
+
+    List<Integer> categoryIdsIncludingChild = new ArrayList<>();
+
+    for (CategoryDTO category : categoryList) {
+      if (visited[category.getCategoryId()]) {
+        categoryIdsIncludingChild.add(category.getCategoryId());
       }
     }
 
@@ -43,7 +57,8 @@ public class SearchViewAction implements Action {
     dto.setKeyword(keyword);
     dto.setSort(sort);
     dto.setPrice(price);
-    dto.setCategories(categoryIds);
+    dto.setCategories(
+        categoryIdsIncludingChild.stream().map(c -> c.toString()).toList().toArray(new String[0]));
 
     ProductDAO dao = ProductDAO.getInstance();
 
@@ -65,7 +80,16 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private List<Integer> findAllParentId(int categoryId, List<CategoryDTO> categoryList) {
+  private void findChildCategoryIds(int categoryId) {
+    visited[categoryId] = true;
+
+    for (CategoryDTO category : categoryGraph[categoryId]) {
+      if (!visited[category.getCategoryId()])
+        findChildCategoryIds(category.getCategoryId());
+    }
+  }
+
+  private List<Integer> findAllParentIds(int categoryId) {
     List<Integer> parentCategories = new ArrayList<>();
 
     /* 1. 인자로 받은 categoryId의 부모 카테고리의 식별자를 찾은 후 변수에 할당합니다. */
@@ -92,5 +116,4 @@ public class SearchViewAction implements Action {
 
     return parentCategories;
   }
-
 }

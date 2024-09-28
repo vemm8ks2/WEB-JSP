@@ -256,7 +256,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      String sql = "SELECT * " + "FROM T_product " + "WHERE upper(product_name) LIKE upper(?)";
+      String sql = "SELECT * FROM T_product WHERE upper(product_name) LIKE upper(?)";
 
       if (dto.getPrice() != null) {
         String price = dto.getPrice();
