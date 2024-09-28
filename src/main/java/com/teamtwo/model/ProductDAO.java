@@ -256,7 +256,7 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     try {
       open();
 
-      String sql = "SELECT * " + "FROM T_product " + "WHERE upper(product_name) LIKE upper(?)";
+      String sql = "SELECT * FROM T_product WHERE upper(product_name) LIKE upper(?)";
 
       if (dto.getPrice() != null) {
         String price = dto.getPrice();
@@ -387,52 +387,6 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
       close();
     }
 
-    return list;
-  }
-  
-  public List<ProductDTO> getProductsAndChildProductsByIds(String[] ids) {
-    List<ProductDTO> list = new ArrayList<>();
-    
-    if (ids.length == 0)
-      return list;
-    
-    try {
-      open();
-      
-      String sql = "SELECT * FROM t_category START WITH category in (";
-      
-      for (int i = 0; i < ids.length; i++) {
-        if (i == ids.length - 1) sql += ids[i] + " ";
-        else sql += ids[i] + ", ";
-      }
-      
-      sql += "CONNECT BY PRIOR category_id = category_parent_fk";
-      
-      System.out.println(sql);
-
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
-      
-      while (rs.next()) {
-        ProductDTO product = new ProductDTO();
-
-        product.setProductId(rs.getInt("product_id"));
-        product.setProductName(rs.getString("product_name"));
-        product.setProductPrice(rs.getInt("product_price"));
-        product.setProductStock(rs.getInt("product_stock"));
-        product.setProductImage(rs.getString("product_image"));
-        product.setProductCreatedAt(rs.getString("product_created_at"));
-        product.setProductUpdatedAt(rs.getString("product_updated_at"));
-        product.setProductCategoryFk(rs.getInt("product_category_fk"));
-
-        list.add(product);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      close();
-    }
-    
     return list;
   }
 

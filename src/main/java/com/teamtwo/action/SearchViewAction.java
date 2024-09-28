@@ -14,6 +14,10 @@ import com.teamtwo.model.SearchDTO;
 
 public class SearchViewAction implements Action {
 
+  List<CategoryDTO> categoryList;
+  ArrayList<CategoryDTO>[] categoryGraph;
+  boolean[] visited;
+
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -27,43 +31,69 @@ public class SearchViewAction implements Action {
     String price = request.getParameter("price-filter");
     String[] categoryIds = request.getParameterValues("category-filter");
 
-    List<CategoryDTO> categoryList =
-        (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryGraph = new ArrayList[categoryList.size() + 1];
+
+    visited = new boolean[categoryList.size() + 1];
+
+    for (int i = 0; i < categoryGraph.length; i++)
+      categoryGraph[i] = new ArrayList<>();
+
+    for (CategoryDTO category : categoryList)
+      categoryGraph[category.getCategoryParentFk()].add(category);
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
-    if (categoryIds != null) {
-      for (String categoryId : categoryIds) {
-        int id = Integer.parseInt(categoryId);
-        parentCategoryIdList.addAll(findAllParentIds(id, categoryList));
+    for (String categoryId : categoryIds) {
+      int id = Integer.parseInt(categoryId);
+
+      parentCategoryIdList.addAll(findAllParentIds(id));
+      dfs(id);
+    }
+
+    /* 콘솔용 반복문 START */
+    for (int id : parentCategoryIdList)
+      System.out.println("오픈될 카테고리 ID: " + id);
+    for (int i = 0; i < visited.length; i++)
+      System.out.println(i + "번째 방문 여부: " + visited[i]);
+    /* 콘솔용 반복문 END */
+
+    List<Integer> categoryIdsIncludingChild = new ArrayList<>();
+
+    for (CategoryDTO category : categoryList) {
+      if (visited[category.getCategoryId()]) {
+        categoryIdsIncludingChild.add(category.getCategoryId());
       }
     }
 
+    /* 대체 예정 코드 START */
+    /*
+     * List<Integer> parentCategoryIdList = new ArrayList<>();
+     * 
+     * if (categoryIds != null) { for (String categoryId : categoryIds) { int id =
+     * Integer.parseInt(categoryId); parentCategoryIdList.addAll(findAllParentIds(id,
+     * categoryList)); } }
+     * 
+     * List<String> categoryIdsIncludingChild = new ArrayList<>();
+     * categoryIdsIncludingChild.addAll(Arrays.stream(categoryIds).map(id ->
+     * id.toString()).toList());
+     * 
+     * for (String categoryId : categoryIds) { int id = Integer.parseInt(categoryId); List<Integer>
+     * childCategories = findChildCategoryIds(id, categoryList);
+     * 
+     * List<String> parsedCategories = childCategories.stream().map(num -> num.toString()).toList();
+     * categoryIdsIncludingChild.addAll(parsedCategories); }
+     */
+    /* 대체 예정 코드 END */
 
-    /* 임시 코드 영역 START */
-    for (String categoryId : categoryIds)
-      System.out.println("선택된 카테고리: " + categoryId);
-    for (int parentCategoryId : parentCategoryIdList)
-      System.out.println("부모 카테고리: " + parentCategoryId);
-    /* 임시 코드 영역 END */
-
-    List<String> categoryIdsIncludingChild = new ArrayList<>();
-    categoryIdsIncludingChild.addAll(Arrays.stream(categoryIds).map(id -> id.toString()).toList());
-
-    for (String categoryId : categoryIds) {
-      int id = Integer.parseInt(categoryId);
-      List<Integer> childCategories = findChildCategoryIds(id, categoryList);
-
-      List<String> parsedCategories = childCategories.stream().map(num -> num.toString()).toList();
-      categoryIdsIncludingChild.addAll(parsedCategories);
-    }
 
     SearchDTO dto = new SearchDTO();
 
     dto.setKeyword(keyword);
     dto.setSort(sort);
     dto.setPrice(price);
-    dto.setCategories(categoryIdsIncludingChild.toArray(new String[0]));
+    dto.setCategories(
+        categoryIdsIncludingChild.stream().map(c -> c.toString()).toList().toArray(new String[0]));
 
     ProductDAO dao = ProductDAO.getInstance();
 
@@ -71,7 +101,8 @@ public class SearchViewAction implements Action {
 
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
-    request.setAttribute("selectedCategories", ""); /* TODO(24.09.27): 선택되어진 카테고리 목록을 JSP 페이지로 보낸 후 선택되게 하기 */
+    request.setAttribute("selectedCategories", ""); // TODO(24.09.27): 선택되어진 카테고리 목록을 JSP 페이지로 보낸 후
+                                                    // 선택되게 하기
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
 
     request.setAttribute("url", "search.jsp");
@@ -86,7 +117,16 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private List<Integer> findAllParentIds(int categoryId, List<CategoryDTO> categoryList) {
+  private void dfs(int categoryId) {
+    visited[categoryId] = true;
+
+    for (CategoryDTO category : categoryGraph[categoryId]) {
+      if (!visited[category.getCategoryId()])
+        dfs(category.getCategoryId());
+    }
+  }
+
+  private List<Integer> findAllParentIds(int categoryId) {
     List<Integer> parentCategories = new ArrayList<>();
 
     /* 1. 인자로 받은 categoryId의 부모 카테고리의 식별자를 찾은 후 변수에 할당합니다. */
