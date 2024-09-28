@@ -2,7 +2,6 @@ package com.teamtwo.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,15 +31,9 @@ public class SearchViewAction implements Action {
     String[] categoryIds = request.getParameterValues("category-filter");
 
     categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
-    categoryGraph = new ArrayList[categoryList.size() + 1];
-
+    categoryGraph =
+        (ArrayList<CategoryDTO>[]) request.getServletContext().getAttribute("categoryGraph");
     visited = new boolean[categoryList.size() + 1];
-
-    for (int i = 0; i < categoryGraph.length; i++)
-      categoryGraph[i] = new ArrayList<>();
-
-    for (CategoryDTO category : categoryList)
-      categoryGraph[category.getCategoryParentFk()].add(category);
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
@@ -48,15 +41,8 @@ public class SearchViewAction implements Action {
       int id = Integer.parseInt(categoryId);
 
       parentCategoryIdList.addAll(findAllParentIds(id));
-      dfs(id);
+      findChildCategoryIds(id);
     }
-
-    /* 콘솔용 반복문 START */
-    for (int id : parentCategoryIdList)
-      System.out.println("오픈될 카테고리 ID: " + id);
-    for (int i = 0; i < visited.length; i++)
-      System.out.println(i + "번째 방문 여부: " + visited[i]);
-    /* 콘솔용 반복문 END */
 
     List<Integer> categoryIdsIncludingChild = new ArrayList<>();
 
@@ -65,27 +51,6 @@ public class SearchViewAction implements Action {
         categoryIdsIncludingChild.add(category.getCategoryId());
       }
     }
-
-    /* 대체 예정 코드 START */
-    /*
-     * List<Integer> parentCategoryIdList = new ArrayList<>();
-     * 
-     * if (categoryIds != null) { for (String categoryId : categoryIds) { int id =
-     * Integer.parseInt(categoryId); parentCategoryIdList.addAll(findAllParentIds(id,
-     * categoryList)); } }
-     * 
-     * List<String> categoryIdsIncludingChild = new ArrayList<>();
-     * categoryIdsIncludingChild.addAll(Arrays.stream(categoryIds).map(id ->
-     * id.toString()).toList());
-     * 
-     * for (String categoryId : categoryIds) { int id = Integer.parseInt(categoryId); List<Integer>
-     * childCategories = findChildCategoryIds(id, categoryList);
-     * 
-     * List<String> parsedCategories = childCategories.stream().map(num -> num.toString()).toList();
-     * categoryIdsIncludingChild.addAll(parsedCategories); }
-     */
-    /* 대체 예정 코드 END */
-
 
     SearchDTO dto = new SearchDTO();
 
@@ -101,8 +66,6 @@ public class SearchViewAction implements Action {
 
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
-    request.setAttribute("selectedCategories", ""); // TODO(24.09.27): 선택되어진 카테고리 목록을 JSP 페이지로 보낸 후
-                                                    // 선택되게 하기
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
 
     request.setAttribute("url", "search.jsp");
@@ -117,12 +80,12 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private void dfs(int categoryId) {
+  private void findChildCategoryIds(int categoryId) {
     visited[categoryId] = true;
 
     for (CategoryDTO category : categoryGraph[categoryId]) {
       if (!visited[category.getCategoryId()])
-        dfs(category.getCategoryId());
+        findChildCategoryIds(category.getCategoryId());
     }
   }
 
@@ -153,16 +116,4 @@ public class SearchViewAction implements Action {
 
     return parentCategories;
   }
-
-  private List<Integer> findChildCategoryIds(int categoryId, List<CategoryDTO> categoryList) {
-    List<Integer> childCategories = new ArrayList<>(categoryId);
-
-    for (CategoryDTO category : categoryList) {
-      if (category.getCategoryParentFk() == categoryId)
-        childCategories.add(category.getCategoryId());
-    }
-
-    return childCategories;
-  }
-
 }

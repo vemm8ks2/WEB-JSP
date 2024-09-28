@@ -131,7 +131,7 @@
             id="filter-category__item-${ root.getCategoryName() }"
             name="category-filter"
             value="${ root.getCategoryId() }"
-            onclick="handleFilter()"
+            data-parent-category="0"
             class="display-products__filter-category__checkbox primary-checkbox"
           />
           <label for="filter-category__item-${ root.getCategoryName() }" 
@@ -149,7 +149,7 @@
                 id="filter-category__item-${ level1.getCategoryName() }"
 	            name="category-filter"
 	            value="${ level1.getCategoryId() }"
-	            onclick="handleFilter()"
+	            data-parent-category="${ root.getCategoryId() }"
                 class="display-products__filter-category__checkbox primary-checkbox"
               />
               <label for="filter-category__item-${ level1.getCategoryName() }"
@@ -167,7 +167,7 @@
                       id="filter-category__item-${ level2.getCategoryName() }"
 		              name="category-filter"
 		              value="${ level2.getCategoryId() }"
-		              onclick="handleFilter()"
+           		      data-parent-category="${ level1.getCategoryId() }"
                       class="primary-checkbox"
                     />
                    <label for="filter-category__item-${ level2.getCategoryName() }"
