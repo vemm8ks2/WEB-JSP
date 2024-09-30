@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	const checkboxes = document.querySelectorAll(`input[type='checkbox'][name='category-filter']`);
-
+	const priceFilters = document.querySelectorAll(`input[type='radio'][name='price-filter']`);
+	const sortFilters = document.querySelectorAll(`input[type='input'][name='sort-filter']`);
+	 
 	Array.from(checkboxes).forEach(checkbox => {
 		checkbox.addEventListener('click', (e) => {
 			uncheckingParentCheckboxes(e.target, checkboxes);
@@ -31,6 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			const filterForm = document['search-filter-form'];
 			filterForm.submit();
 		})
+	})
+	
+	Array.from(priceFilters).forEach(filter => {
+		filter.addEventListener('click', () => handleFilter());
+	})
+	
+	Array.from(sortFilters).forEach(filter => {
+		filter.addEventListener('click', () => handleFilter());
 	})
 })
 
@@ -59,4 +69,9 @@ const uncheckingChildCheckboxes = (target, checkboxes) => {
 	};
 
 	uncheckRecursively(target.value);
+}
+
+const handleFilter = () => {
+  const filterForm = document['search-filter-form'];
+  filterForm.submit();
 }
