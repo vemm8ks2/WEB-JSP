@@ -78,44 +78,46 @@
             type="radio"
             id="price-option-radio-1"
             name="price-filter"
-            value="60000~"
+            value="${Q3}~"
             onclick="handleFilter()"
             class="primary-radio"
           />
-          <label for="price-option-radio-1">60,000원 이상</label>
+          <label for="price-option-radio-1">
+            ${Q3}원 이상
+       	  </label>
         </div>
         <div>
           <input
             type="radio"
             id="price-option-radio-2"
             name="price-filter"
-            value="30000~60000"
+            value="${Q2}~${Q3}"
             onclick="handleFilter()"
             class="primary-radio"
           />
-          <label for="price-option-radio-2">30,000원 ~ 60,000원</label>
+          <label for="price-option-radio-2">${Q2}원 ~ ${Q3}원</label>
         </div>
         <div>
           <input
             type="radio"
             id="price-option-radio-3"
             name="price-filter"
-            value="10000~30000"
+            value="${Q1}~${Q2}"
             onclick="handleFilter()"
             class="primary-radio"
           />
-          <label for="price-option-radio-3">10,000원 ~ 30,000원</label>
+          <label for="price-option-radio-3">${Q1}원 ~ ${Q2}원</label>
         </div>
         <div>
           <input
             type="radio"
             id="price-option-radio-4"
             name="price-filter"
-            value="~10000"
+            value="0~${Q1}"
             onclick="handleFilter()"
             class="primary-radio"
           />
-          <label for="price-option-radio-4">10,000원 미만</label>
+          <label for="price-option-radio-4">${Q1}원 미만</label>
         </div>
       </fieldset>
     </div>

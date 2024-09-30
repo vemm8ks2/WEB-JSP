@@ -259,18 +259,14 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
       String sql = "SELECT * FROM T_product WHERE upper(product_name) LIKE upper(?)";
 
       if (dto.getPrice() != null) {
-        String price = dto.getPrice();
+        String[] price = dto.getPrice().split("~");
 
         sql += " AND ";
-
-        if (price.equals("60000~")) {
-          sql += "product_price >= 60000";
-        } else if (price.equals("30000~60000")) {
-          sql += "product_price BETWEEN 30000 AND 60000";
-        } else if (price.equals("10000~30000")) {
-          sql += "product_price BETWEEN 10000 AND 30000";
-        } else if (price.equals("~10000")) {
-          sql += "produce_price <= 10000";
+        
+        if (price.length == 1) {
+          sql += "product_price >= " + price[0]; 
+        } else {
+          sql += "product_price BETWEEN " + price[0] + " AND " + price[1];
         }
       }
 

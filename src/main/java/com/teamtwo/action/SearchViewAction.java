@@ -2,6 +2,7 @@ package com.teamtwo.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +38,13 @@ public class SearchViewAction implements Action {
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
-    for (String categoryId : categoryIds) {
-      int id = Integer.parseInt(categoryId);
+    if (categoryIds != null) {
+      for (String categoryId : categoryIds) {
+        int id = Integer.parseInt(categoryId);
 
-      parentCategoryIdList.addAll(findAllParentIds(id));
-      findChildCategoryIds(id);
+        parentCategoryIdList.addAll(findAllParentIds(id));
+        findChildCategoryIds(id);
+      }
     }
 
     List<Integer> categoryIdsIncludingChild = new ArrayList<>();
@@ -62,11 +65,18 @@ public class SearchViewAction implements Action {
 
     ProductDAO dao = ProductDAO.getInstance();
 
-    List<ProductDTO> list = dao.searchByKeywordAndFilter(dto);
+    List<ProductDTO> productList = dao.searchByKeywordAndFilter(dto);
+    Integer[] priceList = productList.stream().map(product -> product.getProductPrice()).toList()
+        .toArray(new Integer[0]);
+
+    Arrays.sort(priceList);
 
     request.setAttribute("keyword", keyword);
-    request.setAttribute("list", list);
+    request.setAttribute("list", productList);
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
+    request.setAttribute("Q1", findQuartile(priceList, 1));
+    request.setAttribute("Q2", findQuartile(priceList, 2));
+    request.setAttribute("Q3", findQuartile(priceList, 3));
 
     request.setAttribute("url", "search.jsp");
     request.setAttribute("stylesheet", "search.css");
@@ -115,5 +125,29 @@ public class SearchViewAction implements Action {
     }
 
     return parentCategories;
+  }
+
+  private int findQuartile(Integer[] data, int quartile) {
+    int i = data.length;
+    boolean isEven = i % 2 == 0;
+
+    if (quartile < 1 || quartile > 3) {
+      throw new IllegalArgumentException("Quartile must be 1, 2, or 3");
+    }
+
+    if (quartile == 2) {
+      return isEven ? (data[i / 2 - 1] + data[i / 2]) / 2 : data[i / 2];
+    }
+
+    int k = (quartile * (i + 1)) / 4;
+
+    if (k % 1 == 0) {
+      return data[k - 1];
+    }
+
+    int lower = (int) Math.floor(k) - 1;
+    int upper = (int) Math.ceil(k) - 1;
+
+    return (data[lower] + data[upper]) / 2;
   }
 }
