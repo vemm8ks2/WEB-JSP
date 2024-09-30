@@ -37,11 +37,13 @@ public class SearchViewAction implements Action {
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
-    for (String categoryId : categoryIds) {
-      int id = Integer.parseInt(categoryId);
+    if (categoryIds != null) {
+      for (String categoryId : categoryIds) {
+        int id = Integer.parseInt(categoryId);
 
-      parentCategoryIdList.addAll(findAllParentIds(id));
-      findChildCategoryIds(id);
+        parentCategoryIdList.addAll(findAllParentIds(id));
+        findChildCategoryIds(id);
+      }
     }
 
     List<Integer> categoryIdsIncludingChild = new ArrayList<>();
