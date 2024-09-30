@@ -253,10 +253,31 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
   public List<ProductDTO> searchByKeywordAndFilter(SearchDTO dto) {
     List<ProductDTO> list = new ArrayList<>();
 
+    /* SQL문 예시
+      SELECT * 
+      FROM (
+          SELECT ROWNUM AS pnum, p.* 
+          FROM (
+              SELECT *
+              FROM t_product
+              WHERE upper(product_name) LIKE upper('%%')
+              ORDER BY product_price DESC
+          ) p
+      ) 
+      WHERE pnum >= 1 AND pnum <= 10;
+     */
+
     try {
       open();
 
-      String sql = "SELECT * FROM T_product WHERE upper(product_name) LIKE upper(?)";
+      String sql =
+          "SELECT * "
+          + "FROM ("
+          +     "SELECT ROWNUM AS pnum, p.* "
+          +     "FROM ("
+          +         "SELECT * "
+          +         "FROM t_product "
+          +         "WHERE upper(product_name) LIKE upper(?)";
 
       if (dto.getPrice() != null) {
         String price = dto.getPrice();
@@ -309,6 +330,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
           sql += "product_price DESC";
         }
       }
+      
+      sql += ") p ) WHERE pnum >= ? AND pnum <= ?";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -317,6 +340,15 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
       } else {
         pstmt.setString(1, "%" + dto.getKeyword() + "%");
       }
+      
+      int page = dto.getPagination().getCurrPage();
+      int row = dto.getPagination().getRow();
+      
+      int sNum = (page * row) - (row - 1);
+      int eNum = page * row;
+      
+      pstmt.setInt(2, sNum);
+      pstmt.setInt(3, eNum);
 
       rs = pstmt.executeQuery();
 
@@ -388,6 +420,29 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     }
 
     return list;
+  }
+
+  public int getProductCount() {
+    int cnt = 0;
+
+    try {
+      open();
+
+      String sql = "SELECT count(*) FROM t_product";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        cnt = rs.getInt(1);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return cnt;
   }
 
 }

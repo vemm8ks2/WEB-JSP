@@ -203,6 +203,30 @@
         </a>
       </div>
       </c:forEach>
+      <nav>
+        <ul>
+          <li>
+            <button>
+              <a href="#">1</a>
+            </button>
+          </li>
+          <li>
+            <button>
+              <a href="#">2</a>
+            </button>
+          </li>
+          <li>
+            <button>
+              <a href="#">3</a>
+            </button>
+          </li>
+          <li>
+            <button>
+              <a href="#">4</a>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

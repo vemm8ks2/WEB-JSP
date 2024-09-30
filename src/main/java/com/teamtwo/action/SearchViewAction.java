@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.teamtwo.model.CategoryDTO;
+import com.teamtwo.model.PaginationDTO;
 import com.teamtwo.model.ProductDAO;
 import com.teamtwo.model.ProductDTO;
 import com.teamtwo.model.SearchDTO;
@@ -29,6 +30,7 @@ public class SearchViewAction implements Action {
     String sort = request.getParameter("sort-filter");
     String price = request.getParameter("price-filter");
     String[] categoryIds = request.getParameterValues("category-filter");
+    String page = request.getParameter("page");
 
     categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
     categoryGraph =
@@ -62,7 +64,26 @@ public class SearchViewAction implements Action {
     dto.setCategories(
         categoryIdsIncludingChild.stream().map(c -> c.toString()).toList().toArray(new String[0]));
 
+    PaginationDTO paginationDTO = new PaginationDTO();
+
+    if (page == null) {
+      paginationDTO.setCurrPage(1);
+    } else {
+      paginationDTO.setCurrPage(Integer.parseInt(page));
+    }
+
+    paginationDTO.setRow(12);
+    paginationDTO.setBlock(12);
+    
     ProductDAO dao = ProductDAO.getInstance();
+    
+    int totalSize = dao.getProductCount();
+    int totalPage = (int) Math.ceil(totalSize / paginationDTO.getRow());
+    
+    paginationDTO.setTotalSize(totalSize);
+    paginationDTO.setTotalPage(totalPage);
+
+    dto.setPagination(paginationDTO);
 
     List<ProductDTO> list = dao.searchByKeywordAndFilter(dto);
 
