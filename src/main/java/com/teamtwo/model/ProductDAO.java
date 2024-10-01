@@ -444,5 +444,21 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
 
     return cnt;
   }
+  
+  public int getProductCountByKeywordAndFilter(SearchDTO dto) {
+    int cnt = 0;
+    
+    try {
+      open();
+      
+      String sql = "";
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+    
+    return cnt;
+  }
 
 }

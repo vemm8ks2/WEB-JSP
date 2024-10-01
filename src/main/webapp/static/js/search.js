@@ -24,13 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	const checkboxes = document.querySelectorAll(`input[type='checkbox'][name='category-filter']`);
 	const priceFilters = document.querySelectorAll(`input[type='radio'][name='price-filter']`);
 	const sortFilters = document.querySelectorAll(`input[type='input'][name='sort-filter']`);
+	const paginationBtns = document.querySelectorAll(`button[name='pagination-btn']`);
+	
+	const filterForm = document['search-filter-form'];
 	 
 	Array.from(checkboxes).forEach(checkbox => {
 		checkbox.addEventListener('click', (e) => {
 			uncheckingParentCheckboxes(e.target, checkboxes);
 			uncheckingChildCheckboxes(e.target, checkboxes);
 
-			const filterForm = document['search-filter-form'];
 			filterForm.submit();
 		})
 	})
@@ -41,6 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	Array.from(sortFilters).forEach(filter => {
 		filter.addEventListener('click', () => handleFilter());
+	})
+	
+	const paginationInput = document.querySelector(`input[type='hidden'][name='page']`);
+	
+	Array.from(paginationBtns).forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			const page = e.currentTarget.dataset.page;
+			paginationInput.value = page;
+			
+			filterForm.submit();
+		})
 	})
 })
 

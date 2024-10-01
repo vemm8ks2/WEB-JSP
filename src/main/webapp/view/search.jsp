@@ -15,6 +15,7 @@
 <div class="display-products__container">
   <form method="GET" action="searchView.do" name="search-filter-form" class="display-products__filter">
     <input type="hidden" name="keyword" value="${keyword}">
+    <input type="hidden" name="page" value="${ currPage }" />
             
     <p>필터</p>
     <hr />
@@ -203,28 +204,14 @@
         </a>
       </div>
       </c:forEach>
+      
       <nav>
         <ul>
+          <c:forEach begin="${ sBlock }" end="${ eBlock }" var="i">
           <li>
-            <button>
-              <a href="#">1</a>
-            </button>
+            <button name='pagination-btn' data-page="${ i }">${ i }</button>
           </li>
-          <li>
-            <button>
-              <a href="#">2</a>
-            </button>
-          </li>
-          <li>
-            <button>
-              <a href="#">3</a>
-            </button>
-          </li>
-          <li>
-            <button>
-              <a href="#">4</a>
-            </button>
-          </li>
+          </c:forEach>
         </ul>
       </nav>
     </div>

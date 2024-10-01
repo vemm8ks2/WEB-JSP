@@ -16,7 +16,6 @@ public class SearchViewAction implements Action {
 
   List<CategoryDTO> categoryList;
   ArrayList<CategoryDTO>[] categoryGraph;
-  boolean[] visited;
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
@@ -35,7 +34,7 @@ public class SearchViewAction implements Action {
     categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
     categoryGraph =
         (ArrayList<CategoryDTO>[]) request.getServletContext().getAttribute("categoryGraph");
-    visited = new boolean[categoryList.size() + 1];
+    boolean[] visited = new boolean[categoryList.size() + 1];
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
@@ -44,7 +43,7 @@ public class SearchViewAction implements Action {
         int id = Integer.parseInt(categoryId);
 
         parentCategoryIdList.addAll(findAllParentIds(id));
-        findChildCategoryIds(id);
+        findChildCategoryIds(id, visited);
       }
     }
 
@@ -72,14 +71,14 @@ public class SearchViewAction implements Action {
       paginationDTO.setCurrPage(Integer.parseInt(page));
     }
 
-    paginationDTO.setRow(12);
-    paginationDTO.setBlock(12);
-    
+    paginationDTO.setRow(9);
+    paginationDTO.setBlock(3);
+
     ProductDAO dao = ProductDAO.getInstance();
-    
+
     int totalSize = dao.getProductCount();
     int totalPage = (int) Math.ceil(totalSize / paginationDTO.getRow());
-    
+
     paginationDTO.setTotalSize(totalSize);
     paginationDTO.setTotalPage(totalPage);
 
@@ -87,9 +86,30 @@ public class SearchViewAction implements Action {
 
     List<ProductDTO> list = dao.searchByKeywordAndFilter(dto);
 
+    int currPage = paginationDTO.getCurrPage();
+    int block = paginationDTO.getBlock();
+
+    int distance = (int) Math.floor(block / 2);
+    int sBlock = currPage - distance;
+    int eBlock = currPage + distance;
+    int maxBlock = (int) Math.ceil((double) totalSize / paginationDTO.getRow());
+
+    if (sBlock <= 0) {
+      sBlock = 1;
+      eBlock = block;
+    }
+
+    if (eBlock > maxBlock) {
+      sBlock = maxBlock - block + 1;
+      eBlock = maxBlock;
+    }
+
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
+    request.setAttribute("currPage", currPage);
+    request.setAttribute("sBlock", sBlock);
+    request.setAttribute("eBlock", eBlock);
 
     request.setAttribute("url", "search.jsp");
     request.setAttribute("stylesheet", "search.css");
@@ -103,12 +123,12 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private void findChildCategoryIds(int categoryId) {
+  private void findChildCategoryIds(int categoryId, boolean[] visited) {
     visited[categoryId] = true;
 
     for (CategoryDTO category : categoryGraph[categoryId]) {
       if (!visited[category.getCategoryId()])
-        findChildCategoryIds(category.getCategoryId());
+        findChildCategoryIds(category.getCategoryId(), visited);
     }
   }
 
