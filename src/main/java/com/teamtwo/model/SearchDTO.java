@@ -11,7 +11,8 @@ public class SearchDTO {
   String sort;
   String price;
   String[] categories;
-  
+  PaginationDTO pagination;
+
   public String getKeyword() {
     return keyword;
   }
@@ -42,6 +43,14 @@ public class SearchDTO {
   
   public void setCategories(String[] categories) {
     this.categories = categories;
+  }
+
+  public PaginationDTO getPagination() {
+    return pagination;
+  }
+
+  public void setPagination(PaginationDTO pagination) {
+    this.pagination = pagination;
   }
   
 }
