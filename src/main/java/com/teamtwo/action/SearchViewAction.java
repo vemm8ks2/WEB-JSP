@@ -85,6 +85,7 @@ public class SearchViewAction implements Action {
     dto.setPagination(paginationDTO);
 
     List<ProductDTO> list = dao.searchByKeywordAndFilter(dto);
+    int searchResultSize = dao.getProductCountByKeywordAndFilter(dto);
 
     int currPage = paginationDTO.getCurrPage();
     int block = paginationDTO.getBlock();
@@ -92,7 +93,7 @@ public class SearchViewAction implements Action {
     int distance = (int) Math.floor(block / 2);
     int sBlock = currPage - distance;
     int eBlock = currPage + distance;
-    int maxBlock = (int) Math.ceil((double) totalSize / paginationDTO.getRow());
+    int maxBlock = (int) Math.ceil((double) searchResultSize / paginationDTO.getRow());
 
     if (sBlock <= 0) {
       sBlock = 1;
@@ -103,9 +104,14 @@ public class SearchViewAction implements Action {
       sBlock = maxBlock - block + 1;
       eBlock = maxBlock;
     }
+    
+    if (sBlock <= 0) {
+      sBlock = 1;
+    }
 
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
+    request.setAttribute("searchResultSize", searchResultSize);
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
     request.setAttribute("currPage", currPage);
     request.setAttribute("sBlock", sBlock);

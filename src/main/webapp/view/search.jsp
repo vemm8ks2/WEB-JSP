@@ -191,7 +191,7 @@
     </div>
   </form>
   <div class="display-product__container">
-    <p>총 ${list.size()}건</p>
+    <p>총 ${searchResultSize}건</p>
     <div class="display-products__wrapper">
       <c:forEach var="p" items="${list}">
       <div class="display-products__product">
@@ -204,17 +204,34 @@
         </a>
       </div>
       </c:forEach>
-      
-      <nav>
-        <ul>
-          <c:forEach begin="${ sBlock }" end="${ eBlock }" var="i">
-          <li>
-            <button name='pagination-btn' data-page="${ i }">${ i }</button>
-          </li>
-          </c:forEach>
-        </ul>
-      </nav>
     </div>
+      
+    <nav>
+      <ul class="display-products__pagination">
+        <c:forEach begin="${ sBlock }" end="${ eBlock }" var="i">
+        <li>
+          <c:if test="${ i == currPage }">
+          <button 
+            name='pagination-btn' 
+            data-page="${ i }"
+            class="primary-btn default-btn-color"
+          >
+            ${ i }
+          </button>
+          </c:if>
+          <c:if test="${ i != currPage }">
+          <button 
+            name='pagination-btn' 
+            data-page="${ i }"
+            class="primary-btn reverse-btn-color"
+          >
+            ${ i }
+          </button>
+          </c:if>
+        </li>
+        </c:forEach>
+      </ul>
+    </nav>
   </div>
 </div>
 <script>
