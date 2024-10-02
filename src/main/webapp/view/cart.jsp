@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+  <p>장바구니 페이지</p>
 </body>
 </html>
