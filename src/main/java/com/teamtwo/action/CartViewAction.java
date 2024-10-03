@@ -27,6 +27,7 @@ public class CartViewAction implements Action {
 
     request.setAttribute("url", "cart.jsp");
     request.setAttribute("stylesheet", "");
+    request.setAttribute("javascript", "cart.js");
 
     ActionForward forward = new ActionForward();
 
