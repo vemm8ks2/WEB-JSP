@@ -230,4 +230,53 @@ public class CartDAO implements BaseDAO<CartDTO> {
     return id;
   }
 
+  public List<CartResultDTO> getCartListByCustomer(int id) {
+    List<CartResultDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+      String sql =
+          "SELECT * FROM t_cart c, t_product p WHERE c.cart_customer_fk = ? AND c.cart_product_fk = p.product_id";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, id);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        CartResultDTO dto = new CartResultDTO();
+        
+        CartDTO cartDto = new CartDTO();
+
+        cartDto.setCartId(rs.getInt("cart_id"));
+        cartDto.setCartProductCount(rs.getInt("cart_product_count"));
+        cartDto.setCartCustomerFk(rs.getInt("cart_customer_fk"));
+        cartDto.setCartProductFk(rs.getInt("cart_product_fk"));
+        
+        ProductDTO productDto = new ProductDTO();
+        
+        productDto.setProductId(rs.getInt("product_id"));
+        productDto.setProductName(rs.getString("product_name"));
+        productDto.setProductPrice(rs.getInt("product_price"));
+        productDto.setProductStock(rs.getInt("product_stock"));
+        productDto.setProductImage(rs.getString("product_image"));
+        productDto.setProductCreatedAt(rs.getString("product_created_at"));
+        productDto.setProductUpdatedAt(rs.getString("product_updated_at"));
+        productDto.setProductCategoryFk(rs.getInt("product_category_fk"));
+        
+        dto.setCartDTO(cartDto);
+        dto.setProductDTO(productDto);
+        
+        list.add(dto);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
+
 }

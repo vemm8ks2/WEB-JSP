@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+<div>
   <p>장바구니 페이지</p>
-</body>
-</html>
+  <c:forEach items="${cartResult}" var="dto">
+    <c:set value="${dto.getCartDTO()}" var="cartDto" />
+    <c:set value="${dto.getProductDTO()}" var="productDto" />
+    
+    <p>상품 이름 : ${productDto.getProductName()}</p>
+    <p>상품 개당 가격 : ${productDto.getProductPrice()}</p>
+    <p>개수 : ${cartDto.getCartProductCount()}</p>
+    <p>상품별 총 가격 : ${productDto.getProductPrice() * cartDto.getCartProductCount()}</p>
+    <br />
+  </c:forEach>
+</div>
