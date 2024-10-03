@@ -153,19 +153,14 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      CartDTO prevDto = get(dto.getCartId());
-      /*
-       * TODO: 카트가 없는 경우 즉, id가 잘못된 경우 에러 핸들링
-       */
-      if (prevDto == null)
-        new SQLException();
-
       String sql = "UPDATE T_cart SET cart_product_count = ? WHERE cart_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
       pstmt.setInt(1, dto.getCartProductCount());
       pstmt.setInt(2, dto.getCartId());
+      
+      pstmt.executeUpdate();
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -179,24 +174,20 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      CartDTO dto = get(id);
       /*
        * TODO: 카트가 없는 경우 즉, id가 잘못된 경우 에러 핸들링
        */
-      if (dto == null)
-        throw new SQLException();
 
       String sql = "DELETE FROM T_cart WHERE cart_id = ?";
 
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
 
-      int result = pstmt.executeUpdate();
+      pstmt.executeUpdate();
+      
       /*
-       * TODO: 삭제에 실패하였을 때 에러 핸들링. 아래는 임시 코드입니다.
+       * TODO: 삭제에 실패하였을 때 에러 핸들링.
        */
-      if (result > 0)
-        throw new SQLException();
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -228,6 +219,55 @@ public class CartDAO implements BaseDAO<CartDTO> {
     }
 
     return id;
+  }
+
+  public List<CartResultDTO> getCartListByCustomer(int id) {
+    List<CartResultDTO> list = new ArrayList<>();
+
+    try {
+      open();
+
+      String sql =
+          "SELECT * FROM t_cart c, t_product p WHERE c.cart_customer_fk = ? AND c.cart_product_fk = p.product_id";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, id);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        CartResultDTO dto = new CartResultDTO();
+        
+        CartDTO cartDto = new CartDTO();
+
+        cartDto.setCartId(rs.getInt("cart_id"));
+        cartDto.setCartProductCount(rs.getInt("cart_product_count"));
+        cartDto.setCartCustomerFk(rs.getInt("cart_customer_fk"));
+        cartDto.setCartProductFk(rs.getInt("cart_product_fk"));
+        
+        ProductDTO productDto = new ProductDTO();
+        
+        productDto.setProductId(rs.getInt("product_id"));
+        productDto.setProductName(rs.getString("product_name"));
+        productDto.setProductPrice(rs.getInt("product_price"));
+        productDto.setProductStock(rs.getInt("product_stock"));
+        productDto.setProductImage(rs.getString("product_image"));
+        productDto.setProductCreatedAt(rs.getString("product_created_at"));
+        productDto.setProductUpdatedAt(rs.getString("product_updated_at"));
+        productDto.setProductCategoryFk(rs.getInt("product_category_fk"));
+        
+        dto.setCartDTO(cartDto);
+        dto.setProductDTO(productDto);
+        
+        list.add(dto);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
   }
 
 }

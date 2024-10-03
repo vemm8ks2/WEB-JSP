@@ -21,18 +21,18 @@ public class DeleteProductFromCartAction implements Action {
      * TODO(24.09.03): 장바구니 목록의 주인과 세션의 유저가 일치하는지 검증하는 작업이 필요합니다.
      */
 
-    int cartId = Integer.parseInt(request.getParameter("cart_id").trim());
-
+    int id = Integer.parseInt(request.getParameter("id").trim());
+    
     CartDAO dao = CartDAO.getInstance();
     /**
      * TODO(24.09.03): 에러 핸들링
      */
-    dao.delete(cartId);
+    dao.delete(id);
 
     ActionForward forward = new ActionForward();
 
     forward.setRedirect(false);
-    forward.setPath("");
+    forward.setPath("cartView.do");
 
     return forward;
   }
