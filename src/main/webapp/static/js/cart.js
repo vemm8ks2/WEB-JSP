@@ -57,5 +57,30 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 		})
 	})	
+	
+	const deleteBtns = document.querySelectorAll(`button[type='button'][name='delete']`);
+	
+	deleteBtns.forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			
+			const id = e.currentTarget.dataset.deleteId;
+			const form = document.createElement('form');
+			
+			form.method = 'POST';
+			form.action ='deleteProductFromCart.do';
+        
+			const input = document.createElement('input');
+			
+			input.type = 'hidden';
+			input.name = 'id';
+			input.value = id;
+			
+			form.appendChild(input);
+	        document.body.appendChild(form);
+	        
+			form.submit();
+			
+		})
+	})
 		
 })

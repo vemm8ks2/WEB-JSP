@@ -174,24 +174,20 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      CartDTO dto = get(id);
       /*
        * TODO: 카트가 없는 경우 즉, id가 잘못된 경우 에러 핸들링
        */
-      if (dto == null)
-        throw new SQLException();
 
       String sql = "DELETE FROM T_cart WHERE cart_id = ?";
 
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, id);
 
-      int result = pstmt.executeUpdate();
+      pstmt.executeUpdate();
+      
       /*
-       * TODO: 삭제에 실패하였을 때 에러 핸들링. 아래는 임시 코드입니다.
+       * TODO: 삭제에 실패하였을 때 에러 핸들링.
        */
-      if (result > 0)
-        throw new SQLException();
     } catch (Exception e) {
       e.printStackTrace();
     } finally {

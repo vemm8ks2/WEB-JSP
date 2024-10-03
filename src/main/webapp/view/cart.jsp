@@ -32,6 +32,14 @@
         ${productDto.getProductPrice() * cartDto.getCartProductCount()}
       </span>
     </p>
+    <button 
+      type="button" 
+      name="delete" 
+      data-delete-id="${cartDto.getCartId()}" 
+      class="primary-btn reverse-btn-color"
+    >
+      삭제
+    </button>
     <br />
     <br />
   </c:forEach>
