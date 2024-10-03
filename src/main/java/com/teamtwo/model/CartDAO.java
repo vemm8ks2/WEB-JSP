@@ -153,19 +153,14 @@ public class CartDAO implements BaseDAO<CartDTO> {
     try {
       open();
 
-      CartDTO prevDto = get(dto.getCartId());
-      /*
-       * TODO: 카트가 없는 경우 즉, id가 잘못된 경우 에러 핸들링
-       */
-      if (prevDto == null)
-        new SQLException();
-
       String sql = "UPDATE T_cart SET cart_product_count = ? WHERE cart_id = ?";
 
       pstmt = conn.prepareStatement(sql);
 
       pstmt.setInt(1, dto.getCartProductCount());
       pstmt.setInt(2, dto.getCartId());
+      
+      pstmt.executeUpdate();
 
     } catch (Exception e) {
       e.printStackTrace();

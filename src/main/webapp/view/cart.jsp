@@ -9,6 +9,8 @@
     <c:set value="${dto.getCartDTO()}" var="cartDto" />
     <c:set value="${dto.getProductDTO()}" var="productDto" />
     
+    <input type="hidden" value="${cartDto.getCartId()}" data-cart-id="${productDto.getProductId()}" />
+    
 	<input type="checkbox" checked name="${productDto.getProductId()}" />    
     <p>상품 이름 : ${productDto.getProductName()}</p>
     <p>상품 개당 가격 : 

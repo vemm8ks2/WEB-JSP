@@ -33,18 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
 		el.addEventListener('change', (e) => {
 						
 			const id = e.currentTarget.dataset.productId;
-			const qty = e.currentTarget.value;
+			let qty = e.currentTarget.value;
 			
 			const totalPriceByProduct = document.querySelector(`span[data-product-total-price='${id}']`);
 			const unitPrice = document.querySelector(`span[data-product-unit-price='${id}']`).textContent;
 			
 			if (e.target.value < 1) {
 				e.currentTarget.value = 1;
+				qty = 1;
 				totalPriceByProduct.textContent = unitPrice;
-				return;
+			} else {
+			    totalPriceByProduct.textContent = Number(qty) * Number(unitPrice);
 			}
 			
-			totalPriceByProduct.textContent = Number(qty) * Number(unitPrice);
+			const data = {
+				id: document.querySelector(`input[type='hidden'][data-cart-id='${id}']`).value,
+				qty
+			}
+			
+			fetch('updateCart.do', {
+				method: 'POST',
+				body: new URLSearchParams(data),
+			})
 		})
 	})	
 		
