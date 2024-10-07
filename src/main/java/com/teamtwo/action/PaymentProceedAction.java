@@ -26,9 +26,9 @@ public class PaymentProceedAction implements Action {
     String buyerName = request.getParameter("buyer_name");
     String buyerTel = request.getParameter("buyer_tel");
     String buyerAddr = request.getParameter("buyer_addr");
-    String[] productIds = request.getParameterValues("product_ids");
-    String[] productsQty = request.getParameterValues("products_qty");
-
+    String[] productIds = request.getParameter("product_ids").split(",");
+    String[] productsQty = request.getParameter("products_qty").split(",");
+    
     OrderDAO orderDao = OrderDAO.getInstance();
     OrderDTO orderDto = new OrderDTO();
 

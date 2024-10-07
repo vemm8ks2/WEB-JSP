@@ -3,15 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>Insert title here</title>
-</head>
-
-<body>
+<div>
   <input type="hidden" name="payment-name" value="${paymentName}" />
   <input type="hidden" name="payment-amount" value="${paymentAmount}" />
   <input type="hidden" name="payment-buyer-name" value="${customer.getCustomerName()}" />
@@ -24,19 +16,20 @@
   
   <c:forEach items="${productList}" var="p" varStatus="status" >
   <div style="display:flex; gap:10px">
-    <input type="hidden" name="product-id" value="${p.getProductId()}" />
-    <p>${p.getProductName()}</p>
 	<c:forEach items="${purchaseList}" var="purchaseProduct">
 	  <c:if test="${purchaseProduct.getProductId() == p.getProductId()}">
+      <input type="hidden" name="product-id" value="${p.getProductId()}" />
+      <p>${p.getProductName()}</p>
 	  <p>${purchaseProduct.getProductQty()}개</p>
+      <p>${p.getProductPrice() * purchaseProduct.getProductQty()}원</p>
 	  </c:if>
 	</c:forEach>
-    <p>${p.getProductPrice()}원</p>
   </div>
   </c:forEach>
+  
+  <br/>
+  <p>금액 합계 : ${paymentAmount}원</p>
   <div>
     <button onclick="proceedPay()" class="primary-btn default-btn-color">결제하기</button>
   </div>
-</body>
-
-</html>
+</div>
