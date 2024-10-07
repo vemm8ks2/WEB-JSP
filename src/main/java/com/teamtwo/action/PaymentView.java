@@ -38,7 +38,7 @@ public class PaymentView implements Action {
     }
 
     /**
-     * TODO(24.09.26): JSON 데이터로 받기
+     * TODO(24.09.26): JSON 데이터로 받기 (보류)
      */
     String[] productIds = request.getParameterValues("id");
     String[] productsQty = request.getParameterValues("qty");
@@ -66,6 +66,16 @@ public class PaymentView implements Action {
     if (productList.size() == 0)
       return null;
 
+    int paymentAmount = 0;
+
+    for (PurchaseDTO p : purchaseList) {
+      int qty = p.getProductQty();
+      int unitPrice = productList.stream().filter(dto -> dto.getProductId() == p.getProductId())
+          .findFirst().get().getProductPrice();
+
+      paymentAmount += unitPrice * qty;
+    }
+
     /**
      * TODO(24.09.24): 지금은 DB에서 유저의 배송지를 가져오지만 결제 페이지에서 지정된 주소를 받게 변경해야 합니다.
      */
@@ -82,15 +92,13 @@ public class PaymentView implements Action {
       paymentName += " 외 " + (productList.size() - 1) + "종";
     }
 
-    int paymentAmount =
-        productList.stream().map(dto -> dto.getProductPrice()).reduce(Integer::sum).get();
-
     request.setAttribute("paymentName", paymentName);
     request.setAttribute("paymentAmount", paymentAmount);
     request.setAttribute("cutsomer", customer);
     request.setAttribute("shippingAddress", shippingAddress.getShippingAddressDestination());
     request.setAttribute("productList", productList);
     request.setAttribute("purchaseList", purchaseList);
+    
     request.setAttribute("url", "payment.jsp");
     request.setAttribute("externalJavascriptList", externalJavascriptList);
     request.setAttribute("javascript", "payment.js");
