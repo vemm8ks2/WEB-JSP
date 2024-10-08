@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div style="display: flex; flex-direction: column; align-items: center;">
   <p>유저의 개인정보 페이지입니다.</p>
@@ -14,5 +15,23 @@
   	[절취선 아래에 유저 테이블의 데이터를 보여주세요]<br>
   	예쁘게 꾸밀 필요 없이 유저의 데이터를 JSTL을 사용해서 보여주기만 하면 됩니다!<br><br>
   	--- --- --- ---<br>
+	  	
+	<p>${customer.getCustomerName()}</p>
+	<p>${customer.getCustomerEmail()}</p>
+	<p>${customer.getCustomerPhoneNumber()}</p>
+	<p>${customer.getCustomerGender()}</p>
+	<p>${customer.getCustomerBirth()}</p>
+	<p>${customer.getCustomerCreatedAt()}</p>
+	<p>${customer.getCustomerUpdatedAt()}</p>
+  
+  	<c:forEach items="${shippingAddressList}" var="dto">
+		<div style="display:flex; gap:20px">
+			<p>${dto.getShippingAddressId()}</p>
+			<p>${dto.getShippingAddressDestination()}</p>
+			<p>${dto.getShippingAddressIsDefault()}</p>
+			<p>${dto.getShippingAddressCustomerFk()}</p>
+		</div>  	
+  	</c:forEach>
+  	
   </p>
 </div>
