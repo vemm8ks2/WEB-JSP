@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teamtwo.model.CustomerDAO;
 import com.teamtwo.model.CustomerDTO;
 import com.teamtwo.model.ShippingAddressDAO;
 import com.teamtwo.model.ShippingAddressDTO;
@@ -27,8 +26,10 @@ public class PersonalInfoViewAction implements Action {
 
 		request.setAttribute("customer", customer);
 		request.setAttribute("shippingAddressList", shippingAddressList);
+		
 		request.setAttribute("url", "personalInfo.jsp");
 		request.setAttribute("stylesheet", "");
+		request.setAttribute("javascript", "personalInfo.js");
 
 		ActionForward forward = new ActionForward();
 

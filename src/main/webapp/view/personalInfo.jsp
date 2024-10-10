@@ -2,36 +2,46 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div style="display: flex; flex-direction: column; align-items: center;">
+<form
+  method="POST"
+  action="personalInfoUpdate.do" 
+  style="display: flex; flex-direction: column; align-items: center; gap:10px;"
+>
   <p>유저의 개인정보 페이지입니다.</p>
   <br>
-  <p>
-  	[과제]<br>
-  	로그인 된 유저의 개인정보를 불러오기.<br><br>
-  	[개인정보 페이지에 들어오기까지 과정]<br>
-  	personalInfoView.do 링크를 클릭 => PersonalInfoViewAction 실행 => personalInfo.jsp 페이지로 포워딩<br><br>
-  	[고민해야 할 것]<br>
-  	유저의 정보를 어디서, 어떻게 가져올 것인가?<br><br>
-  	[절취선 아래에 유저 테이블의 데이터를 보여주세요]<br>
-  	예쁘게 꾸밀 필요 없이 유저의 데이터를 JSTL을 사용해서 보여주기만 하면 됩니다!<br><br>
-  	--- --- --- ---<br>
-	  	
-	<p>${customer.getCustomerName()}</p>
-	<p>${customer.getCustomerEmail()}</p>
-	<p>${customer.getCustomerPhoneNumber()}</p>
-	<p>${customer.getCustomerGender()}</p>
-	<p>${customer.getCustomerBirth()}</p>
-	<p>${customer.getCustomerCreatedAt()}</p>
-	<p>${customer.getCustomerUpdatedAt()}</p>
-  
-  	<c:forEach items="${shippingAddressList}" var="dto">
-		<div style="display:flex; gap:20px">
-			<p>${dto.getShippingAddressId()}</p>
-			<p>${dto.getShippingAddressDestination()}</p>
-			<p>${dto.getShippingAddressIsDefault()}</p>
-			<p>${dto.getShippingAddressCustomerFk()}</p>
-		</div>  	
-  	</c:forEach>
-  	
+  <p>이름 : 
+    <input name="customer_name" value="${customer.getCustomerName()}" />
   </p>
-</div>
+  <p>이메일 : 
+    <input name="customer_email" type="email" value="${customer.getCustomerEmail()}" />
+  </p>
+  <p>전화번호 : 
+    <input name="customer_phone_number" value="${customer.getCustomerPhoneNumber()}" />
+  </p>
+  <p>성별 : 
+    <select name="customer_gender">
+      <option value="M">남성</option>
+      <option value="F">여성</option>
+    </select>
+  </p>
+  <p>
+    생년월일 : 
+    <input name="customer_birth" type="date" value="${customer.getCustomerBirth().substring(0, 10)}" />
+  </p>
+  <p>회원가입일 : ${customer.getCustomerCreatedAt()}</p>
+  <c:if test="${!empty customer.getCustomerUpdatedAt()}">
+    <p>업데이트일 : ${customer.getCustomerUpdatedAt()}</p>
+  </c:if>
+ 
+  <c:forEach items="${shippingAddressList}" var="dto">
+  <div style="display:flex; gap:20px">
+    <p>${dto.getShippingAddressId()}</p>
+	  <p>주소 : ${dto.getShippingAddressDestination()}</p>
+	  <p>기본 배송지 여부 : ${dto.getShippingAddressIsDefault()}</p>
+	  <p>${dto.getShippingAddressCustomerFk()}</p>
+  </div>
+  </c:forEach>
+  
+  <button class="primary-btn default-btn-color">업데이트</button>
+</form>
+<input name="customer_default_gender" type="hidden" value="${customer.getCustomerGender()}" />
