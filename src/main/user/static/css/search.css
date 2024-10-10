@@ -70,3 +70,12 @@
   flex-wrap: wrap;
   gap: 2rem;
   padding-left: var(--padding); }
+
+.display-products__pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem; }
+  .display-products__pagination button.primary-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px; }

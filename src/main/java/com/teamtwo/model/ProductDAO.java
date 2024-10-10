@@ -253,10 +253,31 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
   public List<ProductDTO> searchByKeywordAndFilter(SearchDTO dto) {
     List<ProductDTO> list = new ArrayList<>();
 
+    /* SQL문 예시
+      SELECT * 
+      FROM (
+          SELECT ROWNUM AS pnum, p.* 
+          FROM (
+              SELECT *
+              FROM t_product
+              WHERE upper(product_name) LIKE upper('%%')
+              ORDER BY product_price DESC
+          ) p
+      ) 
+      WHERE pnum >= 1 AND pnum <= 10;
+     */
+
     try {
       open();
 
-      String sql = "SELECT * " + "FROM T_product " + "WHERE upper(product_name) LIKE upper(?)";
+      String sql =
+          "SELECT * "
+          + "FROM ("
+          +     "SELECT ROWNUM AS pnum, p.* "
+          +     "FROM ("
+          +         "SELECT * "
+          +         "FROM t_product "
+          +         "WHERE upper(product_name) LIKE upper(?)";
 
       if (dto.getPrice() != null) {
         String price = dto.getPrice();
@@ -309,6 +330,8 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
           sql += "product_price DESC";
         }
       }
+      
+      sql += ") p ) WHERE pnum >= ? AND pnum <= ?";
 
       pstmt = conn.prepareStatement(sql);
 
@@ -317,6 +340,15 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
       } else {
         pstmt.setString(1, "%" + dto.getKeyword() + "%");
       }
+      
+      int page = dto.getPagination().getCurrPage();
+      int row = dto.getPagination().getRow();
+      
+      int sNum = (page * row) - (row - 1);
+      int eNum = page * row;
+      
+      pstmt.setInt(2, sNum);
+      pstmt.setInt(3, eNum);
 
       rs = pstmt.executeQuery();
 
@@ -342,6 +374,141 @@ public class ProductDAO implements BaseDAO<ProductDTO> {
     }
 
     return list;
+  }
+
+  public List<ProductDTO> getProductsByIds(String[] ids) {
+    List<ProductDTO> list = new ArrayList<>();
+
+    if (ids.length == 0)
+      return list;
+
+    try {
+      open();
+
+      String sql = "SELECT * FROM t_product WHERE product_id in (";
+
+      for (int i = 0; i < ids.length; i++) {
+        if (i == ids.length - 1)
+          sql += ids[i];
+        else
+          sql += ids[i] + ",";
+      }
+
+      sql += ")";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        ProductDTO product = new ProductDTO();
+
+        product.setProductId(rs.getInt("product_id"));
+        product.setProductName(rs.getString("product_name"));
+        product.setProductPrice(rs.getInt("product_price"));
+        product.setProductStock(rs.getInt("product_stock"));
+        product.setProductImage(rs.getString("product_image"));
+        product.setProductCreatedAt(rs.getString("product_created_at"));
+        product.setProductUpdatedAt(rs.getString("product_updated_at"));
+        product.setProductCategoryFk(rs.getInt("product_category_fk"));
+
+        list.add(product);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return list;
+  }
+
+  public int getProductCount() {
+    int cnt = 0;
+
+    try {
+      open();
+
+      String sql = "SELECT count(*) FROM t_product";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        cnt = rs.getInt(1);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return cnt;
+  }
+  
+  public int getProductCountByKeywordAndFilter(SearchDTO dto) {
+    int cnt = 0;
+    
+    try {
+      open();
+      
+      String sql = "SELECT count(*) FROM t_product WHERE upper(product_name) LIKE upper(?)";
+
+      if (dto.getPrice() != null) {
+        String price = dto.getPrice();
+
+        sql += " AND ";
+
+        if (price.equals("60000~")) {
+          sql += "product_price >= 60000";
+        } else if (price.equals("30000~60000")) {
+          sql += "product_price BETWEEN 30000 AND 60000";
+        } else if (price.equals("10000~30000")) {
+          sql += "product_price BETWEEN 10000 AND 30000";
+        } else if (price.equals("~10000")) {
+          sql += "produce_price <= 10000";
+        }
+      }
+
+      /**
+       * TODO(24.09.12): 현재는 카테고리가 정확하게 맞아야 해당하는 상품을 보여주지만 부모 카테고리를 선택했을 때 자식 카테고리에 해당하는 상품도 보여지도록
+       * 하는 것이 적절할 것이다.
+       */
+      if (dto.getCategories() != null && dto.getCategories().length > 0) {
+        String[] categories = dto.getCategories();
+
+        sql += " AND product_category_fk in(";
+
+        for (int i = 0; i < categories.length; i++) {
+          if (i == categories.length - 1) {
+            sql += categories[i];
+          } else {
+            sql += (categories[i] + ",");
+          }
+        }
+
+        sql += ")";
+      }
+      
+      pstmt = conn.prepareStatement(sql);
+
+      if (dto.getKeyword() == null) {
+        pstmt.setString(1, "%" + "%");
+      } else {
+        pstmt.setString(1, "%" + dto.getKeyword() + "%");
+      }
+      
+      rs = pstmt.executeQuery();
+
+      if (rs.next())
+        cnt = rs.getInt(1);
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+    
+    return cnt;
   }
 
 }

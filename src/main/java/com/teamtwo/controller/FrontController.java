@@ -3,6 +3,8 @@ package com.teamtwo.controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.teamtwo.action.Action;
 import com.teamtwo.action.ActionForward;
 import com.teamtwo.model.CategoryDAO;
+import com.teamtwo.model.CategoryDTO;
 
 public class FrontController extends HttpServlet {
 
@@ -31,7 +34,10 @@ public class FrontController extends HttpServlet {
 
     if (ctx.getAttribute("categoryList") == null) {
       CategoryDAO dao = CategoryDAO.getInstance();
-      ctx.setAttribute("categoryList", dao.getAll());
+      List<CategoryDTO> categoryList = dao.getAll();
+      
+      ctx.setAttribute("categoryList", categoryList);
+      ctx.setAttribute("categoryGraph", getCategoryGraph(categoryList));
     }
 
     String uri = request.getRequestURI(); // "/<프로젝트명>/<파일명(*.do)>"라는 문자열을 반환해주는 메서드이다.
@@ -91,5 +97,18 @@ public class FrontController extends HttpServlet {
         rd.forward(request, response);
       }
     }
+  }
+
+  private ArrayList<CategoryDTO>[] getCategoryGraph(List<CategoryDTO> list) {
+    @SuppressWarnings("unchecked")
+    ArrayList<CategoryDTO>[] graph = new ArrayList[list.size() + 1];
+
+    for (int i = 0; i < graph.length; i++)
+      graph[i] = new ArrayList<>();
+
+    for (CategoryDTO category : list)
+      graph[category.getCategoryParentFk()].add(category);
+
+    return graph;
   }
 }

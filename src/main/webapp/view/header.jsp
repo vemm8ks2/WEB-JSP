@@ -44,7 +44,7 @@
     <!-- 로그인 UI -->
     <c:if test="${ !empty customer }">
     <div class="header-top__logged-in">
-      <a href="#">
+      <a href="cartView.do">
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"

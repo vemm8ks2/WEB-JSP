@@ -15,6 +15,7 @@
 <div class="display-products__container">
   <form method="GET" action="searchView.do" name="search-filter-form" class="display-products__filter">
     <input type="hidden" name="keyword" value="${keyword}">
+    <input type="hidden" name="page" value="${ currPage }" />
             
     <p>필터</p>
     <hr />
@@ -131,7 +132,7 @@
             id="filter-category__item-${ root.getCategoryName() }"
             name="category-filter"
             value="${ root.getCategoryId() }"
-            onclick="handleFilter()"
+            data-parent-category="0"
             class="display-products__filter-category__checkbox primary-checkbox"
           />
           <label for="filter-category__item-${ root.getCategoryName() }" 
@@ -149,7 +150,7 @@
                 id="filter-category__item-${ level1.getCategoryName() }"
 	            name="category-filter"
 	            value="${ level1.getCategoryId() }"
-	            onclick="handleFilter()"
+	            data-parent-category="${ root.getCategoryId() }"
                 class="display-products__filter-category__checkbox primary-checkbox"
               />
               <label for="filter-category__item-${ level1.getCategoryName() }"
@@ -167,7 +168,7 @@
                       id="filter-category__item-${ level2.getCategoryName() }"
 		              name="category-filter"
 		              value="${ level2.getCategoryId() }"
-		              onclick="handleFilter()"
+           		      data-parent-category="${ level1.getCategoryId() }"
                       class="primary-checkbox"
                     />
                    <label for="filter-category__item-${ level2.getCategoryName() }"
@@ -190,7 +191,7 @@
     </div>
   </form>
   <div class="display-product__container">
-    <p>총 ${list.size()}건</p>
+    <p>총 ${searchResultSize}건</p>
     <div class="display-products__wrapper">
       <c:forEach var="p" items="${list}">
       <div class="display-products__product">
@@ -204,6 +205,33 @@
       </div>
       </c:forEach>
     </div>
+      
+    <nav>
+      <ul class="display-products__pagination">
+        <c:forEach begin="${ sBlock }" end="${ eBlock }" var="i">
+        <li>
+          <c:if test="${ i == currPage }">
+          <button 
+            name='pagination-btn' 
+            data-page="${ i }"
+            class="primary-btn default-btn-color"
+          >
+            ${ i }
+          </button>
+          </c:if>
+          <c:if test="${ i != currPage }">
+          <button 
+            name='pagination-btn' 
+            data-page="${ i }"
+            class="primary-btn reverse-btn-color"
+          >
+            ${ i }
+          </button>
+          </c:if>
+        </li>
+        </c:forEach>
+      </ul>
+    </nav>
   </div>
 </div>
 <script>

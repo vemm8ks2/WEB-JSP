@@ -7,11 +7,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.teamtwo.model.CategoryDTO;
+import com.teamtwo.model.PaginationDTO;
 import com.teamtwo.model.ProductDAO;
 import com.teamtwo.model.ProductDTO;
 import com.teamtwo.model.SearchDTO;
 
 public class SearchViewAction implements Action {
+
+  List<CategoryDTO> categoryList;
+  ArrayList<CategoryDTO>[] categoryGraph;
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
@@ -25,16 +29,29 @@ public class SearchViewAction implements Action {
     String sort = request.getParameter("sort-filter");
     String price = request.getParameter("price-filter");
     String[] categoryIds = request.getParameterValues("category-filter");
+    String page = request.getParameter("page");
 
-    List<CategoryDTO> categoryList =
-        (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryList = (List<CategoryDTO>) request.getServletContext().getAttribute("categoryList");
+    categoryGraph =
+        (ArrayList<CategoryDTO>[]) request.getServletContext().getAttribute("categoryGraph");
+    boolean[] visited = new boolean[categoryList.size() + 1];
 
     List<Integer> parentCategoryIdList = new ArrayList<>();
 
     if (categoryIds != null) {
       for (String categoryId : categoryIds) {
         int id = Integer.parseInt(categoryId);
-        parentCategoryIdList.addAll(findAllParentId(id, categoryList));
+
+        parentCategoryIdList.addAll(findAllParentIds(id));
+        findChildCategoryIds(id, visited);
+      }
+    }
+
+    List<Integer> categoryIdsIncludingChild = new ArrayList<>();
+
+    for (CategoryDTO category : categoryList) {
+      if (visited[category.getCategoryId()]) {
+        categoryIdsIncludingChild.add(category.getCategoryId());
       }
     }
 
@@ -43,15 +60,62 @@ public class SearchViewAction implements Action {
     dto.setKeyword(keyword);
     dto.setSort(sort);
     dto.setPrice(price);
-    dto.setCategories(categoryIds);
+    dto.setCategories(
+        categoryIdsIncludingChild.stream().map(c -> c.toString()).toList().toArray(new String[0]));
+
+    PaginationDTO paginationDTO = new PaginationDTO();
+
+    if (page == null) {
+      paginationDTO.setCurrPage(1);
+    } else {
+      paginationDTO.setCurrPage(Integer.parseInt(page));
+    }
+
+    paginationDTO.setRow(9);
+    paginationDTO.setBlock(3);
 
     ProductDAO dao = ProductDAO.getInstance();
 
+    int totalSize = dao.getProductCount();
+    int totalPage = (int) Math.ceil(totalSize / paginationDTO.getRow());
+
+    paginationDTO.setTotalSize(totalSize);
+    paginationDTO.setTotalPage(totalPage);
+
+    dto.setPagination(paginationDTO);
+
     List<ProductDTO> list = dao.searchByKeywordAndFilter(dto);
+    int searchResultSize = dao.getProductCountByKeywordAndFilter(dto);
+
+    int currPage = paginationDTO.getCurrPage();
+    int block = paginationDTO.getBlock();
+
+    int distance = (int) Math.floor(block / 2);
+    int sBlock = currPage - distance;
+    int eBlock = currPage + distance;
+    int maxBlock = (int) Math.ceil((double) searchResultSize / paginationDTO.getRow());
+
+    if (sBlock <= 0) {
+      sBlock = 1;
+      eBlock = block;
+    }
+
+    if (eBlock > maxBlock) {
+      sBlock = maxBlock - block + 1;
+      eBlock = maxBlock;
+    }
+    
+    if (sBlock <= 0) {
+      sBlock = 1;
+    }
 
     request.setAttribute("keyword", keyword);
     request.setAttribute("list", list);
+    request.setAttribute("searchResultSize", searchResultSize);
     request.setAttribute("opennedCategories", parentCategoryIdList.stream().distinct().toList());
+    request.setAttribute("currPage", currPage);
+    request.setAttribute("sBlock", sBlock);
+    request.setAttribute("eBlock", eBlock);
 
     request.setAttribute("url", "search.jsp");
     request.setAttribute("stylesheet", "search.css");
@@ -65,7 +129,16 @@ public class SearchViewAction implements Action {
     return forward;
   }
 
-  private List<Integer> findAllParentId(int categoryId, List<CategoryDTO> categoryList) {
+  private void findChildCategoryIds(int categoryId, boolean[] visited) {
+    visited[categoryId] = true;
+
+    for (CategoryDTO category : categoryGraph[categoryId]) {
+      if (!visited[category.getCategoryId()])
+        findChildCategoryIds(category.getCategoryId(), visited);
+    }
+  }
+
+  private List<Integer> findAllParentIds(int categoryId) {
     List<Integer> parentCategories = new ArrayList<>();
 
     /* 1. 인자로 받은 categoryId의 부모 카테고리의 식별자를 찾은 후 변수에 할당합니다. */
@@ -92,5 +165,4 @@ public class SearchViewAction implements Action {
 
     return parentCategories;
   }
-
 }
