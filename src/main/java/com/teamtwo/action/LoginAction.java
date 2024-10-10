@@ -49,7 +49,7 @@ public class LoginAction implements Action {
     session.setAttribute("customer", customer);
 
     forward.setPath("mainView.do");
-    forward.setRedirect(false);
+    forward.setRedirect(true);
 
     return forward;
   }

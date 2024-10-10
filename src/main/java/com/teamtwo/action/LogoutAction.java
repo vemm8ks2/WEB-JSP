@@ -26,7 +26,7 @@ public class LogoutAction implements Action {
     
     ActionForward forward = new ActionForward();
     
-    forward.setRedirect(false);
+    forward.setRedirect(true);
     forward.setPath("mainView.do");
     
     return forward;
