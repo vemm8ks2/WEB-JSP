@@ -34,8 +34,8 @@
   </div>
   <hr />
   <div>
-    <a href="#" class="customer-wrapper__link">
-      <button>취소&#183;반품&#183;교환목록</button>
+    <a href="personalAddressListView.do" class="customer-wrapper__link">
+      <button>배송지목록</button>
     </a>
   </div>
   <hr />
