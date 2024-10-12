@@ -1,7 +1,6 @@
 package com.teamtwo.action;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,36 +14,31 @@ import com.teamtwo.model.ShippingAddressDTO;
  * 
  * @author hsheeh
  */
-public class ModifyShippingAdddress implements Action {
-  /**
-   * TODO(24.09.03): ModifyAddressAction과 혼동되니 보완이 필요합니다.
-   */
+public class ModifyShippingAdddressAction implements Action {
   
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    /**
-     * Q(24.09.03): shippingAddressCustomerFk를 파라미터로 받을 수 있을 지 고민을 해보아야 합니다. 만약 파라미터로 받지 않기로 하였다면 유저
-     * 외래키를 가져올 다른 방법을 찾아보아야 합니다.
-     */
     String shippingAddressDestination = request.getParameter("shippingAddressDestination").trim();;
     String shippingAddressIsDefault = request.getParameter("shippingAddressIsDefault").trim();;
     int shippingAddressId = Integer.parseInt(request.getParameter("shippingAddressId").trim());
-    int shippingAddressCustomerIdFk =
-        Integer.parseInt(request.getParameter("shippingAddressCustomerIdFk").trim());
 
     ShippingAddressDTO dto = new ShippingAddressDTO();
 
-    dto.setShippingAddressDestination(shippingAddressDestination);
     dto.setShippingAddressId(shippingAddressId);
+    dto.setShippingAddressDestination(shippingAddressDestination);
     dto.setShippingAddressIsDefault(shippingAddressIsDefault);
-    dto.setShippingAddressCustomerFk(shippingAddressCustomerIdFk);
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
     dao.update(dto);
+    
+    ActionForward forward = new ActionForward();
+    
+    forward.setRedirect(true);
+    forward.setPath("personalAddressListView.do");
 
-    return null;
+    return forward;
   }
 
 }
