@@ -16,7 +16,7 @@ import com.teamtwo.model.ShippingAddressDTO;
  * 
  * @author hsheeh
  */
-public class ShowPersonalAddressListAction implements Action {
+public class PersonalAddressListViewAction implements Action {
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
