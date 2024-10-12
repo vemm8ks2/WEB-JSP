@@ -135,30 +135,13 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     try {
       open();
 
-      String sql = "SELECT max(shipping_address_id) FROM T_shipping_address";
-
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
-
-      Integer count = null;
-
-      if (rs.next())
-        count = rs.getInt(1) + 1;
-
-      /**
-       * TODO(24.09.03): 에러 핸들링
-       */
-      if (count == null)
-        throw new SQLException();
-
-      sql = "INSERT INTO T_shipping_address VALUES(?, ?, ?, ?)";
+      String sql = "INSERT INTO T_shipping_address VALUES(?, ?, 'N', ?)";
 
       pstmt = conn.prepareStatement(sql);
 
-      pstmt.setInt(1, count);
+      pstmt.setInt(1, dto.getShippingAddressId());
       pstmt.setString(2, dto.getShippingAddressDestination());
-      pstmt.setString(3, dto.getShippingAddressIsDefault());
-      pstmt.setInt(4, dto.getShippingAddressCustomerFk());
+      pstmt.setInt(3, dto.getShippingAddressCustomerFk());
 
       pstmt.executeUpdate();
 
@@ -232,21 +215,19 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
    * @param 배송지의 식별자를 인자로 받습니다.
    * @author joohp
    */
-  public void updateDefault(int id) {
+  public void setDefault(int id) {
     /**
-     * TODO(24.09.05): 배송지를 새롭게 'Y'로 업데이트 해줄 뿐만 아니라 기존에 있던 기본 배송지도 'N'으로 업데이트해야 한다.
+     * TODO(24.10.12): 무조건 기본 배송지로 업데이트 해주는데 이전에 기본 배송지가 있는지 확인이 필요합니다.
      */
 
     try {
       open();
 
       String sql =
-          "UPDATE T_shipping_address SET shipping_address_is_default = ? WHERE shipping_address_id = ?";
+          "UPDATE T_shipping_address SET shipping_address_is_default = 'Y' WHERE shipping_address_id = ?";
 
       pstmt = conn.prepareStatement(sql);
-
-      pstmt.setString(1, "Y");
-      pstmt.setInt(2, id);
+      pstmt.setInt(1, id);
 
       pstmt.executeUpdate();
 
@@ -257,6 +238,47 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     }
   } // getupdate(id) end
 
+  public void unsetDefault(int customerId) {
+    try {
+      open();
+
+      String sql = "UPDATE T_shipping_address " + "SET shipping_address_is_default = 'N' "
+          + "WHERE shipping_address_customer_fk = ? AND shipping_address_is_default = 'Y'";
+
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, customerId);
+
+      pstmt.executeUpdate();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  }
+
+  public Integer getNewId() {
+    Integer id = null;
+
+    try {
+      open();
+
+      String sql = "SELECT max(shipping_address_id) FROM T_shipping_address";
+
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        id = rs.getInt(1) + 1;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return id;
+  }
 
   /**
    * 유저의 식별자를 인자로 받아서 해당하는 유저의 모든 배송지 리스트를 반환해주는 메소드입니다.
