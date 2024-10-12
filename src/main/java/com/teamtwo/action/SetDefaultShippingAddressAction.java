@@ -24,7 +24,7 @@ public class SetDefaultShippingAddressAction implements Action {
     /**
      * TODO(24.09.05): 배송지를 새롭게 'Y'로 업데이트 해줄 뿐만 아니라 기존에 있던 기본 배송지도 'N'으로 업데이트해야 한다.
      */
-    dao.updateDefault(shippingAddressId);
+    dao.setDefault(shippingAddressId);
 
     ActionForward forword = new ActionForward();
 
