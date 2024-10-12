@@ -18,18 +18,18 @@ public class DeleteShippingAddressAction implements Action {
       throws IOException, ServletException {
 
     int shippingAddressId = Integer.parseInt(request.getParameter("shippingAddressId").trim());
+    
+    /**
+     * TODO(24.10.12): 로그인 되어있는 고객과 해당 배송지 데이터의 고객 외래키가 같은지 검증해야합니다.
+     */
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
-
-    /**
-     * TODO(24.09.03): 에러 핸들링
-     */
     dao.delete(shippingAddressId);
 
     ActionForward forward = new ActionForward();
 
-    forward.setRedirect(false);
-    forward.setPath("");
+    forward.setRedirect(true);
+    forward.setPath("personalAddressListView.do");
 
     return forward;
   }
