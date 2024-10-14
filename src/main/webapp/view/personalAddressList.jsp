@@ -2,12 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--
-	24.09.24
-	유저의 배송지 목록은 페이지로 나눌지 말지 결정해야 합니다.
-	즉, 배송지의 Create, Read, Update, Delete가 어디서 수행되어야 적절할지 유저의 입장에서 고려해보아야 합니다.  
---%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +25,7 @@
 					<td>${dto.getShippingAddressDestination()}</td>
 					<td>
 						<button onclick="" class="primary-btn reverse-btn-color">수정</button>
+						<button onclick="" class="primary-btn reverse-btn-color">삭제</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -44,8 +39,28 @@
 	</table>
 	<br>
 	<button onclick="" class="primary-btn reverse-btn-color">저장</button>
-	<button onclick="" class="primary-btn reverse-btn-color">등록</button>
-	<button onclick="" class="primary-btn reverse-btn-color">삭제</button>
+	
+	<form method="POST" action="" style='margin-top:20px;'>
+		<h3>새 배송지 추가</h3>
+		<div style='display:flex;'>
+			<label>새로운 배송지 주소</label>
+			<input style='border: 1px solid #ccc;' />
+		</div>
+		<button class="primary-btn reverse-btn-color">등록</button>
+	</form>
+	
+	<form method="POST" action="" style='margin-top:20px;'>
+		<h3>기존 배송지 수정</h3>
+		<div style='display:flex;'>
+			<label>기존 배송지 주소</label>
+			<input style='border: 1px solid #ccc' />
+		</div>
+		<div style='display:flex;'>
+			<label>새 배송지 주소</label>
+			<input style='border: 1px solid #ccc' />
+		</div>
+		<button class="primary-btn reverse-btn-color">등록</button>
+	</form>
 </div>
 </body>
 </html>
