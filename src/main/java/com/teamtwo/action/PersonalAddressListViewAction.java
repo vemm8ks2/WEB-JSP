@@ -31,6 +31,7 @@ public class PersonalAddressListViewAction implements Action {
 
     request.setAttribute("addressList", list);
     request.setAttribute("url", "personalAddressList.jsp");
+    request.setAttribute("javascript", "personalAddressList.js");
 
     ActionForward forward = new ActionForward();
 

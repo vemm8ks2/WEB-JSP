@@ -320,4 +320,25 @@ public class ShippingAddressDAO implements BaseDAO<ShippingAddressDTO> {
     return list;
   }
 
+  public void modifyShippingAddressDestination(ShippingAddressDTO dto) {
+    try {
+      open();
+
+      String sql =
+          "UPDATE T_shipping_address SET shipping_address_destination = ? WHERE shipping_address_id = ?";
+
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setString(1, dto.getShippingAddressDestination());
+      pstmt.setInt(2, dto.getShippingAddressId());
+
+      pstmt.executeUpdate();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+  }
+
 }
