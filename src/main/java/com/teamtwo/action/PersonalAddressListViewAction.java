@@ -30,7 +30,7 @@ public class PersonalAddressListViewAction implements Action {
     List<ShippingAddressDTO> list = dao.getShippingAddressByCustomer(customer.getCustomerId());
 
     request.setAttribute("addressList", list);
-    request.setAttribute("url", "customerAddressList.jsp");
+    request.setAttribute("url", "personalAddressList.jsp");
 
     ActionForward forward = new ActionForward();
 
