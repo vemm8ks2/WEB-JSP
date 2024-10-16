@@ -14,13 +14,13 @@ public class ModifyShippingAdddressDestinationAction implements Action {
       throws IOException, ServletException {
 
     int shippingAddressId = Integer.parseInt(request.getParameter("shipping-address-id").trim());
-    String newShippingAddressDestination =
-        request.getParameter("new-shipping-address-destination").trim();
+    String modifiedShippingAddressDestination =
+        request.getParameter("modified-shipping-address-destination").trim();
 
     ShippingAddressDTO dto = new ShippingAddressDTO();
 
     dto.setShippingAddressId(shippingAddressId);
-    dto.setShippingAddressDestination(newShippingAddressDestination);
+    dto.setShippingAddressDestination(modifiedShippingAddressDestination);
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
     dao.modifyShippingAddressDestination(dto);

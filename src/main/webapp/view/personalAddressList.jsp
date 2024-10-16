@@ -18,16 +18,17 @@
 		</tr>
 		<c:if test="${!empty list}">
 			<c:forEach items="${list}" var="dto">
-				<input 
+				<%-- <input 
 					type="hidden" 
 					name="addr-info"
 					data-addr-id="${dto.getShippingAddressId()}" 
 					data-addr-dest="${dto.getShippingAddressDestination()}" 
-				/>
+				/> --%>
 				<tr align="center">
 					<td> 
 						<input 
 							type="radio" 
+							name="addr-info"
 							value="${dto.getShippingAddressId()}"
 							<c:if test="${dto.getShippingAddressIsDefault() eq 'Y'}">checked</c:if> 
 						/>
@@ -59,11 +60,11 @@
 	<br>
 	<button onclick="" class="primary-btn reverse-btn-color">저장</button>
 	
-	<form method="POST" action="" style='margin-top:20px;'>
+	<form method="POST" action="createShippingAdddressDestination.do" style='margin-top:20px;'>
 		<h3>새 배송지 추가</h3>
 		<div style='display:flex;'>
 			<label>새로운 배송지 주소</label>
-			<input style='border: 1px solid #ccc;' />
+			<input name="new-shipping-address-destination" style='border: 1px solid #ccc;' />
 		</div>
 		<button class="primary-btn reverse-btn-color">등록</button>
 	</form>
@@ -77,8 +78,8 @@
 			<input name="prev-shipping-address" style='border: 1px solid #ccc' />
 		</div>
 		<div style='display:flex;'>
-			<label>새 배송지 주소</label>
-			<input name='new-shipping-address-destination' style='border: 1px solid #ccc' />
+			<label>수정 배송지 주소</label>
+			<input name='modified-shipping-address-destination' style='border: 1px solid #ccc' />
 		</div>
 		<button class="primary-btn reverse-btn-color">수정</button>
 	</form>
