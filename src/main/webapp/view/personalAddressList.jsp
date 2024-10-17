@@ -45,7 +45,13 @@
 						>
 							수정
 						</button>
-						<button onclick="" class="primary-btn reverse-btn-color">삭제</button>
+						<button 
+							name="delete-btn"
+							data-addr-id="${dto.getShippingAddressId()}" 
+							class="primary-btn reverse-btn-color"
+						>
+							삭제
+						</button>
 					</td>
 				</tr>
 			</c:forEach>
