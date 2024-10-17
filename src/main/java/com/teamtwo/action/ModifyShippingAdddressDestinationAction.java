@@ -5,26 +5,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.teamtwo.model.ShippingAddressDAO;
+import com.teamtwo.model.ShippingAddressDTO;
 
-/**
- * 배송지를 삭제하는 액션입니다.
- * 
- * @author hsheeh
- */
-public class DeleteShippingAddressAction implements Action {
+public class ModifyShippingAdddressDestinationAction implements Action {
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
-    int id = Integer.parseInt(request.getParameter("id").trim());
-    
-    /**
-     * TODO(24.10.12): 로그인 되어있는 고객과 해당 배송지 데이터의 고객 외래키가 같은지 검증해야합니다.
-     */
+    int shippingAddressId = Integer.parseInt(request.getParameter("shipping-address-id").trim());
+    String modifiedShippingAddressDestination =
+        request.getParameter("modified-shipping-address-destination").trim();
+
+    ShippingAddressDTO dto = new ShippingAddressDTO();
+
+    dto.setShippingAddressId(shippingAddressId);
+    dto.setShippingAddressDestination(modifiedShippingAddressDestination);
 
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
-    dao.delete(id);
+    dao.modifyShippingAddressDestination(dto);
 
     ActionForward forward = new ActionForward();
 

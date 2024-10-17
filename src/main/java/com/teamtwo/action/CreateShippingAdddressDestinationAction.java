@@ -1,8 +1,6 @@
 package com.teamtwo.action;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,35 +9,35 @@ import com.teamtwo.model.CustomerDTO;
 import com.teamtwo.model.ShippingAddressDAO;
 import com.teamtwo.model.ShippingAddressDTO;
 
-/**
- * 특정 유저의 배송지 목록을 보여주는 Action 입니다.
- * 
- * @author hsheeh
- */
-public class PersonalAddressListViewAction implements Action {
+public class CreateShippingAdddressDestinationAction implements Action {
 
   @Override
   public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    
+
     HttpSession session = request.getSession();
     CustomerDTO customer = (CustomerDTO) session.getAttribute("customer"); // 세션에서 값 받아옴
 
+    String newShippingAddressDestination = request.getParameter("new-shipping-address-destination");
+
     ShippingAddressDAO dao = ShippingAddressDAO.getInstance();
 
-    List<ShippingAddressDTO> list = dao.getShippingAddressByCustomer(customer.getCustomerId());
+    Integer newId = dao.getNewId();
 
-    request.setAttribute("addressList", list);
-    request.setAttribute("url", "personalAddressList.jsp");
-    request.setAttribute("javascript", "personalAddressList.js");
+    ShippingAddressDTO dto = new ShippingAddressDTO();
+
+    dto.setShippingAddressId(newId);
+    dto.setShippingAddressDestination(newShippingAddressDestination);
+    dto.setShippingAddressCustomerFk(customer.getCustomerId());
+
+    dao.save(dto);
 
     ActionForward forward = new ActionForward();
 
-    forward.setRedirect(false);
-    forward.setPath("view/layout.jsp");
+    forward.setRedirect(true);
+    forward.setPath("personalAddressListView.do");
 
     return forward;
-
   }
 
 }
